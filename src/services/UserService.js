@@ -1,18 +1,18 @@
 // Données initiales (SANS MOT DE PASSE)
 const initialUsers = [
   {
-    code: "12345678901",
+    code: "12345678912",
     nom: "Christine Dubois",
     email: "christine.dubois@email.com",
     telephone: "+33 6 12 34 56 78",
     adresse: "15 Rue de la Paix, 75002 Paris",
-    solde: 2450.75,
+    solde: 2000000.75,
     numeroCompte: "FR76 3000 4000 0100 0123 4567 890",
     iban: "FR76 3000 4000 0100 0123 4567 890",
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    notification: "Votre virement de 500€ a été effectué avec succès",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès,nous vous invitons à régler les frais de  déblocage s'élevant à 12 800 €. Merci de votre compréhension. ",
     conseiller: {
       nom: 'Marie Martin',
       telephone: '01 23 45 67 89',
