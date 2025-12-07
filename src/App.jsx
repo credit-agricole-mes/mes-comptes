@@ -1,0 +1,163 @@
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import UserService from "./services/UserService";
+import AccountCard from "./components/AccountCard";
+import ActionGrid from "./components/ActionGrid";
+import LoginPage from "./components/LoginPage";
+import TransactionsPage from "./components/TransactionsPage";
+import CartesPromoPage from "./components/CartesPromoPage";
+import DownloadSection from "./components/DownloadSection";
+import Footer from "./components/Footer";
+import Virements from "./components/Virements";
+import Depots from "./components/Depots";
+import Profil from "./components/Profil";
+import GestionCartes from "./components/GestionCartes";
+import GestionDocument from "./components/GestionDocument";
+import TransactionsDownload from "./components/TransactionsDownload";
+import RibPage from "./components/RibPage";
+import LoadingScreen from "./components/LoadingScreen";
+
+// Import des pages de compte bloqué
+import ExpensesPage from "./components/ExpensesPage";
+import SavingsPage from "./components/SavingsPage";
+import BeneficiariesPage from "./components/BeneficiariesPage";
+import LimitsPage from "./components/LimitsPage";
+import LoanPage from "./components/LoanPage";
+import CalculatorPage from "./components/CalculatorPage";
+
+// Import des nouvelles pages
+import SettingsPage from "./components/SettingsPage";
+import OverdraftPage from "./components/OverdraftPage";
+import AssistantPage from "./components/AssistantPage";
+import NotificationsPage from "./components/NotificationsPage";
+
+// Composant pour la page d'accueil
+function HomePage({ user }) {
+  return (
+    <>
+      <div className="px-4 pb-6">
+        <TransactionsPage />
+      </div>
+      <div className="pb-6">
+        <CartesPromoPage />
+      </div>
+      <div className="pb-6">
+        <DownloadSection />
+      </div>
+      <div className="pb-6">
+        <Footer />
+      </div>
+    </>
+  );
+}
+
+// Composant wrapper pour les pages avec bouton retour
+function PageWithBack({ children }) {
+  return (
+    <div className="min-h-screen m-0 p-0 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <button 
+          onClick={() => window.history.back()}
+          className="mb-4 flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold"
+        >
+          ← Retour
+        </button>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// Composant qui gère le contenu avec Router
+function AppContent({ user, onLogout }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === "/";
+
+  return (
+    <div className="min-h-screen m-0 p-0 bg-gray-50">
+      {/* Afficher AccountCard et ActionGrid UNIQUEMENT sur la page d'accueil */}
+      {isHomePage && (
+        <>
+          <AccountCard user={user} onLogout={onLogout} />
+          <ActionGrid onLogout={onLogout} />
+        </>
+      )}
+      
+      <Routes>
+        <Route path="/" element={<HomePage user={user} />} />
+        <Route path="/virements" element={<PageWithBack><Virements /></PageWithBack>} />
+        <Route path="/depots" element={<PageWithBack><Depots /></PageWithBack>} />
+        <Route path="/profil" element={<PageWithBack><Profil user={user} /></PageWithBack>} />
+        <Route path="/cartes" element={<PageWithBack><GestionCartes /></PageWithBack>} />
+        <Route path="/documents" element={<PageWithBack><GestionDocument /></PageWithBack>} />
+        <Route path="/transactions" element={<PageWithBack><TransactionsDownload /></PageWithBack>} />
+        <Route path="/rib" element={<PageWithBack><RibPage /></PageWithBack>} />
+        <Route path="/expenses" element={<PageWithBack><ExpensesPage /></PageWithBack>} />
+        <Route path="/savings" element={<PageWithBack><SavingsPage /></PageWithBack>} />
+        <Route path="/beneficiaries" element={<PageWithBack><BeneficiariesPage /></PageWithBack>} />
+        <Route path="/limits" element={<PageWithBack><LimitsPage /></PageWithBack>} />
+        <Route path="/loan" element={<PageWithBack><LoanPage /></PageWithBack>} />
+        <Route path="/calculator" element={<PageWithBack><CalculatorPage /></PageWithBack>} />
+        <Route path="/settings" element={<PageWithBack><SettingsPage /></PageWithBack>} />
+        <Route path="/overdraft" element={<PageWithBack><OverdraftPage /></PageWithBack>} />
+        <Route path="/assistant" element={<AssistantPage onBack={() => navigate('/')} />} />
+        <Route path="/notifications" element={<PageWithBack><NotificationsPage /></PageWithBack>} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
+  );
+}
+
+// Wrapper interne pour gérer l'authentification
+function AppWrapper() {
+  const { isAuthenticated, user, isLoading, logout } = useAuth();
+
+  const handleLogout = () => {
+    console.log('🚪 Déconnexion');
+    logout();
+  };
+
+  // ✅ Afficher un écran de chargement pendant la vérification de la session
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  // ✅ Afficher la page de login si non authentifié
+  if (!isAuthenticated || !user) {
+    return <LoginPage onLogin={() => {}} />;
+  }
+
+  return (
+    <Router>
+      <AppContent 
+        user={user} 
+        onLogout={handleLogout}
+      />
+    </Router>
+  );
+}
+
+// Composant principal avec AuthProvider
+export default function App() {
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setInitialLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (initialLoading) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <AuthProvider>
+      <AppWrapper />
+    </AuthProvider>
+  );
+}
