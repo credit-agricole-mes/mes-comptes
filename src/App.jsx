@@ -110,18 +110,87 @@ function AppContent({ user, onLogout }) {
   );
 }
 
+// ✅ ÉCRAN "SESSION EXPIRÉE" SANS RECHARGEMENT
+function SessionExpiredScreen({ onReturn }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md text-center animate-fade-in">
+        <div className="text-7xl mb-6">🔒</div>
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          Session expirée
+        </h2>
+        <p className="text-gray-600 mb-3 text-lg">
+          Votre code d'accès a été modifié.
+        </p>
+        <p className="text-gray-500 mb-8">
+          Veuillez vous reconnecter avec votre nouveau code.
+        </p>
+        <button
+          onClick={onReturn}
+          className="w-full bg-green-700 text-white px-6 py-4 rounded-lg font-semibold hover:bg-green-800 transition duration-200 text-lg"
+        >
+          Retour à la connexion
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // Wrapper interne pour gérer l'authentification
 function AppWrapper() {
   const { isAuthenticated, user, isLoading, logout } = useAuth();
+  const [showSessionExpired, setShowSessionExpired] = useState(false);
+
+  // ✅ VÉRIFICATION PÉRIODIQUE CRITIQUE - Détecte les changements de code
+  useEffect(() => {
+    if (!isAuthenticated || !user) return;
+
+    console.log('🔍 Démarrage vérification périodique...');
+
+    const checkValidity = () => {
+      console.log('🔍 Vérification validité code utilisateur...');
+      const validation = UserService.checkCurrentUserValidity();
+      
+      if (validation.shouldLogout) {
+        console.log('⚠️ CODE INVALIDE DÉTECTÉ - Déconnexion immédiate');
+        setShowSessionExpired(true);
+        logout();
+      } else if (validation.valid && validation.user) {
+        console.log('✅ Code valide');
+      }
+    };
+
+    // Vérification immédiate au montage
+    checkValidity();
+
+    // ✅ Vérification toutes les 2 secondes
+    const interval = setInterval(checkValidity, 2000);
+
+    return () => {
+      console.log('🛑 Arrêt vérification périodique');
+      clearInterval(interval);
+    };
+  }, [isAuthenticated, user, logout]);
 
   const handleLogout = () => {
-    console.log('🚪 Déconnexion');
+    console.log('🚪 Déconnexion manuelle');
+    logout();
+  };
+
+  const handleReturnToLogin = () => {
+    console.log('🔄 Retour à la page de connexion');
+    setShowSessionExpired(false);
     logout();
   };
 
   // ✅ Afficher un écran de chargement pendant la vérification de la session
   if (isLoading) {
     return <LoadingScreen />;
+  }
+
+  // ✅ ÉCRAN SESSION EXPIRÉE (SANS RECHARGEMENT)
+  if (showSessionExpired) {
+    return <SessionExpiredScreen onReturn={handleReturnToLogin} />;
   }
 
   // ✅ Afficher la page de login si non authentifié
@@ -144,9 +213,10 @@ export default function App() {
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
+    // ✅ Réduction du temps de chargement initial à 800ms
     const timer = setTimeout(() => {
       setInitialLoading(false);
-    }, 1500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);

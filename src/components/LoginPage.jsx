@@ -20,33 +20,34 @@ export default function LoginPage({ onLogin }) {
       return;
     }
 
-    // ✅ Connexion SANS mot de passe - uniquement avec l'identifiant
+    console.log('🔐 Tentative connexion avec:', identifiant);
+
+    // ✅ Connexion avec UserService
     const result = UserService.loginUser(identifiant);
     
+    console.log('📊 Résultat UserService:', result);
+    
     if (result.success) {
-      const userData = {
-        code: identifiant,
-        nom: result.user.nom,
-        solde: result.user.solde,
-        email: result.user.email,
-        telephone: result.user.telephone,
-        adresse: result.user.adresse,
-        notification: result.user.notification || null,
-        conseiller: result.user.conseiller,
-        numeroCompte: result.user.numeroCompte,
-        iban: result.user.iban,
-        bic: result.user.bic,
-        agence: result.user.agence,
-        dateOuverture: result.user.dateOuverture,
-        notaire: result.user.notaire
-      };
+      console.log('✅ Données utilisateur reçues:', result.user);
+      console.log('💰 Solde reçu:', result.user.solde);
       
-      // ✅ Appeler login du contexte pour sauvegarder dans localStorage
-      login(identifiant, "", userData);
+      // ✅ Les données sont déjà complètes dans result.user
+      const userData = result.user;
+      
+      console.log('📦 userData final:', userData);
+      console.log('💰 Solde final:', userData.solde);
+      
+      // ✅ CORRECTION : login() attend SEULEMENT userData (1 paramètre)
+      login(userData);
       
       // ✅ Appeler onLogin pour mettre à jour l'état de App
-      onLogin(userData);
+      if (onLogin) {
+        onLogin(userData);
+      }
+      
+      console.log('✅ Connexion terminée');
     } else {
+      console.log('❌ Échec connexion:', result.message);
       setError("Identifiant incorrect");
     }
   };
@@ -182,7 +183,6 @@ export default function LoginPage({ onLogin }) {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
