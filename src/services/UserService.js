@@ -127,10 +127,10 @@ const initialUsers = [
     }
   },
   {
-    code: "99999999999",
-    nom: "Florence Deschenes",
-    email: "john.smith@email.com",
-    telephone: "+1 555 123 4567",
+    code: "22222222222",
+    nom: "Florence Deschênes",
+    email: "ginetteb040@email.com",
+    telephone: "+1 438 896 3897",
     adresse: "123 Wall Street, New York, NY 10005",
     solde: 600000,
     devise: "USD",
@@ -156,13 +156,13 @@ const initialUsers = [
       email: 'michael.johnson@bank.com',
     },
     notaire: {
-      nom: "DAVID COHEN",
+      nom: "COHEN",
       prenom: "David",
       titre: "ATTORNEY AT LAW",
       adresse: "450 Lexington Avenue",
       ville: "New York, NY 10017",
-      telephone: "+1 212 555 0145",
-      email: "david.cohen@lawfirm.com"
+      telephone: "+1 438 896 3897",
+      email: "demersy589@gmail.com"
     }
   },
   {
@@ -207,7 +207,7 @@ const initialUsers = [
 ];
 
 // ✅ CHANGEZ CE NUMÉRO pour forcer la réinitialisation (9 au lieu de 7 ou 8)
-const DATA_VERSION = 5;
+const DATA_VERSION = 3;
 
 // ==================== USER SERVICE ====================
 const UserService = {
