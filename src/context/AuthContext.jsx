@@ -1,4 +1,3 @@
-// Fichier: src/context/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import UserService from '../services/UserService';
 
@@ -17,44 +16,31 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ VÉRIFICATION AU CHARGEMENT
+  // Vérification au chargement
   useEffect(() => {
-    const initAuth = () => {
+    const initAuth = async () => {
       try {
-        const storedUser = localStorage.getItem('currentUser');
+        // Initialiser les utilisateurs
+        await UserService.initializeUsers();
         
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          console.log('📱 Restauration session:', parsedUser.nom);
-          console.log('💰 Solde stocké:', parsedUser.solde);
-          console.log('🔑 Code stocké:', parsedUser.code);
-          
-          // ✅ Vérifier que l'utilisateur existe encore
-          const validation = UserService.checkCurrentUserValidity();
-          
-          if (validation.valid && validation.user) {
-            console.log('✅ SESSION VALIDE - Connexion automatique');
-            console.log('💰 Solde actuel:', validation.user.solde, '€');
-            setUser(validation.user);
-            setIsAuthenticated(true);
-          } else if (validation.shouldLogout) {
-            console.log('❌ CODE OBSOLÈTE - Déconnexion');
-            console.log('💡 Raison:', validation.message || 'Code utilisateur introuvable');
-            setUser(null);
-            setIsAuthenticated(false);
-            localStorage.removeItem('currentUser');
-          } else {
-            console.log('❌ Session expirée');
-            setUser(null);
-            setIsAuthenticated(false);
-            localStorage.removeItem('currentUser');
-          }
+        // Vérifier s'il y a une session
+        const validation = await UserService.checkCurrentUserValidity();
+        
+        if (validation.valid && validation.user) {
+          console.log('✅ SESSION VALIDE - Connexion automatique');
+          console.log('👤 Utilisateur:', validation.user.nom);
+          console.log('💰 Solde:', validation.user.solde, '€');
+          setUser(validation.user);
+          setIsAuthenticated(true);
+        } else if (validation.shouldLogout) {
+          console.log('❌ Session expirée');
+          setUser(null);
+          setIsAuthenticated(false);
         } else {
           console.log('ℹ️ Pas de session sauvegardée');
         }
       } catch (error) {
         console.error('❌ Erreur restauration:', error);
-        localStorage.removeItem('currentUser');
         setUser(null);
         setIsAuthenticated(false);
       } finally {
@@ -65,66 +51,51 @@ export const AuthProvider = ({ children }) => {
     initAuth();
   }, []);
 
-  // 🔍 Synchroniser avec les changements de localStorage (autre onglet)
-  useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === 'currentUser') {
-        if (e.newValue) {
-          try {
-            const newUser = JSON.parse(e.newValue);
-            console.log('🔄 Mise à jour depuis autre onglet:', newUser.nom);
-            setUser(newUser);
-            setIsAuthenticated(true);
-          } catch (error) {
-            console.error('Erreur parsing storage:', error);
-          }
-        } else {
-          console.log('🚪 Déconnexion depuis autre onglet');
-          setUser(null);
-          setIsAuthenticated(false);
-        }
-      }
-      
-      // ✅ Détecter les changements de version dans un autre onglet
-      if (e.key === 'dataVersion') {
-        console.log('🔄 Version changée dans un autre onglet');
-        setUser(null);
-        setIsAuthenticated(false);
-        localStorage.removeItem('currentUser');
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
-
-  const login = (userData) => {
+  const login = async (userData) => {
     console.log('✅ CONNEXION:', userData.nom);
     console.log('💰 Solde:', userData.solde, '€');
     console.log('🔑 Code:', userData.code);
     
     setUser(userData);
     setIsAuthenticated(true);
-    localStorage.setItem('currentUser', JSON.stringify(userData));
+    
+    // Sauvegarder dans le storage
+    try {
+      await window.storage.set('currentUser', JSON.stringify(userData));
+    } catch (error) {
+      console.error('Erreur sauvegarde session:', error);
+    }
   };
 
-  const logout = () => {
+  const logout = async () => {
     console.log('🚪 DÉCONNEXION');
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem('currentUser');
+    
+    // Supprimer du storage
+    try {
+      await window.storage.delete('currentUser');
+    } catch (error) {
+      console.error('Erreur suppression session:', error);
+    }
   };
 
-  const updateUser = (updatedData) => {
+  const updateUser = async (updatedData) => {
     console.log('🔄 UPDATE USER:', updatedData.nom);
     console.log('💰 Nouveau solde:', updatedData.solde, '€');
     
     setUser(updatedData);
     setIsAuthenticated(true);
-    localStorage.setItem('currentUser', JSON.stringify(updatedData));
+    
+    // Mettre à jour dans le storage
+    try {
+      await window.storage.set('currentUser', JSON.stringify(updatedData));
+    } catch (error) {
+      console.error('Erreur update session:', error);
+    }
   };
 
-  // 🔍 DEBUG - Logger à chaque changement
+  // Logger les changements d'état
   useEffect(() => {
     if (user) {
       console.log('👤 STATE USER:', user.nom);

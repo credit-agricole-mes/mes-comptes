@@ -7,7 +7,7 @@ export default function LoginPage({ onLogin }) {
   const [identifiant, setIdentifiant] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {  // ✅ CORRECTION: Ajout de async
     setError("");
     
     if (!identifiant) {
@@ -22,8 +22,8 @@ export default function LoginPage({ onLogin }) {
 
     console.log('🔐 Tentative connexion avec:', identifiant);
 
-    // ✅ Connexion avec UserService
-    const result = UserService.loginUser(identifiant);
+    // ✅ CORRECTION: Ajout de await
+    const result = await UserService.loginUser(identifiant);
     
     console.log('📊 Résultat UserService:', result);
     
@@ -31,16 +31,13 @@ export default function LoginPage({ onLogin }) {
       console.log('✅ Données utilisateur reçues:', result.user);
       console.log('💰 Solde reçu:', result.user.solde);
       
-      // ✅ Les données sont déjà complètes dans result.user
       const userData = result.user;
       
       console.log('📦 userData final:', userData);
       console.log('💰 Solde final:', userData.solde);
       
-      // ✅ CORRECTION : login() attend SEULEMENT userData (1 paramètre)
       login(userData);
       
-      // ✅ Appeler onLogin pour mettre à jour l'état de App
       if (onLogin) {
         onLogin(userData);
       }

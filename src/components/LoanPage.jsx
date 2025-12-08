@@ -9,7 +9,7 @@ const LoanPage = () => {
 
   // Données par défaut si l'utilisateur n'est pas trouvé
   const defaultData = {
-    contactNumber: "+225 01 02 03 04 05",
+    contactNumber: "+33 6 02 03 04 05",
     contactName: "Service Client"
   };
 

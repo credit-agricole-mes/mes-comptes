@@ -1,11 +1,9 @@
 import React from 'react';
 import jsPDF from 'jspdf';
 import { useAuth } from '../context/AuthContext';
-import UserService from '../services/UserService';
 
 const RibPage = () => {
-  const { userCode } = useAuth();
-  const user = UserService.getUserByCode(userCode);
+  const { user } = useAuth(); // ✅ CORRECTION: Utiliser user directement
 
   if (!user) {
     return (
@@ -107,10 +105,9 @@ const RibPage = () => {
           onClick={genererRIB}
           className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition flex items-center gap-3 shadow-lg"
         >
-           Télécharger mon RIB
+          📥 Télécharger mon RIB
         </button>
       </div>
-   
     </div>
   );
 };

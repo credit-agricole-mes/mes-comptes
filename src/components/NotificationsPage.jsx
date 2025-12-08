@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Bell, CheckCircle, Info, AlertCircle, X } from 'lucide-react';
+import React from 'react';
+import { Bell, CheckCircle, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import UserService from '../services/UserService';
 
 const NotificationsPage = () => {
-  const { userCode } = useAuth();
-  const [user, setUser] = useState(null);
+  const { user } = useAuth(); // ✅ CORRECTION: Utiliser user directement
 
-  useEffect(() => {
-    if (userCode) {
-      const userData = UserService.getUserByCode(userCode);
-      setUser(userData);
-    }
-  }, [userCode]);
+  if (!user) {
+    return (
+      <div className="p-4 sm:p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
+          <div className="text-center py-12">
+            <p className="text-gray-600">Chargement des notifications...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6">
@@ -24,18 +27,18 @@ const NotificationsPage = () => {
           <h2 className="text-2xl font-bold text-gray-800">Notifications</h2>
         </div>
 
-        {user?.notification ? (
+        {user.notification ? (
           <div className="space-y-4">
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg hover:bg-blue-100 transition">
               <div className="flex items-start gap-3">
-                <Info className="text-blue-600 mt-1 " size={20} />
+                <Info className="text-blue-600 mt-1" size={20} />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-2">Nouvelle notification</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Notification importante</h3>
                   <p className="text-gray-700 leading-relaxed">
                     {user.notification}
                   </p>
                   <p className="text-xs text-gray-500 mt-2">
-                    Il y a quelques instants
+                    {new Date().toLocaleDateString('fr-FR')} - {new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
               </div>
@@ -60,7 +63,7 @@ const NotificationsPage = () => {
           <div className="space-y-3">
             <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
               <div className="flex items-start gap-3">
-                <CheckCircle className="text-green-600 mt-1 " size={20} />
+                <CheckCircle className="text-green-600 mt-1" size={20} />
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-700 mb-1">Virement effectué</h4>
                   <p className="text-sm text-gray-600">
@@ -73,7 +76,7 @@ const NotificationsPage = () => {
 
             <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
               <div className="flex items-start gap-3">
-                <Info className="text-blue-600 mt-1 " size={20} />
+                <Info className="text-blue-600 mt-1" size={20} />
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-700 mb-1">Mise à jour de sécurité</h4>
                   <p className="text-sm text-gray-600">

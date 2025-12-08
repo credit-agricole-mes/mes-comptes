@@ -62,7 +62,7 @@ export default function Footer() {
             <a href="#" className="text-white hover:text-green-400 transition text-lg font-medium">
               Prêts
             </a>
-            <a href="#" className="text-white hover:text-green-400transition text-lg font-medium">
+            <a href="#" className="text-white hover:text-green-400 transition text-lg font-medium">
               Assurance
             </a>
           </nav>

@@ -4,23 +4,31 @@ import { useAuth } from '../context/AuthContext';
 
 const GestionCartes = () => {
   const [userData, setUserData] = useState(null);
-  const { userCode } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    console.log('Code utilisateur depuis Context:', userCode);
-    
-    if (userCode) {
-      const user = UserService.getUserByCode(userCode);
-      console.log('Données utilisateur:', user);
-      if (user) {
-        setUserData(user);
+    const fetchUserData = async () => {
+      console.log('📱 User depuis Context:', user);
+      
+      if (user && user.code) {
+        console.log('🔍 Recherche avec le code:', user.code);
+        
+        // ✅ Utilisation correcte avec await
+        const fetchedUser = await UserService.getUserByCode(user.code);
+        console.log('✅ Données utilisateur récupérées:', fetchedUser);
+        
+        if (fetchedUser) {
+          setUserData(fetchedUser);
+        } else {
+          console.error('❌ Aucun utilisateur trouvé pour le code:', user.code);
+        }
       } else {
-        console.error('Aucun utilisateur trouvé pour le code:', userCode);
+        console.error('❌ Aucun user ou code manquant dans le Context');
       }
-    } else {
-      console.error('Aucun userCode dans le Context');
-    }
-  }, [userCode]);
+    };
+    
+    fetchUserData();
+  }, [user]);
 
   const handleOpposition = () => {
     if (window.confirm('Voulez-vous vraiment faire opposition sur cette carte ?')) {

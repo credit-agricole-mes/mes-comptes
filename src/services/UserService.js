@@ -1,4 +1,52 @@
-// Données initiales (SANS MOT DE PASSE)
+// ==================== SERVICE DE FORMATAGE DEVISE ====================
+export const formatCurrency = (montant, devise = "EUR", symbole = "€") => {
+  const formattedNumber = new Intl.NumberFormat('fr-FR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(montant);
+  
+  // Position du symbole selon la devise
+  if (devise === "USD" || devise === "CAD") {
+    return `${symbole}${formattedNumber}`; // $1,234.56
+  } else {
+    return `${formattedNumber} ${symbole}`; // 1 234,56 €
+  }
+};
+
+// ==================== SERVICE DE STOCKAGE ====================
+const StorageService = {
+  async get(key) {
+    try {
+      const result = await window.storage.get(key);
+      return result ? JSON.parse(result.value) : null;
+    } catch (error) {
+      console.log(`Key "${key}" not found`);
+      return null;
+    }
+  },
+
+  async set(key, value) {
+    try {
+      await window.storage.set(key, JSON.stringify(value));
+      return true;
+    } catch (error) {
+      console.error('Storage set error:', error);
+      return false;
+    }
+  },
+
+  async delete(key) {
+    try {
+      await window.storage.delete(key);
+      return true;
+    } catch (error) {
+      console.error('Storage delete error:', error);
+      return false;
+    }
+  }
+};
+
+// ==================== DONNÉES INITIALES ====================
 const initialUsers = [
   {
     code: "12345678927",
@@ -7,12 +55,23 @@ const initialUsers = [
     telephone: "+33 6 12 34 56 78",
     adresse: "15 Rue de la Paix, 75002 Paris",
     solde: 2000000.75,
+    devise: "EUR",
+    symboleDevise: "€",
     numeroCompte: "FR76 3000 4000 0100 0123 4567 890",
     iban: "FR76 3000 4000 0100 0123 4567 890",
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès,nous vous invitons à régler les frais de  déblocage s'élevant à 12 800 €. Merci de votre compréhension. ",
+    dateBlocage: "28/11/2024",
+    dateAttestation: "05/12/2024",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 12 800 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '25/11/2024', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '26/11/2024', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '27/11/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '28/11/2024', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '30/11/2024', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
     conseiller: {
       nom: 'Marie Martin',
       telephone: '01 23 45 67 89',
@@ -29,174 +88,163 @@ const initialUsers = [
     }
   },
   {
-    code: "56789012345",
-    nom: "Pierre Martin",
-    email: "pierre.martin@email.com",
-    telephone: "+33 6 98 76 54 32",
-    adresse: "42 Avenue Victor Hugo, 75016 Paris",
-    solde: 15230.50,
-    numeroCompte: "FR76 3000 4000 0200 5678 9012 345",
-    iban: "FR76 3000 4000 0200 5678 9012 345",
+    code: "11111111111",
+    nom: "Marcelin Rolzou",
+    email: "Marcelin.Rolzou@email.com",
+    telephone: "+33 6 12 34 56 78",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 600000.75,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0100 0123 4567 890",
+    iban: "FR76 3000 4000 0100 0123 4567 890",
     bic: "BNPAFRPPXXX",
-    agence: "Agence Paris Victor Hugo - 50 Avenue Victor Hugo, 75016 Paris",
-    dateOuverture: "22/07/2020",
-    notification: null,
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/03/2018",
+    dateBlocage: "28/11/2021",
+    dateAttestation: "25/03/2018",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 14 950 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '25/11/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '27/12/2019', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '26/11/2020', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '28/11/2020', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '30/11/2020', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
     conseiller: {
-      nom: 'Jean Dupont',
-      telephone: '01 98 76 54 32',
-      email: 'jean.dupont@banque.fr',
+      nom: 'Marie Martin',
+      telephone: '+33 6 23 45 67 89',
+      email: 'marie.martin@banque.fr',
     },
     notaire: {
-      nom: "MAÎTRE JEAN DUPONT",
-      prenom: "Jean",
+      nom: "MAÎTRE BERNARD",
+      prenom: "Sophie",
       titre: "NOTAIRE",
-      adresse: "123 Avenue des Champs-Élysées",
+      adresse: "45 Avenue Montaigne",
       ville: "75008 PARIS",
-      telephone: "01 23 45 67 89",
-      email: "jean.dupont@notaire-paris.fr"
+      telephone: "+33 6 44 68 49 73",
+      email: "sophie.bernard@notaire-paris.fr"
     }
   },
   {
     code: "99999999999",
-    nom: "Sophie Lefebvre",
-    email: "sophie.lefebvre@email.com",
-    telephone: "+33 7 11 22 33 44",
-    adresse: "8 Boulevard Saint-Germain, 75005 Paris",
-    solde: 3890.25,
-    numeroCompte: "FR76 3000 4000 0300 9999 1111 222",
-    iban: "FR76 3000 4000 0300 9999 1111 222",
-    bic: "BNPAFRPPXXX",
-    agence: "Agence Paris Saint-Germain - 12 Boulevard Saint-Germain, 75005 Paris",
+    nom: "Florence Deschenes",
+    email: "john.smith@email.com",
+    telephone: "+1 555 123 4567",
+    adresse: "123 Wall Street, New York, NY 10005",
+    solde: 600000,
+    devise: "USD",
+    symboleDevise: "$",
+    numeroCompte: "US12 3456 7890 1234 5678 90",
+    iban: "US12 3456 7890 1234 5678 90",
+    bic: "CHASUS33XXX",
+    agence: "Wall Street Branch - 123 Wall Street, New York, NY 10005",
     dateOuverture: "10/01/2019",
-    notification: null,
+    dateBlocage: "02/12/2024",
+    dateAttestation: "08/12/2024",
+    notification: "Your account has been temporarily blocked due to a detected anomaly. To reactivate your access, please pay the unblocking fee of $14,950. Thank you for your understanding.",
+    transactions: [
+      { date: '28/11/2024', libelle: 'International Wire from Switzerland', debit: '', credit: '450000.00' },
+      { date: '29/11/2024', libelle: 'Real Estate Investment', debit: '', credit: '150000.00' },
+      { date: '30/11/2024', libelle: 'International Banking Fees', debit: '125.00', credit: '' },
+      { date: '01/12/2024', libelle: 'Mercedes Benz Purchase', debit: '75000.00', credit: '' },
+      { date: '02/12/2024', libelle: 'Fine Dining Restaurant', debit: '450.00', credit: '' }
+    ],
     conseiller: {
-      nom: 'Claire Bernard',
-      telephone: '01 55 44 33 22',
-      email: 'claire.bernard@banque.fr',
+      nom: 'Michael Johnson',
+      telephone: '+1 212 555 0199',
+      email: 'michael.johnson@bank.com',
     },
     notaire: {
-      nom: "MAÎTRE CLAIRE ROUSSEAU",
-      prenom: "Claire",
+      nom: "DAVID COHEN",
+      prenom: "David",
+      titre: "ATTORNEY AT LAW",
+      adresse: "450 Lexington Avenue",
+      ville: "New York, NY 10017",
+      telephone: "+1 212 555 0145",
+      email: "david.cohen@lawfirm.com"
+    }
+  },
+  {
+    code: "11122233344",
+    nom: "Ahmed Koné",
+    email: "ahmed.kone@email.com",
+    telephone: "+225 07 12 34 56 78",
+    adresse: "Cocody, Abidjan",
+    solde: 5000000,
+    devise: "XOF",
+    symboleDevise: "FCFA",
+    numeroCompte: "CI93 1234 5678 9012 3456 7890 12",
+    iban: "CI93 1234 5678 9012 3456 7890 12",
+    bic: "BICIIVBJXXX",
+    agence: "Agence Cocody - Boulevard Latrille, Abidjan",
+    dateOuverture: "12/05/2020",
+    dateBlocage: "01/12/2024",
+    dateAttestation: "06/12/2024",
+    notification: "Votre compte a été temporairement bloqué pour des raisons de sécurité. Pour le débloquer, veuillez régler les frais de 7 500 000 FCFA. Merci.",
+    transactions: [
+      { date: '20/11/2024', libelle: 'Transfert International', debit: '', credit: '3000000.00' },
+      { date: '22/11/2024', libelle: 'Achat terrain Riviera', debit: '1500000.00', credit: '' },
+      { date: '25/11/2024', libelle: 'Salaire Entreprise ABC', debit: '', credit: '2500000.00' },
+      { date: '28/11/2024', libelle: 'Frais bancaires', debit: '25000.00', credit: '' },
+      { date: '30/11/2024', libelle: 'Shopping Cap Sud', debit: '150000.00', credit: '' }
+    ],
+    conseiller: {
+      nom: 'Fatou Traoré',
+      telephone: '+225 27 22 45 67 89',
+      email: 'fatou.traore@banque.ci',
+    },
+    notaire: {
+      nom: "MAÎTRE KOUASSI",
+      prenom: "Marcel",
       titre: "NOTAIRE",
-      adresse: "28 Rue de Tournon",
-      ville: "75006 PARIS",
-      telephone: "01 43 26 78 90",
-      email: "claire.rousseau@notaire-paris.fr"
+      adresse: "Plateau, Immeuble SCIAM",
+      ville: "Abidjan",
+      telephone: "+225 27 20 30 40 50",
+      email: "marcel.kouassi@notaire.ci"
     }
   }
 ];
 
-// 🔑 VERSION DES DONNÉES - Incrémentez ce numéro à chaque changement de code/structure
-const DATA_VERSION = 9;
+// ✅ CHANGEZ CE NUMÉRO pour forcer la réinitialisation (9 au lieu de 7 ou 8)
+const DATA_VERSION = 5;
 
-// 🔧 FONCTION POUR RECHARGER LES UTILISATEURS DEPUIS LOCALSTORAGE
-const reloadUsers = () => {
-  try {
-    const stored = localStorage.getItem('bankUsers');
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  } catch (error) {
-    console.error('❌ Erreur rechargement:', error);
-  }
-  return [...initialUsers];
-};
-
-// ✅ Charger les utilisateurs avec vérification de version automatique
-const loadUsers = () => {
-  try {
-    const storedVersion = localStorage.getItem('dataVersion');
-    const stored = localStorage.getItem('bankUsers');
+// ==================== USER SERVICE ====================
+const UserService = {
+  async initializeUsers() {
+    const storedVersion = await StorageService.get('dataVersion');
+    const stored = await StorageService.get('bankUsers');
     
-    // ✅ Si la version a changé, on écrase avec les nouvelles données
-    if (storedVersion != DATA_VERSION) {
-      console.log('🔄 Nouvelle version détectée (v' + DATA_VERSION + ') - Mise à jour automatique');
-      const initialData = [...initialUsers];
-      localStorage.setItem('bankUsers', JSON.stringify(initialData));
-      localStorage.setItem('dataVersion', DATA_VERSION);
-      console.log('✅ Données mises à jour');
-      console.log('💰 Nouveaux codes:', initialData.map(u => u.code));
+    if (storedVersion != DATA_VERSION || !stored) {
+      console.log('🔄 Initialisation des données (v' + DATA_VERSION + ')');
+      await StorageService.set('bankUsers', initialUsers);
+      await StorageService.set('dataVersion', DATA_VERSION);
+      console.log('✅ Données sauvegardées avec devises');
       
-      // ⚠️ Déconnecter l'utilisateur actuel si son code a changé
-      const currentUser = localStorage.getItem('currentUser');
+      const currentUser = await StorageService.get('currentUser');
       if (currentUser) {
-        try {
-          const parsed = JSON.parse(currentUser);
-          const stillExists = initialData.find(u => u.code === parsed.code);
-          if (!stillExists) {
-            console.log('⚠️ Code utilisateur obsolète - Déconnexion automatique');
-            localStorage.removeItem('currentUser');
-          }
-        } catch (e) {
-          console.error('Erreur vérification currentUser:', e);
+        const stillExists = initialUsers.find(u => u.code === currentUser.code);
+        if (!stillExists) {
+          await StorageService.delete('currentUser');
         }
       }
       
-      return initialData;
+      return initialUsers;
     }
     
-    // ✅ Sinon, charger depuis localStorage
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      console.log('✅ Utilisateurs chargés (v' + DATA_VERSION + ')');
-      console.log('💰 Codes disponibles:', parsed.map(u => u.code));
-      return parsed;
-    }
-  } catch (error) {
-    console.error('❌ Erreur lors du chargement:', error);
-  }
-  
-  // ✅ Première installation
-  console.log('📦 Première installation - Données initiales');
-  const initialData = [...initialUsers];
-  
-  try {
-    localStorage.setItem('bankUsers', JSON.stringify(initialData));
-    localStorage.setItem('dataVersion', DATA_VERSION);
-    console.log('💾 Données initiales sauvegardées (v' + DATA_VERSION + ')');
-    console.log('💰 Codes initiaux:', initialData.map(u => u.code));
-  } catch (e) {
-    console.error('❌ Erreur sauvegarde initiale:', e);
-  }
-  
-  return initialData;
-};
+    return stored;
+  },
 
-// Sauvegarder les utilisateurs dans localStorage
-const saveUsers = (usersToSave) => {
-  try {
-    localStorage.setItem('bankUsers', JSON.stringify(usersToSave));
-    console.log('💾 Utilisateurs sauvegardés');
-  } catch (error) {
-    console.error('❌ Erreur lors de la sauvegarde:', error);
-  }
-};
-
-// Initialiser les utilisateurs
-let users = loadUsers();
-
-const UserService = {
-  // ✅ VÉRIFIER SI L'UTILISATEUR CONNECTÉ EXISTE TOUJOURS
-  checkCurrentUserValidity: () => {
+  async checkCurrentUserValidity() {
     try {
-      const currentUserStr = localStorage.getItem('currentUser');
-      if (!currentUserStr) {
-        return { valid: true };
-      }
+      const currentUser = await StorageService.get('currentUser');
+      if (!currentUser) return { valid: true };
 
-      const currentUser = JSON.parse(currentUserStr);
-      console.log('🔍 Vérification pour:', currentUser.nom, '(Code:', currentUser.code, ')');
-      
-      // 🔄 RECHARGER les données
-      users = reloadUsers();
-      
-      // ✅ Chercher l'utilisateur dans les données actuelles
+      const users = await StorageService.get('bankUsers') || initialUsers;
       const userStillExists = users.find(u => u.code === currentUser.code);
 
       if (!userStillExists) {
-        console.log('⚠️ CODE INVALIDE - Utilisateur introuvable');
-        console.log('📋 Codes disponibles:', users.map(u => u.code));
-        localStorage.removeItem('currentUser');
+        await StorageService.delete('currentUser');
         return { 
           valid: false, 
           shouldLogout: true,
@@ -204,154 +252,56 @@ const UserService = {
         };
       }
 
-      console.log('✅ Session valide - Solde:', userStillExists.solde, '€');
-      
       return { 
         valid: true,
         user: { ...userStillExists }
       };
     } catch (error) {
-      console.error('❌ Erreur vérification session:', error);
-      localStorage.removeItem('currentUser');
+      await StorageService.delete('currentUser');
       return { valid: false, shouldLogout: true };
     }
   },
 
-  // ✅ CONNEXION SANS MOT DE PASSE
-  loginUser: (code) => {
-    console.log('🔐 Tentative de connexion avec code:', code);
-    
-    // 🔄 Recharger les données
-    users = reloadUsers();
-    
+  async loginUser(code) {
+    const users = await StorageService.get('bankUsers') || initialUsers;
     const user = users.find(u => u.code === code);
     
     if (user) {
-      console.log('✅ Connexion réussie:', user.nom);
-      console.log('💰 Solde:', user.solde, '€');
       return {
         success: true,
         user: { ...user }
       };
     }
     
-    console.log('❌ Code incorrect');
-    console.log('📋 Codes valides:', users.map(u => u.code));
     return {
       success: false,
       message: "Identifiant incorrect"
     };
   },
 
-  getUserByCode: (code) => {
-    users = reloadUsers();
-    const user = users.find(u => u.code === code);
-    if (user) {
-      console.log('✅ Utilisateur trouvé:', user.nom, '- Solde:', user.solde, '€');
-      return { ...user };
-    }
-    return null;
+  async getUserByCode(code) {
+    const users = await StorageService.get('bankUsers') || initialUsers;
+    return users.find(u => u.code === code) || null;
   },
 
-  getAllUsers: () => {
-    users = reloadUsers();
-    return users.map(u => ({ ...u }));
-  },
-
-  updateUserBalance: (code, newBalance) => {
-    users = reloadUsers();
-    
+  async updateUserBalance(code, newBalance) {
+    const users = await StorageService.get('bankUsers') || initialUsers;
     const userIndex = users.findIndex(u => u.code === code);
+    
     if (userIndex !== -1) {
-      console.log(`💰 Mise à jour solde pour ${users[userIndex].nom}`);
-      console.log(`   Ancien: ${users[userIndex].solde}€`);
-      console.log(`   Nouveau: ${newBalance}€`);
-      
       users[userIndex].solde = newBalance;
-      saveUsers(users);
+      await StorageService.set('bankUsers', users);
       
-      // ✅ Mettre à jour aussi dans currentUser
-      try {
-        const currentUserStr = localStorage.getItem('currentUser');
-        if (currentUserStr) {
-          const currentUser = JSON.parse(currentUserStr);
-          if (currentUser.code === code) {
-            currentUser.solde = newBalance;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            console.log('💾 currentUser synchronisé');
-          }
-        }
-      } catch (e) {
-        console.error('❌ Erreur mise à jour currentUser:', e);
+      const currentUser = await StorageService.get('currentUser');
+      if (currentUser && currentUser.code === code) {
+        currentUser.solde = newBalance;
+        await StorageService.set('currentUser', currentUser);
       }
       
       return true;
     }
     
     return false;
-  },
-
-  updateUserNotary: (code, notaryInfo) => {
-    users = reloadUsers();
-    
-    const userIndex = users.findIndex(u => u.code === code);
-    if (userIndex !== -1) {
-      users[userIndex].notaire = {
-        ...users[userIndex].notaire,
-        ...notaryInfo
-      };
-      saveUsers(users);
-      
-      // Sync avec currentUser
-      try {
-        const currentUserStr = localStorage.getItem('currentUser');
-        if (currentUserStr) {
-          const currentUser = JSON.parse(currentUserStr);
-          if (currentUser.code === code) {
-            currentUser.notaire = users[userIndex].notaire;
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          }
-        }
-      } catch (e) {
-        console.error('Erreur sync notaire:', e);
-      }
-      
-      return true;
-    }
-    return false;
-  },
-
-  getUserNotary: (code) => {
-    users = reloadUsers();
-    const user = users.find(u => u.code === code);
-    return user ? { ...user.notaire } : null;
-  },
-
-  // 🔄 Méthode pour réinitialiser (garde pour debug)
-  resetData: () => {
-    console.log('🔄 RÉINITIALISATION MANUELLE...');
-    users = [...initialUsers];
-    saveUsers(users);
-    localStorage.setItem('dataVersion', DATA_VERSION);
-    localStorage.removeItem('currentUser');
-    console.log('✅ Données réinitialisées');
-    return true;
-  },
-
-  // 🔍 DEBUG
-  debugState: () => {
-    console.log('=== DEBUG STATE ===');
-    console.log('Version données:', localStorage.getItem('dataVersion'), '(actuelle: ' + DATA_VERSION + ')');
-    console.log('Users en mémoire:', users);
-    console.log('bankUsers localStorage:', JSON.parse(localStorage.getItem('bankUsers') || '[]'));
-    console.log('currentUser localStorage:', JSON.parse(localStorage.getItem('currentUser') || 'null'));
-    return {
-      version: localStorage.getItem('dataVersion'),
-      currentVersion: DATA_VERSION,
-      usersInMemory: users,
-      bankUsers: JSON.parse(localStorage.getItem('bankUsers') || '[]'),
-      currentUser: JSON.parse(localStorage.getItem('currentUser') || 'null')
-    };
   }
 };
 

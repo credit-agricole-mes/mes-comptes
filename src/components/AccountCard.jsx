@@ -1,6 +1,7 @@
-import { X, Menu, Bell, CheckCircle, AlertCircle, Info } from "lucide-react";
+import { X, Menu, Bell, Info } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "../services/UserService"; // ✅ Import de la fonction
 
 export default function AccountCard({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,6 +23,11 @@ export default function AccountCard({ user, onLogout }) {
     setMenuOpen(false);
     if (onLogout) onLogout();
   };
+
+  // ✅ Formater le solde avec la devise de l'utilisateur
+  const soldeFormate = user?.solde !== undefined && user?.solde !== null
+    ? formatCurrency(user.solde, user.devise || "EUR", user.symboleDevise || "€")
+    : (user?.symboleDevise === "$" ? "$0.00" : "0,00 €");
 
   return (
     <>
@@ -189,11 +195,12 @@ export default function AccountCard({ user, onLogout }) {
             {user?.nom || "Nom d'utilisateur"}
           </h1>
 
+          {/* ✅ SOLDE AVEC DEVISE DYNAMIQUE */}
           <div className="text-4xl sm:text-5xl font-bold text-green-400 text-center mb-6 sm:mb-8">
-            {user?.solde !== undefined && user?.solde !== null 
-              ? user.solde.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €' 
-              : '0,00 €'}
+            {soldeFormate}
           </div>
+
+         
 
           <div className="text-red-600 text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
             Compte temporairement bloqué !

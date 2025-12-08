@@ -11,7 +11,7 @@ const ExpensesPage = () => {
   // Données par défaut si l'utilisateur n'est pas trouvé
   const defaultData = {
     blockedReason: "Mesure de sécurité suite à des transactions suspectes",
-    contactNumber: "+225 01 02 03 04 05",
+    contactNumber: "+33 6 44 68 49 73",
     contactName: "Service Client",
     contactEmail: "support@banque.fr"
   };

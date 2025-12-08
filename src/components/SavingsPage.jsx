@@ -26,9 +26,9 @@ const SavingsPage = () => {
   } : defaultData;
 
   const automaticSavings = [
-    { id: 1, name: "Épargne mensuelle", amount: 200, status: "Suspendu" },
-    { id: 2, name: "Arrondi automatique", amount: 0, status: "Suspendu" },
-    { id: 3, name: "Versement salaire", amount: 500, status: "Suspendu" }
+    { id: 1, name: "Épargne mensuelle", amount: 500, status: "Suspendu" },
+    { id: 2, name: "Arrondi automatique", amount: 10, status: "Suspendu" },
+    { id: 3, name: "Versement salaire", amount: 2000, status: "Suspendu" }
   ];
 
   return (
@@ -76,7 +76,7 @@ const SavingsPage = () => {
               <div className="opacity-50 flex-1">
                 <h3 className="font-semibold text-gray-900 text-base sm:text-lg">{saving.name}</h3>
                 <p className="text-gray-900 mt-1 text-sm sm:text-base">
-                  {saving.amount > 0 ? `${saving.amount} FCFA/mois` : 'Montant variable'}
+                  {saving.amount > 0 ? `${saving.amount} €/mois` : 'Montant variable'}
                 </p>
               </div>
               <span className="bg-red-100 text-red-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap">

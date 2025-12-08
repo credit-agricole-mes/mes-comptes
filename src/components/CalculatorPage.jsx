@@ -99,7 +99,7 @@ const CalculatorPage = () => {
           </div>
 
           {/* Résultats */}
-          <div className=" from-green-50 to-blue-50 rounded-lg p-4 sm:p-6 border-2 border-green-200">
+          <div className="bg-green-50 rounded-lg p-4 sm:p-6 border-2 border-green-200">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center">
               <TrendingUp className="mr-2 text-green-600" size={24} />
               Résultats de la simulation
@@ -125,14 +125,14 @@ const CalculatorPage = () => {
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">Gains grâce au taux d'intérêt</p>
               </div>
 
-              <div className=" from-green-500 to-green-600 rounded-lg p-4 sm:p-5 shadow-lg">
+              <div className="bg-white rounded-lg p-4 sm:p-5 shadow">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                  <span className="text-white font-bold text-base sm:text-lg">🎯 Total avec intérêts</span>
-                  <span className="font-bold text-2xl sm:text-3xl text-white">
+                  <span className="text-gray-700 font-semibold text-sm sm:text-base">🎯 Total avec intérêts</span>
+                  <span className="font-bold text-lg sm:text-xl text-green-600">
                     {resultat.totalAvecInterets.toLocaleString()} €
                   </span>
                 </div>
-                <p className="text-green-100 text-xs sm:text-sm mt-2">
+                <p className="text-gray-500 text-xs sm:text-sm mt-2">
                   Votre capital final après {duree} mois
                 </p>
               </div>
