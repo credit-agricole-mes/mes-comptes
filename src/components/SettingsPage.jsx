@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Shield, Bell, Palette, Lock, Smartphone, Mail, Globe, Moon, Sun, ChevronDown, ChevronUp } from 'lucide-react';
+import { useAuth } from '../context/AuthContext'; // ✅ Import ajouté
+import CurrencySelector from './CurrencySelector'; // ✅ Import ajouté
 
 const SettingsPage = () => {
+  const { user, updateUser } = useAuth(); // ✅ Récupération user et updateUser
   const [expandedSection, setExpandedSection] = useState(null);
   
   const [settings, setSettings] = useState({
@@ -11,7 +14,6 @@ const SettingsPage = () => {
     
     // Préférences
     language: 'fr',
-    currency: 'EUR',
     theme: 'light',
     
     // Notifications
@@ -33,6 +35,41 @@ const SettingsPage = () => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
+  // ✅ Fonction pour changer la devise
+  const handleCurrencyChange = async (newCurrency, newSymbol) => {
+    try {
+      console.log('🔄 Changement de devise:', newCurrency, newSymbol);
+      
+      // 1. Mettre à jour l'utilisateur local
+      const updatedUser = {
+        ...user,
+        devise: newCurrency,
+        symboleDevise: newSymbol
+      };
+      
+      // 2. Mettre à jour dans le storage (bankUsers)
+      const result = await window.storage.get('bankUsers');
+      if (result) {
+        const users = JSON.parse(result.value);
+        const userIndex = users.findIndex(u => u.code === user.code);
+        
+        if (userIndex !== -1) {
+          users[userIndex].devise = newCurrency;
+          users[userIndex].symboleDevise = newSymbol;
+          await window.storage.set('bankUsers', JSON.stringify(users));
+          console.log('✅ Devise mise à jour dans bankUsers');
+        }
+      }
+      
+      // 3. Mettre à jour le contexte auth
+      updateUser(updatedUser);
+      console.log('✅ Devise changée avec succès !');
+      
+    } catch (error) {
+      console.error('❌ Erreur changement devise:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen from-blue-50 to-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
@@ -46,6 +83,15 @@ const SettingsPage = () => {
           <p className="text-red-700 text-sm mt-1">
             Certaines fonctionnalités sont limitées. Débloquez votre compte pour accéder à toutes les options.
           </p>
+        </div>
+
+        {/* ✅ NOUVEAU : Sélecteur de devise */}
+        <div className="mb-6">
+          <CurrencySelector 
+            currentCurrency={user?.devise || 'EUR'}
+            currentSymbol={user?.symboleDevise || '€'}
+            onCurrencyChange={handleCurrencyChange}
+          />
         </div>
 
         {/* Sécurité et Confidentialité */}
@@ -194,29 +240,6 @@ const SettingsPage = () => {
                     <option value="ar">🇸🇦 العربية</option>
                     <option value="zh">🇨🇳 中文</option>
                     <option value="ja">🇯🇵 日本語</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Devise */}
-              <div className="border-b pb-4">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div className="flex items-center">
-                    <span className="mr-3 text-gray-600 text-xl">💰</span>
-                    <div>
-                      <p className="font-semibold text-gray-800">Devise par défaut</p>
-                      <p className="text-sm text-gray-500">Devise d'affichage des montants</p>
-                    </div>
-                  </div>
-                  <select
-                    value={settings.currency}
-                    onChange={(e) => updateSetting('currency', e.target.value)}
-                    className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
-                  >
-                    <option value="EUR">EUR (€)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="GBP">GBP (£)</option>
-                    <option value="CHF">CHF (Fr)</option>
                   </select>
                 </div>
               </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Calculator, TrendingUp } from 'lucide-react';
+import { formatCurrency } from '../utils/currencyFormatter'; // ✅ Import ajouté
 
-const CalculatorPage = () => {
+const CalculatorPage = ({ user }) => { // ✅ Ajout du prop user
   const [montantInitial, setMontantInitial] = useState(1000);
   const [montantMensuel, setMontantMensuel] = useState(100);
   const [duree, setDuree] = useState(12);
@@ -19,10 +20,13 @@ const CalculatorPage = () => {
 
   const resultat = calculerEpargne();
 
+  // ✅ Récupérer devise et symbole de l'utilisateur
+  const devise = user?.devise || "EUR";
+  const symbole = user?.symboleDevise || "€";
+
   return (
     <div className="min-h-screen from-blue-50 to-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
-        {/* Alerte positive */}
         <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg">
           <p className="text-green-800 font-semibold text-lg">
             ✅ Outil de simulation disponible
@@ -41,7 +45,7 @@ const CalculatorPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
             <div>
               <label className="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">
-                💰 Montant initial (€)
+                💰 Montant initial ({symbole})
               </label>
               <input
                 type="number"
@@ -55,7 +59,7 @@ const CalculatorPage = () => {
 
             <div>
               <label className="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">
-                📅 Épargne mensuelle (€)
+                📅 Épargne mensuelle ({symbole})
               </label>
               <input
                 type="number"
@@ -98,7 +102,7 @@ const CalculatorPage = () => {
             </div>
           </div>
 
-          {/* Résultats */}
+          {/* Résultats avec devise dynamique */}
           <div className="bg-green-50 rounded-lg p-4 sm:p-6 border-2 border-green-200">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 flex items-center">
               <TrendingUp className="mr-2 text-green-600" size={24} />
@@ -109,7 +113,7 @@ const CalculatorPage = () => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <span className="text-gray-700 font-semibold text-sm sm:text-base">💵 Total épargné (capital)</span>
                   <span className="font-bold text-lg sm:text-xl text-gray-800">
-                    {resultat.totalVerse.toLocaleString()} €
+                    {formatCurrency(resultat.totalVerse, devise, symbole)}
                   </span>
                 </div>
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">Votre apport personnel total</p>
@@ -119,7 +123,7 @@ const CalculatorPage = () => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <span className="text-gray-700 font-semibold text-sm sm:text-base">✨ Intérêts générés</span>
                   <span className="font-bold text-lg sm:text-xl text-green-600">
-                    +{resultat.interets.toLocaleString()} €
+                    +{formatCurrency(resultat.interets, devise, symbole)}
                   </span>
                 </div>
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">Gains grâce au taux d'intérêt</p>
@@ -129,7 +133,7 @@ const CalculatorPage = () => {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                   <span className="text-gray-700 font-semibold text-sm sm:text-base">🎯 Total avec intérêts</span>
                   <span className="font-bold text-lg sm:text-xl text-green-600">
-                    {resultat.totalAvecInterets.toLocaleString()} €
+                    {formatCurrency(resultat.totalAvecInterets, devise, symbole)}
                   </span>
                 </div>
                 <p className="text-gray-500 text-xs sm:text-sm mt-2">

@@ -87,8 +87,9 @@ function AppContent({ user, onLogout }) {
       
       <Routes>
         <Route path="/" element={<HomePage user={user} />} />
-        <Route path="/virements" element={<PageWithBack><Virements /></PageWithBack>} />
-        <Route path="/depots" element={<PageWithBack><Depots /></PageWithBack>} />
+        <Route path="/virements" element={<PageWithBack><Virements user={user} /></PageWithBack>} />
+        {/* ✅ Ajout prop user */}
+        <Route path="/depots" element={<PageWithBack><Depots user={user} /></PageWithBack>} />
         <Route path="/profil" element={<PageWithBack><Profil user={user} /></PageWithBack>} />
         <Route path="/cartes" element={<PageWithBack><GestionCartes /></PageWithBack>} />
         <Route path="/documents" element={<PageWithBack><GestionDocument /></PageWithBack>} />
@@ -98,9 +99,12 @@ function AppContent({ user, onLogout }) {
         <Route path="/savings" element={<PageWithBack><SavingsPage /></PageWithBack>} />
         <Route path="/beneficiaries" element={<PageWithBack><BeneficiariesPage /></PageWithBack>} />
         <Route path="/limits" element={<PageWithBack><LimitsPage /></PageWithBack>} />
-        <Route path="/loan" element={<PageWithBack><LoanPage /></PageWithBack>} />
-        <Route path="/calculator" element={<PageWithBack><CalculatorPage /></PageWithBack>} />
-        <Route path="/settings" element={<PageWithBack><SettingsPage /></PageWithBack>} />
+        {/* ✅ Ajout prop user */}
+        <Route path="/loan" element={<PageWithBack><LoanPage user={user} /></PageWithBack>} />
+        {/* ✅ Ajout prop user */}
+        <Route path="/calculator" element={<PageWithBack><CalculatorPage user={user} /></PageWithBack>} />
+        {/* ✅ Pas besoin de PageWithBack car SettingsPage a déjà son propre layout */}
+        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/overdraft" element={<PageWithBack><OverdraftPage /></PageWithBack>} />
         <Route path="/assistant" element={<AssistantPage onBack={() => navigate('/')} />} />
         <Route path="/notifications" element={<PageWithBack><NotificationsPage /></PageWithBack>} />
@@ -147,9 +151,9 @@ function AppWrapper() {
 
     console.log('🔍 Démarrage vérification périodique...');
 
-    const checkValidity = () => {
+    const checkValidity = async () => {
       console.log('🔍 Vérification validité code utilisateur...');
-      const validation = UserService.checkCurrentUserValidity();
+      const validation = await UserService.checkCurrentUserValidity();
       
       if (validation.shouldLogout) {
         console.log('⚠️ CODE INVALIDE DÉTECTÉ - Déconnexion immédiate');

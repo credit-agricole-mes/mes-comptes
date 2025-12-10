@@ -1,13 +1,21 @@
+import React from 'react';
 import { FileDown, FileText, File, TrendingUp, Wallet, Users, BarChart3, Calculator } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../utils/currencyFormatter';
 
 export default function TransactionsPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Récupération de la devise et du symbole de l'utilisateur connecté
+  const devise = user?.devise || "EUR";
+  const symbole = user?.symboleDevise || "€";
 
   const accounts = [
-    { name: "Livret A", balance: "0.00 €" },
-    { name: "Assurance", balance: "0.00 €" },
-    { name: "Épargne", balance: "0.00 €" }
+    { name: "Livret A", balance: 0 },
+    { name: "Assurance", balance: 0 },
+    { name: "Épargne", balance: 0 }
   ];
 
   const topActions = [
@@ -41,8 +49,6 @@ export default function TransactionsPage() {
     <div className="bg-white rounded-2xl shadow-lg p-6">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Mes transactions</h1>
 
-     
-
       {/* Actions principales avec navigation */}
       <div className="grid grid-cols-3 gap-2 mb-6">
         {topActions.map((action, index) => (
@@ -57,13 +63,15 @@ export default function TransactionsPage() {
         ))}
       </div>
 
-      {/* Liste des comptes */}
+      {/* Liste des comptes - FORMATAGE DEVISE */}
       <div className="space-y-4 mb-6">
         {accounts.map((account, index) => (
           <div key={index} className="bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold text-gray-800">{account.name}</h3>
-              <span className="text-lg font-bold text-green-500">{account.balance}</span>
+              <span className="text-lg font-bold text-green-500">
+                {formatCurrency(account.balance, devise, symbole)}
+              </span>
             </div>
             <div className="w-full h-2 bg-yellow-100 rounded-full"></div>
           </div>

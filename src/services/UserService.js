@@ -47,6 +47,7 @@ const StorageService = {
 };
 
 // ==================== DONNÉES INITIALES ====================
+// ✅ TOUTES LES DATES EN FORMAT DD/MM/YYYY - TOUT EN FRANÇAIS
 const initialUsers = [
   {
     code: "12345678927",
@@ -71,6 +72,28 @@ const initialUsers = [
       { date: '27/11/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
       { date: '28/11/2024', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
       { date: '30/11/2024', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2024', dateGeneration: '05/12/2024' },
+      { mois: 'novembre', annee: '2024', dateGeneration: '01/12/2024' },
+      { mois: 'octobre', annee: '2024', dateGeneration: '01/11/2024' }
+    ],
+    virements: [
+      { date: '20/11/2024', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/11/2024', beneficiaire: 'Marie Dubois', montant: -200.00, statut: 'Effectué' },
+      { date: '15/11/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '15/11/2024', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/11/2024', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/12/2024', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/11/2024', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/11/2024', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/11/2024', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/10/2024', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/10/2024', montant: -200, duree: 3, frais: 6.0 }
     ],
     conseiller: {
       nom: 'Marie Martin',
@@ -101,15 +124,32 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    dateBlocage: "28/11/2021",
+    dateBlocage: "28/12/2021",
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 14 950 €. Merci de votre compréhension.",
     transactions: [
-      { date: '25/11/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
-      { date: '27/12/2019', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
-      { date: '26/11/2020', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
-      { date: '28/11/2020', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
-      { date: '30/11/2020', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+      { date: '23/11/2021', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/11/2021', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '16/10/2021', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/10/2021', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/10/2021', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2021', dateGeneration: '05/01/2021' },
+      { mois: 'novembre', annee: '2021', dateGeneration: '01/12/2021' },
+      { mois: 'décembre', annee: '2020', dateGeneration: '05/01/2020' },
+      { mois: 'novembre', annee: '2020', dateGeneration: '01/12/2020' }
+    ],
+    virements: [
+      { date: '10/11/2021', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/11/2021', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/11/2021', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/10/2021', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/10/2021', montant: -220, duree: 3, frais: 6.6 },
     ],
     conseiller: {
       nom: 'Marie Martin',
@@ -132,23 +172,42 @@ const initialUsers = [
     email: "ginetteb040@email.com",
     telephone: "+1 438 896 3897",
     adresse: "123 Wall Street, New York, NY 10005",
-    solde: 600000,
+    solde: 150000,
     devise: "USD",
     symboleDevise: "$",
     numeroCompte: "US12 3456 7890 1234 5678 90",
     iban: "US12 3456 7890 1234 5678 90",
     bic: "CHASUS33XXX",
     agence: "Wall Street Branch - 123 Wall Street, New York, NY 10005",
-    dateOuverture: "10/01/2019",
-    dateBlocage: "02/12/2024",
-    dateAttestation: "08/12/2024",
-    notification: "Your account has been temporarily blocked due to a detected anomaly. To reactivate your access, please pay the unblocking fee of $14,950. Thank you for your understanding.",
+    dateOuverture: "10/01/2021",
+    dateBlocage: "02/12/2025",
+    dateAttestation: "08/12/2021",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 15 050 $. Merci de votre compréhension.",
     transactions: [
-      { date: '28/11/2024', libelle: 'International Wire from Switzerland', debit: '', credit: '450000.00' },
-      { date: '29/11/2024', libelle: 'Real Estate Investment', debit: '', credit: '150000.00' },
-      { date: '30/11/2024', libelle: 'International Banking Fees', debit: '125.00', credit: '' },
-      { date: '01/12/2024', libelle: 'Mercedes Benz Purchase', debit: '75000.00', credit: '' },
-      { date: '02/12/2024', libelle: 'Fine Dining Restaurant', debit: '450.00', credit: '' }
+      { date: '28/11/2025', libelle: 'Virement international depuis Suisse', debit: '', credit: '450000.00' },
+      { date: '29/11/2025', libelle: 'Investissement immobilier', debit: '', credit: '150000.00' },
+      { date: '30/11/2025', libelle: 'Frais bancaires internationaux', debit: '125.00', credit: '' },
+      { date: '01/12/2025', libelle: 'Achat Mercedes Benz', debit: '75000.00', credit: '' },
+      { date: '02/12/2025', libelle: 'Restaurant gastronomique', debit: '450.00', credit: '' }
+    ],
+    // ✅ TOUT EN FRANÇAIS (mois en français)
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2025', dateGeneration: '05/12/2025' },
+      { mois: 'novembre', annee: '2025', dateGeneration: '01/12/2025' }
+    ],
+    virements: [
+      { date: '25/11/2025', beneficiaire: 'ConEd Electric', montant: -150.00, statut: 'Effectué' },
+      { date: '20/11/2025', beneficiaire: 'John Smith', montant: -500.00, statut: 'Effectué' },
+      { date: '15/11/2025', beneficiaire: 'Paiement loyer', montant: -2500.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '15/11/2025', montant: 3500.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '12/11/2025', montant: 1000.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '01/12/2025', montant: -300, duree: 2, frais: 6.0 },
+      { id: 2, date: '25/11/2025', montant: -250, duree: 4, frais: 10.0 },
+      { id: 3, date: '10/11/2025', montant: -400, duree: 5, frais: 20.0 },
     ],
     conseiller: {
       nom: 'Michael Johnson',
@@ -158,7 +217,7 @@ const initialUsers = [
     notaire: {
       nom: "COHEN",
       prenom: "David",
-      titre: "ATTORNEY AT LAW",
+      titre: "NOTAIRE",
       adresse: "450 Lexington Avenue",
       ville: "New York, NY 10017",
       telephone: "+1 438 896 3897",
@@ -189,6 +248,24 @@ const initialUsers = [
       { date: '28/11/2024', libelle: 'Frais bancaires', debit: '25000.00', credit: '' },
       { date: '30/11/2024', libelle: 'Shopping Cap Sud', debit: '150000.00', credit: '' }
     ],
+    relevesMensuels: [
+      { mois: 'novembre', annee: '2024', dateGeneration: '01/12/2024' },
+      { mois: 'octobre', annee: '2024', dateGeneration: '01/11/2024' }
+    ],
+    virements: [
+      { date: '25/11/2024', beneficiaire: 'CIE Électricité', montant: -45000, statut: 'Effectué' },
+      { date: '20/11/2024', beneficiaire: 'Fatou Koné', montant: -100000, statut: 'Effectué' },
+      { date: '15/11/2024', beneficiaire: 'Loyer Cocody', montant: -250000, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '18/11/2024', montant: 800000, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/11/2024', montant: 300000, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '28/11/2024', montant: -150000, duree: 3, frais: 4500 },
+      { id: 2, date: '20/11/2024', montant: -200000, duree: 5, frais: 10000 },
+      { id: 3, date: '10/11/2024', montant: -100000, duree: 2, frais: 2000 },
+    ],
     conseiller: {
       nom: 'Fatou Traoré',
       telephone: '+225 27 22 45 67 89',
@@ -206,8 +283,8 @@ const initialUsers = [
   }
 ];
 
-// ✅ CHANGEZ CE NUMÉRO pour forcer la réinitialisation (9 au lieu de 7 ou 8)
-const DATA_VERSION = 3;
+// ✅ Version 4 avec tout en français
+const DATA_VERSION = 5;
 
 // ==================== USER SERVICE ====================
 const UserService = {
@@ -219,7 +296,7 @@ const UserService = {
       console.log('🔄 Initialisation des données (v' + DATA_VERSION + ')');
       await StorageService.set('bankUsers', initialUsers);
       await StorageService.set('dataVersion', DATA_VERSION);
-      console.log('✅ Données sauvegardées avec devises');
+      console.log('✅ Données sauvegardées - tout en français');
       
       const currentUser = await StorageService.get('currentUser');
       if (currentUser) {

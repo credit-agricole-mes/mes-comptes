@@ -1,7 +1,7 @@
 import { X, Menu, Bell, Info } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatCurrency } from "../services/UserService"; // ✅ Import de la fonction
+import { formatCurrency } from "../utils/currencyFormatter"; // ✅ Import corrigé
 
 export default function AccountCard({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -168,7 +168,6 @@ export default function AccountCard({ user, onLogout }) {
 
       <div className="-mt-20 px-4 z-60 relative">
         <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-2xl mx-auto relative">
-          {/* La bannière peut être fermée indépendamment */}
           {user?.notification && showBanner && (
             <div className="mb-6 bg-blue-50 border-2 border-blue-200 text-blue-800 rounded-lg p-4 flex items-start gap-3">
               <div className="mt-0.5">
@@ -199,8 +198,6 @@ export default function AccountCard({ user, onLogout }) {
           <div className="text-4xl sm:text-5xl font-bold text-green-400 text-center mb-6 sm:mb-8">
             {soldeFormate}
           </div>
-
-         
 
           <div className="text-red-600 text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
             Compte temporairement bloqué !

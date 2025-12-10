@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Lock, AlertCircle, X, PiggyBank } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import UserService from '../services/UserService';
+import { formatCurrency } from '../services/UserService';
 
 const SavingsPage = () => {
-  const { userCode } = useAuth();
-  const user = UserService.getUserByCode(userCode);
+  const { user } = useAuth();
   const [showBlockedAlert, setShowBlockedAlert] = useState(true);
+
+  // Utiliser la devise de l'utilisateur
+  const devise = user?.devise || 'EUR';
+  const symbole = user?.symboleDevise || '€';
 
   // Données par défaut si l'utilisateur n'est pas trouvé
   const defaultData = {
@@ -59,7 +62,7 @@ const SavingsPage = () => {
           Épargne automatique
         </h2>
         
-        <div className="bg-green-300 border-l-4 border-green-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded">
+        <div className="bg-yellow-50 border-l-4 border-yellow-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded">
           <p className="text-yellow-800 font-semibold text-base sm:text-lg">
             ⚠️ Les virements automatiques sont suspendus
           </p>
@@ -71,12 +74,12 @@ const SavingsPage = () => {
         <h3 className="font-semibold text-black mb-3 sm:mb-4 text-base sm:text-lg">📋 Règles d'épargne configurées</h3>
         
         {automaticSavings.map(saving => (
-          <div key={saving.id} className="border-2 border-gray-300 rounded-lg p-4 sm:p-5 mb-3 sm:mb-4 bg-green-100">
+          <div key={saving.id} className="border-2 border-gray-300 rounded-lg p-4 sm:p-5 mb-3 sm:mb-4 bg-gray-50">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div className="opacity-50 flex-1">
                 <h3 className="font-semibold text-gray-900 text-base sm:text-lg">{saving.name}</h3>
                 <p className="text-gray-900 mt-1 text-sm sm:text-base">
-                  {saving.amount > 0 ? `${saving.amount} €/mois` : 'Montant variable'}
+                  {saving.amount > 0 ? `${formatCurrency(saving.amount, devise, symbole)}/mois` : 'Montant variable'}
                 </p>
               </div>
               <span className="bg-red-100 text-red-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap">
@@ -87,17 +90,17 @@ const SavingsPage = () => {
         ))}
         
         <div className="mt-4 sm:mt-6 space-y-3">
-          <button disabled className="w-full bg-green-300 text-gray-500 py-3 sm:py-4 rounded-lg cursor-not-allowed flex items-center justify-center font-semibold text-base sm:text-lg">
+          <button disabled className="w-full bg-gray-300 text-gray-500 py-3 sm:py-4 rounded-lg cursor-not-allowed flex items-center justify-center font-semibold text-base sm:text-lg">
             <Lock size={18} className="mr-2 sm:w-5 sm:h-5" />
             Ajouter une règle (bloqué)
           </button>
-          <button disabled className="w-full bg-green-300 text-gray-500 py-3 sm:py-4 rounded-lg cursor-not-allowed flex items-center justify-center font-semibold text-base sm:text-lg">
+          <button disabled className="w-full bg-gray-300 text-gray-500 py-3 sm:py-4 rounded-lg cursor-not-allowed flex items-center justify-center font-semibold text-base sm:text-lg">
             <Lock size={18} className="mr-2 sm:w-5 sm:h-5" />
             Modifier les règles (bloqué)
           </button>
         </div>
 
-        <div className="mt-4 sm:mt-6 bg-green-100 border border-blue-300 rounded-lg p-3 sm:p-4">
+        <div className="mt-4 sm:mt-6 bg-blue-50 border border-blue-300 rounded-lg p-3 sm:p-4">
           <p className="text-blue-800 text-xs sm:text-sm">
             <strong>ℹ️ Information :</strong> Vos règles d'épargne seront réactivées automatiquement une fois votre compte débloqué.
           </p>

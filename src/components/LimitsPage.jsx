@@ -1,7 +1,15 @@
 import React from 'react';
 import { Lock, CreditCard, TrendingUp, DollarSign } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../services/UserService';
 
 const LimitsPage = () => {
+  const { user } = useAuth();
+  
+  // Utiliser la devise de l'utilisateur connecté
+  const devise = user?.devise || 'EUR';
+  const symbole = user?.symboleDevise || '€';
+
   const plafonds = {
     carteBancaire: { limit: 10000, used: 450, period: "Mensuel" },
     virementJournalier: { limit: 5000, used: 0, period: "Journalier" },
@@ -43,7 +51,7 @@ const LimitsPage = () => {
               <p className="text-gray-600 text-xs sm:text-sm mt-1">Limite {plafonds.carteBancaire.period.toLowerCase()}</p>
             </div>
             <span className="text-blue-800 font-bold text-xl sm:text-2xl">
-              {plafonds.carteBancaire.limit.toLocaleString()} €
+              {formatCurrency(plafonds.carteBancaire.limit, devise, symbole)}
             </span>
           </div>
           <div className="w-full bg-blue-200 rounded-full h-2.5 sm:h-3">
@@ -53,7 +61,7 @@ const LimitsPage = () => {
             ></div>
           </div>
           <p className="text-xs sm:text-sm text-gray-600 mt-2">
-            Utilisé : {plafonds.carteBancaire.used} € ({calculatePercentage(plafonds.carteBancaire.used, plafonds.carteBancaire.limit)}%)
+            Utilisé : {formatCurrency(plafonds.carteBancaire.used, devise, symbole)} ({calculatePercentage(plafonds.carteBancaire.used, plafonds.carteBancaire.limit)}%)
           </p>
         </div>
         
@@ -68,7 +76,7 @@ const LimitsPage = () => {
               <p className="text-gray-600 text-xs sm:text-sm mt-1">Limite {plafonds.virementJournalier.period.toLowerCase()}</p>
             </div>
             <span className="text-green-800 font-bold text-xl sm:text-2xl">
-              {plafonds.virementJournalier.limit.toLocaleString()} €
+              {formatCurrency(plafonds.virementJournalier.limit, devise, symbole)}
             </span>
           </div>
           <div className="w-full bg-green-200 rounded-full h-2.5 sm:h-3">
@@ -78,7 +86,7 @@ const LimitsPage = () => {
             ></div>
           </div>
           <p className="text-xs sm:text-sm text-gray-600 mt-2">
-            Utilisé : {plafonds.virementJournalier.used} € ({calculatePercentage(plafonds.virementJournalier.used, plafonds.virementJournalier.limit)}%)
+            Utilisé : {formatCurrency(plafonds.virementJournalier.used, devise, symbole)} ({calculatePercentage(plafonds.virementJournalier.used, plafonds.virementJournalier.limit)}%)
           </p>
         </div>
         
@@ -93,7 +101,7 @@ const LimitsPage = () => {
               <p className="text-gray-600 text-xs sm:text-sm mt-1">Limite {plafonds.retraitATM.period.toLowerCase()}</p>
             </div>
             <span className="text-purple-800 font-bold text-xl sm:text-2xl">
-              {plafonds.retraitATM.limit.toLocaleString()} €
+              {formatCurrency(plafonds.retraitATM.limit, devise, symbole)}
             </span>
           </div>
           <div className="w-full bg-purple-200 rounded-full h-2.5 sm:h-3">
@@ -103,7 +111,7 @@ const LimitsPage = () => {
             ></div>
           </div>
           <p className="text-xs sm:text-sm text-gray-600 mt-2">
-            Utilisé : {plafonds.retraitATM.used} € ({calculatePercentage(plafonds.retraitATM.used, plafonds.retraitATM.limit)}%)
+            Utilisé : {formatCurrency(plafonds.retraitATM.used, devise, symbole)} ({calculatePercentage(plafonds.retraitATM.used, plafonds.retraitATM.limit)}%)
           </p>
         </div>
 
@@ -118,7 +126,7 @@ const LimitsPage = () => {
               <p className="text-gray-600 text-xs sm:text-sm mt-1">Limite {plafonds.paiementInternet.period.toLowerCase()}</p>
             </div>
             <span className="text-orange-800 font-bold text-xl sm:text-2xl">
-              {plafonds.paiementInternet.limit.toLocaleString()} €
+              {formatCurrency(plafonds.paiementInternet.limit, devise, symbole)}
             </span>
           </div>
           <div className="w-full bg-orange-200 rounded-full h-2.5 sm:h-3">
@@ -128,7 +136,7 @@ const LimitsPage = () => {
             ></div>
           </div>
           <p className="text-xs sm:text-sm text-gray-600 mt-2">
-            Utilisé : {plafonds.paiementInternet.used} € ({calculatePercentage(plafonds.paiementInternet.used, plafonds.paiementInternet.limit)}%)
+            Utilisé : {formatCurrency(plafonds.paiementInternet.used, devise, symbole)} ({calculatePercentage(plafonds.paiementInternet.used, plafonds.paiementInternet.limit)}%)
           </p>
         </div>
         

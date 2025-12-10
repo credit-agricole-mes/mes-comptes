@@ -1,7 +1,8 @@
 import React from 'react';
 import jsPDF from 'jspdf';
 import { useAuth } from '../context/AuthContext';
-import { formatCurrency } from '../services/UserService';
+import { formatCurrency } from '../utils/currencyFormatter';
+import { formatDateShort } from '../utils/dateFormatter';
 
 const TransactionsDownload = () => {
   const { user } = useAuth();
@@ -22,8 +23,8 @@ const TransactionsDownload = () => {
     solde: formatCurrency(user.solde || 0, user.devise || 'EUR', user.symboleDevise || '€')
   };
 
-  // ✅ Date actuelle au lieu de dateAttestation fixe
-  const dateReleve = new Date().toLocaleDateString('fr-FR');
+  // ✅ Date actuelle formatée selon la devise de l'utilisateur
+  const dateReleve = formatDateShort(new Date(), user.devise);
   const transactions = user.transactions || [];
 
   // ✅ Fonction pour filtrer les transactions par mois
@@ -37,7 +38,6 @@ const TransactionsDownload = () => {
     const moisStr = moisIndex[mois.toLowerCase()];
     
     return transactions.filter(t => {
-      // Format: DD/MM/YYYY
       const [jour, moisTransaction, anneeTransaction] = t.date.split('/');
       return moisTransaction === moisStr && anneeTransaction === annee;
     });
@@ -48,45 +48,8 @@ const TransactionsDownload = () => {
     return filtrerTransactionsParMois(mois, annee).length;
   };
 
-  // ✅ Générer automatiquement les mois disponibles
-  const genererMoisDisponibles = () => {
-    const moisParAnnee = {};
-    
-    transactions.forEach(t => {
-      const [jour, mois, annee] = t.date.split('/');
-      const key = `${annee}-${mois}`;
-      
-      if (!moisParAnnee[key]) {
-        moisParAnnee[key] = {
-          mois: mois,
-          annee: annee,
-          count: 0
-        };
-      }
-      moisParAnnee[key].count++;
-    });
-
-    const moisNoms = {
-      '01': 'janvier', '02': 'février', '03': 'mars', '04': 'avril',
-      '05': 'mai', '06': 'juin', '07': 'juillet', '08': 'août',
-      '09': 'septembre', '10': 'octobre', '11': 'novembre', '12': 'décembre'
-    };
-
-    return Object.values(moisParAnnee)
-      .map(m => ({
-        mois: moisNoms[m.mois],
-        annee: m.annee,
-        count: m.count
-      }))
-      .sort((a, b) => {
-        if (a.annee !== b.annee) return b.annee - a.annee;
-        return b.mois.localeCompare(a.mois);
-      });
-  };
-
-  const genererReleveBancaire = (mois, annee) => {
+  const genererReleveBancaire = (mois, annee, dateGenerationReleve) => {
     try {
-      // ✅ Filtrer les transactions pour le mois demandé
       const transactionsDuMois = filtrerTransactionsParMois(mois, annee);
       
       if (transactionsDuMois.length === 0) {
@@ -95,6 +58,10 @@ const TransactionsDownload = () => {
       }
 
       const doc = new jsPDF();
+      // ✅ Utiliser la date de génération du relevé
+      const dateFooter = dateGenerationReleve 
+        ? formatDateShort(dateGenerationReleve, user.devise)
+        : dateReleve;
       
       // En-tête bleu
       doc.setFillColor(0, 51, 102);
@@ -143,7 +110,7 @@ const TransactionsDownload = () => {
       y += 5;
       doc.line(20, y, 190, y);
       
-      // ✅ Transactions filtrées par mois
+      // Transactions avec DATES et MONTANTS FORMATÉS
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       
@@ -164,13 +131,14 @@ const TransactionsDownload = () => {
           doc.setFont('helvetica', 'normal');
         }
         
-        doc.text(t.date, 20, y);
+        // ✅ DATE FORMATÉE SELON LA DEVISE
+        doc.text(formatDateShort(t.date, user.devise), 20, y);
         
         const maxLibelleWidth = 75;
         const libelleLines = doc.splitTextToSize(t.libelle, maxLibelleWidth);
         doc.text(libelleLines, 50, y);
         
-        // Formatage avec devise
+        // ✅ MONTANTS FORMATÉS SELON LA DEVISE
         if(t.debit) {
           const montantDebit = formatCurrency(parseFloat(t.debit), user.devise, user.symboleDevise);
           doc.text(montantDebit, 130, y);
@@ -188,62 +156,49 @@ const TransactionsDownload = () => {
       y += 10;
       doc.line(20, y, 190, y);
       
-      // Solde avec devise
       y += 10;
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(12);
       doc.text('Solde actuel :', 20, y);
       doc.text(compteInfo.solde, 160, y);
       
-      // Footer avec date actuelle
+      // ✅ Footer avec date de génération du relevé
       doc.setFontSize(9);
       doc.setFont('helvetica', 'italic');
       const pageCount = doc.internal.getNumberOfPages();
       doc.setPage(pageCount);
-      doc.text('Document généré le ' + dateReleve, 105, 280, { align: 'center' });
+      doc.text('Document généré le ' + dateFooter, 105, 280, { align: 'center' });
       
       doc.save(`releve_bancaire_${mois}_${annee}.pdf`);
       
-      console.log(`✅ Relevé généré avec succès pour ${mois} ${annee} (${transactionsDuMois.length} transactions)`);
+      console.log(`✅ Relevé généré pour ${mois} ${annee} (${transactionsDuMois.length} transactions)`);
     } catch (error) {
       console.error('❌ Erreur génération relevé:', error);
       alert('Erreur lors de la génération du relevé');
     }
   };
 
-  // ✅ Documents avec dates personnalisables
-  const documents = [
-    {
+  // ✅ UTILISATION DES RELEVÉS DÉFINIS MANUELLEMENT dans user.relevesMensuels
+  const relevesMensuels = user.relevesMensuels || [];
+  
+  const documents = relevesMensuels.map((releve, index) => {
+    const nbTransactions = compterTransactionsParMois(releve.mois, releve.annee);
+    // ✅ Utiliser la date de génération du relevé si définie, sinon date du jour
+    const dateGen = releve.dateGeneration 
+      ? formatDateShort(releve.dateGeneration, user.devise)
+      : dateReleve;
+    
+    return {
       icon: '📄',
-      titre: 'Relevé bancaire - Décembre 2025',
-      mois: 'décembre',
-      annee: '2025',
-      description: `${compterTransactionsParMois('décembre', '2025')} transaction(s) - Généré le ${dateReleve}`,
+      titre: `Relevé bancaire - ${releve.mois.charAt(0).toUpperCase() + releve.mois.slice(1)} ${releve.annee}`,
+      mois: releve.mois,
+      annee: releve.annee,
+      description: `${nbTransactions} transaction${nbTransactions > 1 ? 's' : ''} - Généré le ${dateGen}`,
       badge: 'PDF',
-      action: () => genererReleveBancaire('décembre', '2024'),
+      action: () => genererReleveBancaire(releve.mois, releve.annee, releve.dateGeneration),
       badgeColor: 'bg-blue-100 text-blue-800'
-    },
-    {
-      icon: '📄',
-      titre: 'Relevé bancaire - Novembre 2025',
-      mois: 'novembre',
-      annee: '2024',
-      description: `${compterTransactionsParMois('novembre', '2025')} transaction(s) - Généré le ${dateReleve}`,
-      badge: 'PDF',
-      action: () => genererReleveBancaire('novembre', '2025'),
-      badgeColor: 'bg-blue-100 text-blue-800'
-    },
-    {
-      icon: '📄',
-      titre: 'Relevé bancaire - Octobre 2025',
-      mois: 'octobre',
-      annee: '2025',
-      description: `${compterTransactionsParMois('octobre', '2025')} transaction(s) - Généré le ${dateReleve}`,
-      badge: 'PDF',
-      action: () => genererReleveBancaire('octobre', '2025'),
-      badgeColor: 'bg-blue-100 text-blue-800'
-    }
-  ];
+    };
+  });
 
   const totalTransactions = transactions.length;
 
@@ -261,7 +216,7 @@ const TransactionsDownload = () => {
 
       {documents.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-8 text-center">
-          <p className="text-gray-600">Aucune transaction disponible</p>
+          <p className="text-gray-600">Aucun relevé disponible pour le moment</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -269,7 +224,7 @@ const TransactionsDownload = () => {
             <div key={index} className="bg-white rounded-lg shadow hover:shadow-xl transition p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-                  <span className="text-3xl sm:text-5xl ">{doc.icon}</span>
+                  <span className="text-3xl sm:text-5xl">{doc.icon}</span>
                   <div className="flex-1">
                     <h4 className="font-bold text-base sm:text-lg text-gray-900">{doc.titre}</h4>
                     <p className="text-gray-600 text-xs sm:text-sm mt-1">{doc.description}</p>
