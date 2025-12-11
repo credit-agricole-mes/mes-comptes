@@ -110,8 +110,73 @@ const initialUsers = [
       email: "sophie.bernard@notaire-paris.fr"
     }
   },
+
+
   {
-    code: "11111111111",
+    code: "12345678927",
+    nom: "Christine Dubois",
+    email: "christine.dubois@email.com",
+    telephone: "+33 6 12 34 56 78",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 2000000.75,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0100 0123 4567 890",
+    iban: "FR76 3000 4000 0100 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/03/2018",
+    dateBlocage: "28/11/2024",
+    dateAttestation: "05/12/2024",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 12 800 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '25/11/2024', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '26/11/2024', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '27/11/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '28/11/2024', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '30/11/2024', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2024', dateGeneration: '05/12/2024' },
+      { mois: 'novembre', annee: '2024', dateGeneration: '01/12/2024' },
+      { mois: 'octobre', annee: '2024', dateGeneration: '01/11/2024' }
+    ],
+    virements: [
+      { date: '20/11/2024', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/11/2024', beneficiaire: 'Marie Dubois', montant: -200.00, statut: 'Effectué' },
+      { date: '15/11/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '15/11/2024', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/11/2024', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/12/2024', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/11/2024', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/11/2024', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/11/2024', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/10/2024', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/10/2024', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '01 23 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "MAÎTRE SOPHIE BERNARD",
+      prenom: "Sophie",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: "01 42 89 33 44",
+      email: "sophie.bernard@notaire-paris.fr"
+    }
+  },
+
+
+  {
+    code: "00111111111",
     nom: "Marcelin Rolzou",
     email: "Marcelin.Rolzou@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -166,6 +231,8 @@ const initialUsers = [
       email: "sophie.bernard@notaire-paris.fr"
     }
   },
+
+
   {
     code: "22222222222",
     nom: "Florence Deschênes",
@@ -224,6 +291,7 @@ const initialUsers = [
       email: "demersy589@gmail.com"
     }
   },
+  
   {
     code: "11122233344",
     nom: "Ahmed Koné",
