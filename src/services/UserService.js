@@ -232,6 +232,63 @@ const initialUsers = [
     }
   },
 
+  {
+    code: "00000111111",
+    nom: "Jean Patrick Gauthier",
+    email: "gauthierjeanpatrick05@email.com",
+    telephone: "+33 6 12 34 56 78",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 342407.70,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/03/2013",
+    dateBlocage: "13/06/2019",
+    dateAttestation: "25/03/2013",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 8750 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '10/06/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/06/2019', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '16/05/2019', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/05/2019', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/05/2019', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'mai', annee: '2019', dateGeneration: '01/06/2019'},
+      { mois: 'avril', annee: '2019', dateGeneration: '01/05/2019'},
+      { mois: 'mars', annee: '2019', dateGeneration: '01/04/2019' },
+      { mois: 'février', annee: '2019', dateGeneration: '01/03/2019' }
+    ],
+    virements: [
+      { date: '10/06/2019', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2019', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2019', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2019', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2019', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 22 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "MAÎTRE BERNARD",
+      prenom: "Sophie",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: "+33 6 44 58 45 73",
+      email: "sophie.bernard@notaire-paris.fr"
+    }
+  },
+
 
   {
     code: "22222222222",
@@ -353,7 +410,7 @@ const initialUsers = [
 ];
 
 // ✅ Version 4 avec tout en français
-const DATA_VERSION = 5;
+const DATA_VERSION = 2;
 
 // ==================== USER SERVICE ====================
 const UserService = {
