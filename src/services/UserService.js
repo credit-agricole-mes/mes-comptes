@@ -1,4 +1,4 @@
-// ==================== SERVICE DE FORMATAGE DEVISE ====================
+  // ==================== SERVICE DE FORMATAGE DEVISE ====================
 export const formatCurrency = (montant, devise = "EUR", symbole = "€") => {
   const formattedNumber = new Intl.NumberFormat('fr-FR', {
     minimumFractionDigits: 2,
@@ -51,6 +51,7 @@ const StorageService = {
 const initialUsers = [
   {
     code: "12345678927",
+    motDePasse: "123456",
     nom: "Christine Dubois",
     email: "christine.dubois@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -114,6 +115,7 @@ const initialUsers = [
 
   {
     code: "33333333333",
+    motDePasse: "azerty",
     nom: "Clarisse Bianchi",
     email: "clarisse.bianchi@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -173,10 +175,72 @@ const initialUsers = [
       email: "sophie.bernard@notaire-paris.fr"
     }
   },
+  {
+    code: "33333444444",
+    motDePasse: "Emilie123",
+    nom: "Émelie Marie Louise",
+    email: "",
+    telephone: "+33 7 56 81 18 00",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 2345065.75,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 1723 8000 0100 2542 9080 351",
+    iban: "FR76 3000 5000 0200 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/11/2012",
+    dateBlocage: "28/12/2019",
+    dateAttestation: "05/12/2012",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 30 000 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '09/12/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '06/12/2019', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '01/12/2019', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '28/11/2019', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '30/11/2019', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'novembre', annee: '2019', dateGeneration: '01/12/2019' },
+      { mois: 'octobre', annee: '2019', dateGeneration: '01/11/2019' },
+      { mois: 'septembre', annee: '2019', dateGeneration: '01/10/2019' }
+    ],
+    virements: [
+      { date: '10/12/2019', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/11/2019', beneficiaire: 'Marie Dubois', montant: -200.00, statut: 'Effectué' },
+      { date: '15/11/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '15/11/2019', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/11/2019', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/12/2019', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/11/2019', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/11/2019', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/11/2019', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/10/2019', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/10/2019', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 22 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Maitre",
+      prenom: "Hermann",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      email: "Hermann1643@gmail.com"
+    }
+  },
 
 
   {
     code: "00111111111",
+    motDePasse: "secure2021",
     nom: "Marcelin Rolzou",
     email: "Marcelin.Rolzou@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -234,6 +298,7 @@ const initialUsers = [
 
   {
     code: "00000111111",
+    motDePasse: "gauthier2019",
     nom: "Jean Patrick Gauthier",
     email: "gauthierjeanpatrick05@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -292,6 +357,7 @@ const initialUsers = [
 
   {
     code: "22222222222",
+    motDePasse: "newyork2025",
     nom: "Florence Deschênes",
     email: "ginetteb040@email.com",
     telephone: "+1 438 896 3897",
@@ -314,7 +380,6 @@ const initialUsers = [
       { date: '01/12/2025', libelle: 'Achat Mercedes Benz', debit: '75000.00', credit: '' },
       { date: '02/12/2025', libelle: 'Restaurant gastronomique', debit: '450.00', credit: '' }
     ],
-    // ✅ TOUT EN FRANÇAIS (mois en français)
     relevesMensuels: [
       { mois: 'décembre', annee: '2025', dateGeneration: '05/12/2025' },
       { mois: 'novembre', annee: '2025', dateGeneration: '01/12/2025' }
@@ -352,6 +417,7 @@ const initialUsers = [
 
   {
     code: "11122233344",
+    motDePasse: "abidjan2024",
     nom: "Ahmed Koné",
     email: "ahmed.kone@email.com",
     telephone: "+225 07 12 34 56 78",
@@ -380,7 +446,7 @@ const initialUsers = [
     ],
     virements: [
       { date: '25/11/2024', beneficiaire: 'CIE Électricité', montant: -45000, statut: 'Effectué' },
-      { date: '20/11/2024', beneficiaire: 'Fatou Koné', montant: -100000, statut: 'Effectué' },
+      { date: '20/11/2024', beneficiaire: 'Fatou Koné', montant: -100000, },
       { date: '15/11/2024', beneficiaire: 'Loyer Cocody', montant: -250000, statut: 'Effectué' },
     ],
     depots: [
@@ -410,7 +476,7 @@ const initialUsers = [
 ];
 
 // ✅ Version 4 avec tout en français
-const DATA_VERSION = 2;
+const DATA_VERSION = 1;
 
 // ==================== USER SERVICE ====================
 const UserService = {
