@@ -16,34 +16,57 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Vérification au chargement
+  // ✅ VÉRIFICATION AU CHARGEMENT - avec localStorage
   useEffect(() => {
     const initAuth = async () => {
+      console.log('🚀 DÉBUT INIT AUTH');
+      
       try {
+        setIsLoading(true);
+        
         // Initialiser les utilisateurs
+        console.log('📦 Initialisation UserService...');
         await UserService.initializeUsers();
+        console.log('✅ UserService initialisé');
         
-        // Vérifier s'il y a une session
-        const validation = await UserService.checkCurrentUserValidity();
+        // ✅ Récupérer depuis localStorage
+        console.log('🔍 Recherche session dans localStorage...');
+        const storedData = localStorage.getItem('currentUser');
         
-        if (validation.valid && validation.user) {
-          console.log('✅ SESSION VALIDE - Connexion automatique');
-          console.log('👤 Utilisateur:', validation.user.nom);
-          console.log('💰 Solde:', validation.user.solde, '€');
-          setUser(validation.user);
-          setIsAuthenticated(true);
-        } else if (validation.shouldLogout) {
-          console.log('❌ Session expirée');
-          setUser(null);
-          setIsAuthenticated(false);
+        if (storedData) {
+          console.log('📦 Session trouvée dans localStorage');
+          
+          try {
+            const storedUser = JSON.parse(storedData);
+            console.log('✅ User parsé:', storedUser.nom);
+            
+            // Vérifier que l'utilisateur existe toujours dans la base
+            const freshUser = await UserService.getUserByCode(storedUser.code);
+            
+            if (freshUser) {
+              console.log('✅ SESSION RESTAURÉE');
+              console.log('👤 Nom:', freshUser.nom);
+              console.log('💰 Solde:', freshUser.solde);
+              setUser(freshUser);
+              setIsAuthenticated(true);
+            } else {
+              console.log('❌ Utilisateur introuvable dans la base');
+              localStorage.removeItem('currentUser');
+            }
+          } catch (parseError) {
+            console.error('❌ Erreur parsing JSON:', parseError);
+            localStorage.removeItem('currentUser');
+          }
         } else {
-          console.log('ℹ️ Pas de session sauvegardée');
+          console.log('ℹ️ Pas de session dans localStorage');
         }
+        
       } catch (error) {
-        console.error('❌ Erreur restauration:', error);
+        console.error('❌ Erreur init:', error);
         setUser(null);
         setIsAuthenticated(false);
       } finally {
+        console.log('🏁 FIN INIT');
         setIsLoading(false);
       }
     };
@@ -52,59 +75,50 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    console.log('✅ CONNEXION:', userData.nom);
-    console.log('💰 Solde:', userData.solde, '€');
-    console.log('🔑 Code:', userData.code);
+    console.log('🔐 LOGIN:', userData.nom);
+    console.log('💰 Solde:', userData.solde);
     
     setUser(userData);
     setIsAuthenticated(true);
     
-    // Sauvegarder dans le storage
+    // ✅ Sauvegarder dans localStorage
     try {
-      await window.storage.set('currentUser', JSON.stringify(userData));
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      console.log('✅ Session sauvegardée dans localStorage');
     } catch (error) {
-      console.error('Erreur sauvegarde session:', error);
+      console.error('❌ Erreur sauvegarde:', error);
     }
   };
 
   const logout = async () => {
-    console.log('🚪 DÉCONNEXION');
+    console.log('🚪 LOGOUT');
     setUser(null);
     setIsAuthenticated(false);
     
-    // Supprimer du storage
+    // ✅ Supprimer de localStorage
     try {
-      await window.storage.delete('currentUser');
+      localStorage.removeItem('currentUser');
+      console.log('✅ Session supprimée');
     } catch (error) {
-      console.error('Erreur suppression session:', error);
+      console.error('❌ Erreur suppression:', error);
     }
   };
 
   const updateUser = async (updatedData) => {
-    console.log('🔄 UPDATE USER:', updatedData.nom);
-    console.log('💰 Nouveau solde:', updatedData.solde, '€');
+    console.log('🔄 UPDATE:', updatedData.nom);
+    console.log('💰 Nouveau solde:', updatedData.solde);
     
     setUser(updatedData);
     setIsAuthenticated(true);
     
-    // Mettre à jour dans le storage
+    // ✅ Mettre à jour localStorage
     try {
-      await window.storage.set('currentUser', JSON.stringify(updatedData));
+      localStorage.setItem('currentUser', JSON.stringify(updatedData));
+      console.log('✅ Session mise à jour');
     } catch (error) {
-      console.error('Erreur update session:', error);
+      console.error('❌ Erreur update:', error);
     }
   };
-
-  // Logger les changements d'état
-  useEffect(() => {
-    if (user) {
-      console.log('👤 STATE USER:', user.nom);
-      console.log('💰 STATE SOLDE:', user.solde);
-      console.log('🔑 STATE CODE:', user.code);
-    } else {
-      console.log('❌ Pas d\'utilisateur connecté');
-    }
-  }, [user]);
 
   return (
     <AuthContext.Provider

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { TrendingDown, Calendar, Euro, AlertCircle, Clock } from 'lucide-react';
+import { TrendingDown, Calendar, Euro, AlertCircle, Clock, Info } from 'lucide-react';
 import { formatCurrency } from '../utils/currencyFormatter';
 import { formatDateShort, formatDateLong } from '../utils/dateFormatter';
 import { useAuth } from '../context/AuthContext';
 
 const OverdraftPage = () => {
   const { user } = useAuth();
+  
+  // ✅ Vérifier si le compte est vraiment bloqué
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
   
   // ✅ Récupérer l'historique des découverts de l'utilisateur connecté
   const historique = user?.decouvert || [];
@@ -24,7 +27,7 @@ const OverdraftPage = () => {
     ? Math.abs(Math.max(...historique.map(h => h.montant)))
     : 0;
 
-  // Taux et frais (peuvent être personnalisés par utilisateur plus tard)
+  // Taux et frais
   const tauxInteret = 8.5;
   const fraisFixe = 8;
   const decouvertAutorise = 500;
@@ -34,15 +37,42 @@ const OverdraftPage = () => {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">💳 Découvert Bancaire</h1>
 
-        {/* Alerte compte bloqué */}
-        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
-          <p className="text-red-800 font-semibold">
-            🔒 Compte bloqué
-          </p>
-          <p className="text-red-700 text-sm mt-1">
-            Le découvert n'est pas disponible tant que votre compte est bloqué. Vous pouvez consulter votre historique et les informations tarifaires.
-          </p>
-        </div>
+        {/* ✅ Alerte adaptée selon le statut */}
+        {isCompteBloque && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+            <p className="text-red-800 font-semibold">
+              🔒 Compte bloqué
+            </p>
+            <p className="text-red-700 text-sm mt-1">
+              Le découvert n'est pas disponible tant que votre compte est bloqué. Vous pouvez consulter votre historique et les informations tarifaires.
+            </p>
+          </div>
+        )}
+
+        {!isCompteBloque && historique.length === 0 && (
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-lg flex items-start gap-3">
+            <Info className="text-blue-500 " size={24} />
+            <div>
+              <p className="text-blue-800 font-semibold">
+                ℹ️ Découvert bancaire disponible
+              </p>
+              <p className="text-blue-700 text-sm mt-1">
+                Vous disposez d'un découvert autorisé de {formatCurrency(decouvertAutorise, devise, symbole)}. Utilisez-le en cas de besoin temporaire.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!isCompteBloque && historique.length > 0 && (
+          <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg">
+            <p className="text-green-800 font-semibold">
+              ✅ Compte actif
+            </p>
+            <p className="text-green-700 text-sm mt-1">
+              Consultez votre historique de découvert et optimisez votre gestion financière.
+            </p>
+          </div>
+        )}
 
         {/* Informations sur les taux et frais */}
         <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
@@ -105,7 +135,7 @@ const OverdraftPage = () => {
 
           <div className="mt-4 bg-yellow-50 border border-yellow-300 rounded-lg p-3">
             <div className="flex items-start">
-              <AlertCircle className="text-yellow-600 mr-2" size={20} />
+              <AlertCircle className="text-yellow-600 mr-2 " size={20} />
               <p className="text-sm text-yellow-800">
                 <strong>Important :</strong> Le découvert est un crédit renouvelable. Utilisez-le avec modération pour éviter des frais importants.
               </p>
@@ -172,7 +202,7 @@ const OverdraftPage = () => {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
                         <div
-                          className="h-full  bg-green-500 flex items-center justify-end pr-2 text-white text-xs font-semibold"
+                          className="h-full bg-red-500 flex items-center justify-end pr-2 text-white text-xs font-semibold"
                           style={{ width: `${percentage}%` }}
                         >
                           {percentage > 20 && formatCurrency(Math.abs(item.montant), devise, symbole)}
@@ -195,7 +225,12 @@ const OverdraftPage = () => {
 
           {historique.length === 0 ? (
             <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
-              <p className="text-blue-800">Aucun découvert enregistré pour le moment.</p>
+              <p className="text-blue-800">
+                {isCompteBloque 
+                  ? "Aucun découvert enregistré pour le moment."
+                  : "Aucun découvert enregistré. Votre compte reste créditeur. Continuez ainsi !"
+                }
+              </p>
             </div>
           ) : (
             <>

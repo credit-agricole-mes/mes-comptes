@@ -12,10 +12,23 @@ export default function TransactionsPage() {
   const devise = user?.devise || "EUR";
   const symbole = user?.symboleDevise || "€";
 
+  // ✅ Vérifier si c'est un nouveau compte
+  const estNouveauCompte = user?.solde === 0 && (!user?.transactions || user.transactions.length === 0);
+
+  // ✅ Comptes avec soldes dynamiques
   const accounts = [
-    { name: "Livret A", balance: 0 },
-    { name: "Assurance", balance: 0 },
-    { name: "Épargne", balance: 0 }
+    { 
+      name: "Livret A", 
+      balance: estNouveauCompte ? 0 : (user?.livretA || 0)
+    },
+    { 
+      name: "Assurance", 
+      balance: estNouveauCompte ? 0 : (user?.assurance || 0)
+    },
+    { 
+      name: "Épargne", 
+      balance: estNouveauCompte ? 0 : (user?.epargne || 0)
+    }
   ];
 
   const topActions = [

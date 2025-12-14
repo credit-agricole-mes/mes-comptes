@@ -88,7 +88,6 @@ function AppContent({ user, onLogout }) {
       <Routes>
         <Route path="/" element={<HomePage user={user} />} />
         <Route path="/virements" element={<PageWithBack><Virements user={user} /></PageWithBack>} />
-        {/* ✅ Ajout prop user */}
         <Route path="/depots" element={<PageWithBack><Depots user={user} /></PageWithBack>} />
         <Route path="/profil" element={<PageWithBack><Profil user={user} /></PageWithBack>} />
         <Route path="/cartes" element={<PageWithBack><GestionCartes /></PageWithBack>} />
@@ -99,11 +98,8 @@ function AppContent({ user, onLogout }) {
         <Route path="/savings" element={<PageWithBack><SavingsPage /></PageWithBack>} />
         <Route path="/beneficiaries" element={<PageWithBack><BeneficiariesPage /></PageWithBack>} />
         <Route path="/limits" element={<PageWithBack><LimitsPage /></PageWithBack>} />
-        {/* ✅ Ajout prop user */}
         <Route path="/loan" element={<PageWithBack><LoanPage user={user} /></PageWithBack>} />
-        {/* ✅ Ajout prop user */}
         <Route path="/calculator" element={<PageWithBack><CalculatorPage user={user} /></PageWithBack>} />
-        {/* ✅ Pas besoin de PageWithBack car SettingsPage a déjà son propre layout */}
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/overdraft" element={<PageWithBack><OverdraftPage /></PageWithBack>} />
         <Route path="/assistant" element={<AssistantPage onBack={() => navigate('/')} />} />
@@ -145,36 +141,38 @@ function AppWrapper() {
   const { isAuthenticated, user, isLoading, logout } = useAuth();
   const [showSessionExpired, setShowSessionExpired] = useState(false);
 
-  // ✅ VÉRIFICATION PÉRIODIQUE CRITIQUE - Détecte les changements de code
+  // ✅ VÉRIFICATION PÉRIODIQUE DÉSACTIVÉE POUR TEST
+  /*
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
     console.log('🔍 Démarrage vérification périodique...');
 
     const checkValidity = async () => {
-      console.log('🔍 Vérification validité code utilisateur...');
-      const validation = await UserService.checkCurrentUserValidity();
-      
-      if (validation.shouldLogout) {
-        console.log('⚠️ CODE INVALIDE DÉTECTÉ - Déconnexion immédiate');
-        setShowSessionExpired(true);
-        logout();
-      } else if (validation.valid && validation.user) {
-        console.log('✅ Code valide');
+      try {
+        const freshUser = await UserService.getUserByCode(user.code);
+        
+        if (!freshUser) {
+          console.log('⚠️ UTILISATEUR SUPPRIMÉ - Déconnexion');
+          setShowSessionExpired(true);
+          logout();
+        } else {
+          console.log('✅ Utilisateur valide');
+        }
+      } catch (error) {
+        console.error('❌ Erreur vérification:', error);
       }
     };
 
-    // Vérification immédiate au montage
     checkValidity();
-
-    // ✅ Vérification toutes les 2 secondes
-    const interval = setInterval(checkValidity, 2000);
+    const interval = setInterval(checkValidity, 5000);
 
     return () => {
       console.log('🛑 Arrêt vérification périodique');
       clearInterval(interval);
     };
   }, [isAuthenticated, user, logout]);
+  */
 
   const handleLogout = () => {
     console.log('🚪 Déconnexion manuelle');

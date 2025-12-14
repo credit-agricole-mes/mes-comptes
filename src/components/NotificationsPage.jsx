@@ -3,7 +3,7 @@ import { Bell, CheckCircle, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const NotificationsPage = () => {
-  const { user } = useAuth(); // ✅ CORRECTION: Utiliser user directement
+  const { user } = useAuth();
 
   if (!user) {
     return (
@@ -17,6 +17,13 @@ const NotificationsPage = () => {
     );
   }
 
+  // ✅ Vérifier si c'est un nouveau compte
+  const estNouveauCompte = user?.solde === 0 && (!user?.transactions || user.transactions.length === 0);
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
+
+  // ✅ CORRECTION : Ne pas afficher la notification pour nouveaux comptes bloqués
+  const afficherNotification = user.notification && (!estNouveauCompte || !isCompteBloque);
+
   return (
     <div className="p-4 sm:p-6">
       <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
@@ -27,11 +34,18 @@ const NotificationsPage = () => {
           <h2 className="text-2xl font-bold text-gray-800">Notifications</h2>
         </div>
 
-        {user.notification ? (
+        {afficherNotification ? (
           <div className="space-y-4">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg hover:bg-blue-100 transition">
+            {/* ✅ Couleur verte pour nouveaux inscrits NON bloqués */}
+            <div className={`border-l-4 p-4 rounded-lg transition ${
+              estNouveauCompte && !isCompteBloque
+                ? 'bg-green-50 border-green-500 hover:bg-green-100'
+                : 'bg-blue-50 border-blue-500 hover:bg-blue-100'
+            }`}>
               <div className="flex items-start gap-3">
-                <Info className="text-blue-600 mt-1" size={20} />
+                <Info className={`mt-1 ${
+                  estNouveauCompte && !isCompteBloque ? 'text-green-600' : 'text-blue-600'
+                }`} size={20} />
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900 mb-2">Notification importante</h3>
                   <p className="text-gray-700 leading-relaxed">
@@ -58,36 +72,39 @@ const NotificationsPage = () => {
           </div>
         )}
 
-        <div className="mt-8 pt-6 border-t">
-          <h3 className="font-semibold text-gray-700 mb-4">Notifications archivées</h3>
-          <div className="space-y-3">
-            <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="text-green-600 mt-1" size={20} />
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-700 mb-1">Virement effectué</h4>
-                  <p className="text-sm text-gray-600">
-                    Votre virement de 500€ vers le compte ****1234 a été traité avec succès.
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">Il y a 2 jours</p>
+        {/* ✅ CORRECTION : Ne pas afficher les notifications archivées pour les nouveaux comptes */}
+        {!estNouveauCompte && (
+          <div className="mt-8 pt-6 border-t">
+            <h3 className="font-semibold text-gray-700 mb-4">Notifications archivées</h3>
+            <div className="space-y-3">
+              <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="text-green-600 mt-1" size={20} />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-700 mb-1">Virement effectué</h4>
+                    <p className="text-sm text-gray-600">
+                      Votre virement de 500€ vers le compte ****1234 a été traité avec succès.
+                    </p>
+                    <p className="text-xs text-gray-400 mt-2">Il y a 2 jours</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
-              <div className="flex items-start gap-3">
-                <Info className="text-blue-600 mt-1" size={20} />
-                <div className="flex-1">
-                  <h4 className="font-medium text-gray-700 mb-1">Mise à jour de sécurité</h4>
-                  <p className="text-sm text-gray-600">
-                    Vos paramètres de sécurité ont été mis à jour avec succès.
-                  </p>
-                  <p className="text-xs text-gray-400 mt-2">Il y a 5 jours</p>
+              <div className="bg-gray-50 border-l-4 border-gray-300 p-4 rounded-lg opacity-60">
+                <div className="flex items-start gap-3">
+                  <Info className="text-blue-600 mt-1" size={20} />
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-700 mb-1">Mise à jour de sécurité</h4>
+                    <p className="text-sm text-gray-600">
+                      Vos paramètres de sécurité ont été mis à jour avec succès.
+                    </p>
+                    <p className="text-xs text-gray-400 mt-2">Il y a 5 jours</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

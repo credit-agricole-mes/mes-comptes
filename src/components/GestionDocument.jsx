@@ -45,6 +45,9 @@ const drawNotaryStamp = (doc, centerX, centerY, notaryInfo) => {
 const GestionDocument = () => {
   const { user } = useAuth();
 
+  // ✅ Vérifier si le compte est bloqué
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
+
   if (!user) {
     return (
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
@@ -219,15 +222,8 @@ const GestionDocument = () => {
     }
   };
 
+  // ✅ Liste des documents adaptée selon le statut
   const documents = [
-    {
-      icon: '📜',
-      titre: 'Acte de blocage de compte',
-      description: `Document notarié par ${notaireInfo.nom} - ${dateBlocage}`,
-      badge: 'Officiel',
-      action: genererDocumentNotaire,
-      badgeColor: 'bg-red-100 text-red-800'
-    },
     {
       icon: '✓',
       titre: 'Attestation de compte',
@@ -237,6 +233,18 @@ const GestionDocument = () => {
       badgeColor: 'bg-purple-100 text-purple-800'
     }
   ];
+
+  // ✅ Ajouter l'acte de blocage SEULEMENT si le compte est bloqué
+  if (isCompteBloque) {
+    documents.unshift({
+      icon: '📜',
+      titre: 'Acte de blocage de compte',
+      description: `Document notarié par ${notaireInfo.nom} - ${dateBlocage}`,
+      badge: 'Officiel',
+      action: genererDocumentNotaire,
+      badgeColor: 'bg-red-100 text-red-800'
+    });
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6">
@@ -249,6 +257,23 @@ const GestionDocument = () => {
           Notaire assigné : {notaireInfo.nom}
         </p>
       </div>
+
+      {/* ✅ Message adapté selon le statut */}
+      {isCompteBloque ? (
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+          <p className="text-red-800 font-semibold">⚠️ Compte bloqué</p>
+          <p className="text-red-700 text-sm mt-1">
+            Votre compte fait l'objet d'une mesure de blocage. Les documents officiels sont disponibles ci-dessous.
+          </p>
+        </div>
+      ) : (
+        <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg">
+          <p className="text-green-800 font-semibold">✅ Compte actif</p>
+          <p className="text-green-700 text-sm mt-1">
+            Vos documents administratifs sont disponibles au téléchargement.
+          </p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {documents.map((doc, index) => (

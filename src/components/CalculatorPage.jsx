@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Calculator, TrendingUp } from 'lucide-react';
-import { formatCurrency } from '../utils/currencyFormatter'; // ✅ Import ajouté
+import { formatCurrency } from '../utils/currencyFormatter';
 
-const CalculatorPage = ({ user }) => { // ✅ Ajout du prop user
+const CalculatorPage = ({ user }) => {
   const [montantInitial, setMontantInitial] = useState(1000);
   const [montantMensuel, setMontantMensuel] = useState(100);
   const [duree, setDuree] = useState(12);
   const [tauxInteret, setTauxInteret] = useState(2.5);
+
+  // ✅ Vérifier si le compte est vraiment bloqué
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
 
   const calculerEpargne = () => {
     const totalVerse = montantInitial + (montantMensuel * duree);
@@ -27,12 +30,13 @@ const CalculatorPage = ({ user }) => { // ✅ Ajout du prop user
   return (
     <div className="min-h-screen from-blue-50 to-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
+        {/* ✅ MESSAGE ADAPTÉ SELON LE STATUT DU COMPTE */}
         <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg">
           <p className="text-green-800 font-semibold text-lg">
             ✅ Outil de simulation disponible
           </p>
           <p className="text-green-700 text-sm mt-2">
-            Le calculateur d'épargne est un simple outil de calcul. Aucune action ne sera effectuée sur votre compte. Vous pouvez l'utiliser librement pour planifier vos projets.
+            Le calculateur d'épargne est un simple outil de calcul. Aucune action ne sera effectuée sur votre compte. Vous pouvez l'utiliser librement pour planifier vos projets d'épargne.
           </p>
         </div>
 
@@ -166,15 +170,26 @@ const CalculatorPage = ({ user }) => { // ✅ Ajout du prop user
             </div>
           </div>
 
-          <div className="mt-6 bg-yellow-50 border-2 border-yellow-300 rounded-lg p-4">
-            <p className="text-yellow-800 text-sm">
-              <strong>⚠️ Simulation uniquement</strong> - Cet outil vous aide à planifier vos projets d'épargne. Pour mettre en place une épargne automatique, vous devrez d'abord débloquer votre compte.
-            </p>
-          </div>
+          {/* ✅ MESSAGE ADAPTÉ SELON LE STATUT DU COMPTE */}
+          {isCompteBloque && (
+            <div className="mt-6 bg-orange-50 border-2 border-orange-300 rounded-lg p-4">
+              <p className="text-orange-800 text-sm">
+                <strong>⚠️ Compte temporairement bloqué</strong> - Cet outil vous aide à planifier vos projets d'épargne. Pour mettre en place une épargne automatique, vous devrez attendre le déblocage de votre compte.
+              </p>
+            </div>
+          )}
 
-          <div className="mt-4 bg-blue-50 border border-blue-300 rounded-lg p-4">
-            <p className="text-blue-800 text-xs sm:text-sm">
-              <strong>💡 Astuce :</strong> Ce calculateur reste accessible même avec un compte bloqué car il ne réalise aucune opération bancaire. Il s'agit uniquement d'un outil de planification.
+          {!isCompteBloque && (
+            <div className="mt-6 bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+              <p className="text-blue-800 text-sm">
+                <strong>💡 Planifiez votre avenir</strong> - Utilisez ce calculateur pour visualiser vos objectifs d'épargne. Une fois prêt, vous pourrez mettre en place une épargne automatique directement depuis votre compte.
+              </p>
+            </div>
+          )}
+
+          <div className="mt-4 bg-green-50 border border-green-300 rounded-lg p-4">
+            <p className="text-green-800 text-xs sm:text-sm">
+              <strong>✅ Toujours accessible :</strong> Ce calculateur est un outil de planification gratuit qui ne réalise aucune opération bancaire. Utilisez-le autant de fois que nécessaire pour préparer vos projets.
             </p>
           </div>
         </div>

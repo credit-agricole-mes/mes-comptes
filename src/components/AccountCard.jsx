@@ -1,13 +1,30 @@
 import { X, Menu, Bell, Info } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatCurrency } from "../utils/currencyFormatter"; // ✅ Import corrigé
+import { formatCurrency } from "../utils/currencyFormatter";
 
 export default function AccountCard({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showBanner, setShowBanner] = useState(true);
   const [notificationRead, setNotificationRead] = useState(false);
   const navigate = useNavigate();
+
+  // ✅ VÉRIFIER SI LE COMPTE EST VRAIMENT BLOQUÉ
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
+  const estNouveauCompte = user?.solde === 0 && (!user?.transactions || user.transactions.length === 0);
+
+  // ✅ CORRECTION : Pour comptes bloqués = toujours afficher, pour autres = vérifier localStorage
+  const [showBanner, setShowBanner] = useState(() => {
+    if (!user?.notification) return false;
+    
+    // Si compte bloqué, toujours afficher (pas de localStorage)
+    if (isCompteBloque) return true;
+    
+    // Sinon, vérifier si déjà fermé
+    const key = `notificationClosed_${user?.email || user?.nom}`;
+    return localStorage.getItem(key) !== 'true';
+  });
+
+
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -23,6 +40,20 @@ export default function AccountCard({ user, onLogout }) {
     setMenuOpen(false);
     if (onLogout) onLogout();
   };
+
+  // ✅ Fermer la bannière notification et sauvegarder (sauf si compte bloqué)
+  const handleCloseBanner = () => {
+    setShowBanner(false);
+    setNotificationRead(true);
+    
+    // NE PAS sauvegarder pour les comptes bloqués (doit revenir à chaque fois)
+    if (!isCompteBloque) {
+      const key = `notificationClosed_${user?.email || user?.nom}`;
+      localStorage.setItem(key, 'true');
+    }
+  };
+
+
 
   // ✅ Formater le solde avec la devise de l'utilisateur
   const soldeFormate = user?.solde !== undefined && user?.solde !== null
@@ -42,9 +73,10 @@ export default function AccountCard({ user, onLogout }) {
           </div>
 
           <div className="flex items-center gap-6">
-            {user?.notification && (
+            {/* ✅ Notification MOBILE uniquement - PAS pour les comptes bloqués si nouveau compte */}
+            {user?.notification && !(isCompteBloque && estNouveauCompte) && (
               <button 
-                className="relative cursor-pointer hover:opacity-80 transition"
+                className="md:hidden relative cursor-pointer hover:opacity-80 transition"
                 onClick={handleNotificationClick}
               >
                 <Bell className="text-white w-6 h-6" />
@@ -62,6 +94,21 @@ export default function AccountCard({ user, onLogout }) {
             >
               {menuOpen ? <X size={32} /> : <Menu size={32} />}
             </button>
+
+            {/* ✅ Notification DESKTOP uniquement - PAS pour les comptes bloqués si nouveau compte */}
+            {user?.notification && !(isCompteBloque && estNouveauCompte) && (
+              <button 
+                className="hidden md:block relative cursor-pointer hover:opacity-80 transition"
+                onClick={handleNotificationClick}
+              >
+                <Bell className="text-white w-6 h-6" />
+                {!notificationRead && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    1
+                  </span>
+                )}
+              </button>
+            )}
 
             <button 
               onClick={handleLogout}
@@ -111,11 +158,27 @@ export default function AccountCard({ user, onLogout }) {
                   <button onClick={() => handleNavigate('/transactions')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📊 Mes transactions
                   </button>
-                  <button className="w-full text-left px-4 py-3 rounded-lg text-gray-400 cursor-not-allowed">
-                    💸 Virements <span className="text-xs">(bloqué)</span>
+                  <button 
+                    onClick={isCompteBloque ? undefined : () => handleNavigate('/virements')}
+                    className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
+                      isCompteBloque 
+                        ? 'text-gray-400 cursor-not-allowed' 
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    disabled={isCompteBloque}
+                  >
+                    💸 Virements {isCompteBloque && <span className="text-xs">(bloqué)</span>}
                   </button>
-                  <button className="w-full text-left px-4 py-3 rounded-lg text-gray-400 cursor-not-allowed">
-                    💰 Dépôts <span className="text-xs">(bloqué)</span>
+                  <button 
+                    onClick={isCompteBloque ? undefined : () => handleNavigate('/depots')}
+                    className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
+                      isCompteBloque 
+                        ? 'text-gray-400 cursor-not-allowed' 
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                    disabled={isCompteBloque}
+                  >
+                    💰 Dépôts {isCompteBloque && <span className="text-xs">(bloqué)</span>}
                   </button>
                   <button onClick={() => handleNavigate('/overdraft')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📈 Mes découverts
@@ -168,7 +231,8 @@ export default function AccountCard({ user, onLogout }) {
 
       <div className="-mt-20 px-4 z-60 relative">
         <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-2xl mx-auto relative">
-          {user?.notification && showBanner && (
+          {/* ✅ Bannière notification - PAS pour les comptes bloqués si nouveau compte */}
+          {user?.notification && showBanner && !(isCompteBloque && estNouveauCompte) && (
             <div className="mb-6 bg-blue-50 border-2 border-blue-200 text-blue-800 rounded-lg p-4 flex items-start gap-3">
               <div className="mt-0.5">
                 <Info className="w-5 h-5" />
@@ -177,10 +241,7 @@ export default function AccountCard({ user, onLogout }) {
                 <p className="text-sm">{user.notification}</p>
               </div>
               <button
-                onClick={() => {
-                  setShowBanner(false);
-                  setNotificationRead(true);
-                }}
+                onClick={handleCloseBanner}
                 className="hover:opacity-70 transition"
               >
                 <X className="w-4 h-4" />
@@ -199,16 +260,22 @@ export default function AccountCard({ user, onLogout }) {
             {soldeFormate}
           </div>
 
-          <div className="text-red-600 text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
-            Compte temporairement bloqué !
-          </div>
+          {/* ✅ AFFICHER LE MESSAGE DE BLOCAGE UNIQUEMENT SI LE COMPTE EST VRAIMENT BLOQUÉ */}
+          {isCompteBloque && (
+            <div className="text-red-600 text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
+              ⛔ Compte temporairement bloqué !
+            </div>
+          )}
 
+
+
+          {/* ✅ BOUTON ASSISTANT TOUJOURS VISIBLE */}
           <div className="flex justify-center">
             <button 
               onClick={() => handleNavigate('/assistant')}
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 sm:py-4 px-8 sm:px-12 rounded-xl text-lg sm:text-xl shadow-lg transition"
             >
-              Assistant virtuel
+              🤖 Assistant virtuel
             </button>
           </div>
         </div>

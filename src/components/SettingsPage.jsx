@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { Shield, Bell, Palette, Lock, Smartphone, Mail, Globe, Moon, Sun, ChevronDown, ChevronUp } from 'lucide-react';
-import { useAuth } from '../context/AuthContext'; // ✅ Import ajouté
-import CurrencySelector from './CurrencySelector'; // ✅ Import ajouté
+import { useAuth } from '../context/AuthContext';
+import CurrencySelector from './CurrencySelector';
 
 const SettingsPage = () => {
-  const { user, updateUser } = useAuth(); // ✅ Récupération user et updateUser
+  const { user, updateUser } = useAuth();
   const [expandedSection, setExpandedSection] = useState(null);
   
+  // ✅ Vérifier si le compte est bloqué
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
+  
   const [settings, setSettings] = useState({
-    // Sécurité
     twoFactorAuth: false,
     biometricAuth: true,
-    
-    // Préférences
     language: 'fr',
     theme: 'light',
-    
-    // Notifications
     emailNotif: true,
     smsNotif: false,
     pushNotif: true,
@@ -35,19 +33,16 @@ const SettingsPage = () => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  // ✅ Fonction pour changer la devise
   const handleCurrencyChange = async (newCurrency, newSymbol) => {
     try {
       console.log('🔄 Changement de devise:', newCurrency, newSymbol);
       
-      // 1. Mettre à jour l'utilisateur local
       const updatedUser = {
         ...user,
         devise: newCurrency,
         symboleDevise: newSymbol
       };
       
-      // 2. Mettre à jour dans le storage (bankUsers)
       const result = await window.storage.get('bankUsers');
       if (result) {
         const users = JSON.parse(result.value);
@@ -61,7 +56,6 @@ const SettingsPage = () => {
         }
       }
       
-      // 3. Mettre à jour le contexte auth
       updateUser(updatedUser);
       console.log('✅ Devise changée avec succès !');
       
@@ -75,17 +69,19 @@ const SettingsPage = () => {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">⚙️ Paramètres</h1>
 
-        {/* Alerte compte bloqué */}
-        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
-          <p className="text-red-800 font-semibold">
-            🔒 Compte bloqué
-          </p>
-          <p className="text-red-700 text-sm mt-1">
-            Certaines fonctionnalités sont limitées. Débloquez votre compte pour accéder à toutes les options.
-          </p>
-        </div>
+        {/* ✅ Alerte UNIQUEMENT si compte bloqué */}
+        {isCompteBloque && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+            <p className="text-red-800 font-semibold">
+              🔒 Compte bloqué
+            </p>
+            <p className="text-red-700 text-sm mt-1">
+              Certaines fonctionnalités sont limitées. Débloquez votre compte pour accéder à toutes les options.
+            </p>
+          </div>
+        )}
 
-        {/* ✅ NOUVEAU : Sélecteur de devise */}
+        {/* Sélecteur de devise */}
         <div className="mb-6">
           <CurrencySelector 
             currentCurrency={user?.devise || 'EUR'}
@@ -129,42 +125,52 @@ const SettingsPage = () => {
                 </div>
               </div>
 
-              {/* Code PIN - Bloqué */}
-              <div className="border-b pb-4 opacity-50">
+              {/* Code PIN - Bloqué SEULEMENT si compte bloqué */}
+              <div className={`border-b pb-4 ${isCompteBloque ? 'opacity-50' : ''}`}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center">
                     <Smartphone className="mr-3 text-gray-600" size={20} />
                     <div>
                       <p className="font-semibold text-gray-800">Code PIN</p>
                       <p className="text-sm text-gray-500">Code à 4 chiffres pour l'application</p>
-                      <p className="text-xs text-red-600 mt-1">🔒 Débloquez votre compte pour activer</p>
+                      {isCompteBloque && <p className="text-xs text-red-600 mt-1">🔒 Débloquez votre compte pour activer</p>}
                     </div>
                   </div>
-                  <button disabled className="px-4 py-2 bg-gray-200 text-gray-500 rounded-lg cursor-not-allowed text-sm font-semibold">
+                  <button 
+                    disabled={isCompteBloque}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold ${
+                      isCompteBloque 
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                    }`}
+                  >
                     Configurer
                   </button>
                 </div>
               </div>
 
-              {/* Authentification à deux facteurs - Bloqué */}
-              <div className="border-b pb-4 opacity-50">
+              {/* Authentification à deux facteurs */}
+              <div className={`border-b pb-4 ${isCompteBloque ? 'opacity-50' : ''}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center flex-1">
                     <Shield className="mr-3 text-gray-600" size={20} />
                     <div>
                       <p className="font-semibold text-gray-800">Authentification à deux facteurs (2FA)</p>
                       <p className="text-sm text-gray-500">Sécurité renforcée pour vos connexions</p>
-                      <p className="text-xs text-red-600 mt-1">🔒 Débloquez votre compte pour activer</p>
+                      {isCompteBloque && <p className="text-xs text-red-600 mt-1">🔒 Débloquez votre compte pour activer</p>}
                     </div>
                   </div>
-                  <label className="relative inline-flex items-center cursor-not-allowed ml-4">
+                  <label className={`relative inline-flex items-center ml-4 ${isCompteBloque ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
                     <input
                       type="checkbox"
                       checked={settings.twoFactorAuth}
-                      disabled
+                      disabled={isCompteBloque}
+                      onChange={() => !isCompteBloque && toggleSetting('twoFactorAuth')}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                    <div className={`w-11 h-6 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all ${
+                      isCompteBloque ? 'bg-gray-300' : 'bg-gray-300 peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500'
+                    }`}></div>
                   </label>
                 </div>
               </div>
@@ -387,7 +393,7 @@ const SettingsPage = () => {
                 )}
               </div>
 
-              {/* Bouton de sauvegarde dans les notifications */}
+              {/* Bouton de sauvegarde */}
               <div className="pt-2">
                 <button className="w-full px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">
                   💾 Sauvegarder les modifications

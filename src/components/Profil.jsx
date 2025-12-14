@@ -2,6 +2,9 @@
 import React from 'react';
 
 const Profil = ({ user }) => {
+  // ✅ Vérifier si le compte est bloqué
+  const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
+
   // Chaque utilisateur a son conseiller assigné
   const conseiller = user.conseiller || {
     nom: 'Non assigné',
@@ -13,11 +16,18 @@ const Profil = ({ user }) => {
     <div className="max-w-4xl mx-auto p-4 sm:p-6">
       <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Mon Profil</h2>
       
-      {/* Bannière info */}
-      <div className="bg-green-300 border-l-4 border-green-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg flex flex-col sm:flex-row items-start">
-        <span className="text-xl sm:text-2xl mb-2 sm:mb-0 sm:mr-3">ℹ️</span>
-        <p className="text-blue-800 text-sm sm:text-base">Vos informations sont en lecture seule. Contactez votre conseiller pour toute modification.</p>
-      </div>
+      {/* Bannière info - adaptée selon le statut */}
+      {isCompteBloque ? (
+        <div className="bg-red-50 border-l-4 border-red-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg flex flex-col sm:flex-row items-start">
+          <span className="text-xl sm:text-2xl mb-2 sm:mb-0 sm:mr-3">⚠️</span>
+          <p className="text-red-800 text-sm sm:text-base">Vos informations sont en lecture seule. Contactez votre conseiller pour toute modification.</p>
+        </div>
+      ) : (
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-3 sm:p-4 mb-4 sm:mb-6 rounded-lg flex flex-col sm:flex-row items-start">
+          <span className="text-xl sm:text-2xl mb-2 sm:mb-0 sm:mr-3">ℹ️</span>
+          <p className="text-blue-800 text-sm sm:text-base">Vos informations sont en lecture seule. Contactez votre conseiller pour toute modification.</p>
+        </div>
+      )}
       
       {/* Carte profil */}
       <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
@@ -30,9 +40,9 @@ const Profil = ({ user }) => {
                 type="text" 
                 value={user.nom || 'Non renseigné'} 
                 disabled 
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base"
+                className={`w-full px-4 py-3 ${isCompteBloque ? 'pr-12' : ''} border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base`}
               />
-              <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>
+              {isCompteBloque && <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>}
             </div>
           </div>
           <div className="relative">
@@ -42,9 +52,9 @@ const Profil = ({ user }) => {
                 type="email" 
                 value={user.email || 'Non renseigné'} 
                 disabled 
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base"
+                className={`w-full px-4 py-3 ${isCompteBloque ? 'pr-12' : ''} border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base`}
               />
-              <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>
+              {isCompteBloque && <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>}
             </div>
           </div>
           <div className="relative">
@@ -54,9 +64,9 @@ const Profil = ({ user }) => {
                 type="tel" 
                 value={user.telephone || 'Non renseigné'} 
                 disabled 
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base"
+                className={`w-full px-4 py-3 ${isCompteBloque ? 'pr-12' : ''} border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base`}
               />
-              <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>
+              {isCompteBloque && <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>}
             </div>
           </div>
           <div className="relative">
@@ -66,9 +76,9 @@ const Profil = ({ user }) => {
                 value={user.adresse || 'Non renseignée'} 
                 disabled 
                 rows="3"
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base"
+                className={`w-full px-4 py-3 ${isCompteBloque ? 'pr-12' : ''} border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed text-sm sm:text-base`}
               />
-              <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>
+              {isCompteBloque && <span className="absolute right-3 top-3 text-lg sm:text-xl">🔒</span>}
             </div>
           </div>
         </div>

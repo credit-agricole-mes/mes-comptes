@@ -9,6 +9,7 @@ export default function LoginPage({ onLogin }) {
   const [error, setError] = useState("");
   const [showPasswordPage, setShowPasswordPage] = useState(false);
   const [showSignupForm, setShowSignupForm] = useState(false);
+  const [showNumericKeyboard, setShowNumericKeyboard] = useState(false);
   
   // États pour le formulaire d'inscription
   const [signupData, setSignupData] = useState({
@@ -25,6 +26,7 @@ export default function LoginPage({ onLogin }) {
   });
   const [signupError, setSignupError] = useState("");
   const [signupSuccess, setSignupSuccess] = useState("");
+  const [newUserIdentifiant, setNewUserIdentifiant] = useState("");
 
   const handleIdentifiantSubmit = async () => {
     setError("");
@@ -39,7 +41,6 @@ export default function LoginPage({ onLogin }) {
       return;
     }
 
-    // Vérifier si l'identifiant existe
     const result = await UserService.loginUser(identifiant);
     
     if (!result.success) {
@@ -48,8 +49,8 @@ export default function LoginPage({ onLogin }) {
     }
 
     console.log('✅ Identifiant validé:', identifiant);
-    // Passer à la page du mot de passe
     setShowPasswordPage(true);
+    setShowNumericKeyboard(false);
   };
 
   const handlePasswordSubmit = async () => {
@@ -60,30 +61,22 @@ export default function LoginPage({ onLogin }) {
       return;
     }
 
-    if (motDePasse.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères");
+    if (motDePasse.length !== 6) {
+      setError("Le mot de passe doit contenir exactement 6 chiffres");
       return;
     }
 
-    console.log('🔐 Vérification connexion avec:', identifiant);
+    console.log('🔐 Vérification connexion avec:', identifiant, 'mot de passe:', motDePasse);
 
-    // Récupérer l'utilisateur
-    const result = await UserService.loginUser(identifiant);
+    // Utilisez la NOUVELLE fonction verifyLogin qui vérifie les deux
+    const result = await UserService.verifyLogin(identifiant, motDePasse);
     
     if (!result.success) {
-      setError("Erreur de connexion");
+      setError(result.message || "Erreur de connexion");
       return;
     }
 
     const userData = result.user;
-
-    // Vérifier le mot de passe
-    // Si l'utilisateur n'a pas de mot de passe enregistré, on accepte n'importe quel mot de passe de 6+ caractères
-    // Sinon, on vérifie que ça correspond
-    if (userData.motDePasse && userData.motDePasse !== motDePasse) {
-      setError("Mot de passe incorrect");
-      return;
-    }
 
     console.log('✅ Données utilisateur reçues:', userData);
     console.log('💰 Solde reçu:', userData.solde);
@@ -97,29 +90,41 @@ export default function LoginPage({ onLogin }) {
     console.log('✅ Connexion terminée');
   };
 
-  const handleKeyPressIdentifiant = (e) => {
-    if (e.key === 'Enter') {
-      handleIdentifiantSubmit();
-    }
-  };
-
-  const handleKeyPressPassword = (e) => {
-    if (e.key === 'Enter') {
-      handlePasswordSubmit();
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '');
-    if (value.length <= 11) {
-      setIdentifiant(value);
-    }
-  };
-
   const handleBackToIdentifiant = () => {
     setShowPasswordPage(false);
     setMotDePasse("");
     setError("");
+    setShowNumericKeyboard(false);
+  };
+
+  // Fonctions du clavier numérique pour l'identifiant
+  const handleIdentifiantKeyPress = (num) => {
+    if (identifiant.length < 11) {
+      setIdentifiant(prev => prev + num);
+    }
+  };
+
+  const handleIdentifiantBackspace = () => {
+    setIdentifiant(prev => prev.slice(0, -1));
+  };
+
+  const handleClearIdentifiant = () => {
+    setIdentifiant("");
+  };
+
+  // Fonctions du clavier numérique pour le mot de passe
+  const handlePasswordKeyPress = (num) => {
+    if (motDePasse.length < 6) {
+      setMotDePasse(prev => prev + num);
+    }
+  };
+
+  const handlePasswordBackspace = () => {
+    setMotDePasse(prev => prev.slice(0, -1));
+  };
+
+  const handleClearPassword = () => {
+    setMotDePasse("");
   };
 
   const handleSignupInputChange = (e) => {
@@ -134,7 +139,6 @@ export default function LoginPage({ onLogin }) {
     setSignupError("");
     setSignupSuccess("");
 
-    // Validation des champs
     if (!signupData.nom || !signupData.prenom || !signupData.dateNaissance || 
         !signupData.telephone || !signupData.email || !signupData.motDePasse || 
         !signupData.confirmMotDePasse) {
@@ -142,22 +146,27 @@ export default function LoginPage({ onLogin }) {
       return;
     }
 
-    // Validation email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(signupData.email)) {
       setSignupError("Veuillez saisir une adresse email valide");
       return;
     }
 
-    // Validation téléphone (10 chiffres)
-    if (signupData.telephone.replace(/\D/g, '').length !== 10) {
-      setSignupError("Le numéro de téléphone doit contenir 10 chiffres");
+    const phoneDigits = signupData.telephone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      setSignupError("Le numéro de téléphone doit contenir au moins 10 chiffres");
       return;
     }
 
-    // Validation mot de passe
     if (signupData.motDePasse.length < 6) {
       setSignupError("Le mot de passe doit contenir au moins 6 caractères");
+      return;
+    }
+
+    // Vérifier que le mot de passe ne contient que des chiffres
+    const passwordRegex = /^\d+$/;
+    if (!passwordRegex.test(signupData.motDePasse)) {
+      setSignupError("Le mot de passe doit contenir uniquement des chiffres");
       return;
     }
 
@@ -167,40 +176,170 @@ export default function LoginPage({ onLogin }) {
     }
 
     try {
-      console.log('📝 Données d\'inscription:', signupData);
+      console.log('📝 Création du compte...');
       
-      // Simulation de succès
-      setSignupSuccess("Votre demande a été enregistrée avec succès ! Un conseiller vous contactera sous 48h pour finaliser l'ouverture de votre compte.");
+      let newIdentifiant;
+      let identifiantExists = true;
       
-      // Réinitialiser le formulaire après 3 secondes
-      setTimeout(() => {
-        setShowSignupForm(false);
-        setSignupData({
-          nom: "",
-          prenom: "",
-          dateNaissance: "",
-          telephone: "",
-          email: "",
-          adresse: "",
-          ville: "",
-          codePostal: "",
-          motDePasse: "",
-          confirmMotDePasse: ""
-        });
-        setSignupSuccess("");
-      }, 3000);
+      while (identifiantExists) {
+        newIdentifiant = Math.floor(10000000000 + Math.random() * 90000000000).toString();
+        const existingUser = await UserService.getUserByCode(newIdentifiant);
+        identifiantExists = existingUser !== null;
+      }
+      
+      const today = new Date();
+      const dateFormatted = today.toLocaleDateString('fr-FR');
+      
+      const newUser = {
+        code: newIdentifiant,
+        motDePasse: signupData.motDePasse, // Déjà en string (chiffres uniquement)
+        nom: `${signupData.prenom} ${signupData.nom}`,
+        email: signupData.email,
+        telephone: signupData.telephone,
+        adresse: signupData.adresse ? `${signupData.adresse}, ${signupData.codePostal} ${signupData.ville}` : "",
+        solde: 0,
+        devise: "EUR",
+        symboleDevise: "€",
+        numeroCompte: `FR76 ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(100 + Math.random() * 900)}`,
+        iban: `FR76 ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(1000 + Math.random() * 9000)} ${Math.floor(100 + Math.random() * 900)}`,
+        bic: "BNPAFRPPXXX",
+        agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+        dateOuverture: dateFormatted,
+        dateBlocage: "",
+        dateAttestation: dateFormatted,
+        notification: " Bienvenue ! Votre compte a été créé avec succès Vous pouvez maintenant profiter de tous nos services bancaires ",
+        transactions: [],
+        relevesMensuels: [],
+        virements: [],
+        depots: [],
+        decouvert: [],
+        conseiller: {
+          nom: 'Marie Martin',
+          telephone: '+33 6 23 45 67 89',
+          email: 'marie.martin@banque.fr',
+        },
+        notaire: {
+          nom: "MAÎTRE SOPHIE BERNARD",
+          prenom: "Sophie",
+          titre: "NOTAIRE",
+          adresse: "45 Avenue Montaigne",
+          ville: "75008 PARIS",
+          telephone: "+33 6 42 89 33 44",
+          email: "sophie.bernard@notaire-paris.fr"
+        }
+      };
+
+      const users = UserService.getAllUsers ? UserService.getAllUsers() : 
+                    (localStorage.getItem('bankUsers') ? JSON.parse(localStorage.getItem('bankUsers')) : []);
+      
+      users.push(newUser);
+      localStorage.setItem('bankUsers', JSON.stringify(users));
+      
+      console.log('✅ Compte créé avec succès:', newIdentifiant);
+      
+      setNewUserIdentifiant(newIdentifiant);
+      setSignupSuccess(`✅ Votre compte a été créé avec succès !
+
+📋 Votre identifiant de connexion : ${newIdentifiant}
+
+⚠️ IMPORTANT : Notez bien cet identifiant, vous en aurez besoin pour vous connecter !
+
+Votre mot de passe : ${signupData.motDePasse}
+
+Vous pouvez maintenant vous connecter avec cet identifiant et le mot de passe que vous avez choisi.`);
       
     } catch (error) {
-      setSignupError("Une erreur s'est produite. Veuillez réessayer.");
+      setSignupError("Une erreur s'est produite lors de la création du compte. Veuillez réessayer.");
       console.error('Erreur inscription:', error);
     }
+  };
+
+  const handleBackToLogin = () => {
+    setShowSignupForm(false);
+    setSignupData({
+      nom: "",
+      prenom: "",
+      dateNaissance: "",
+      telephone: "",
+      email: "",
+      adresse: "",
+      ville: "",
+      codePostal: "",
+      motDePasse: "",
+      confirmMotDePasse: ""
+    });
+    setSignupSuccess("");
+    setSignupError("");
+    setNewUserIdentifiant("");
+  };
+
+  // Composant du clavier numérique
+  const NumericKeyboard = ({ onKeyPress, onBackspace, onClear }) => {
+    const keys = [
+      ['1', '2', '3'],
+      ['4', '5', '6'],
+      ['7', '8', '9'],
+      ['', '0', '⌫']
+    ];
+
+    return (
+      <div className="mt-6 bg-white rounded-xl p-6">
+        <div className="grid grid-cols-3 gap-8">
+          {keys.map((row, rowIndex) => (
+            row.map((key, keyIndex) => {
+              if (key === '') {
+                return <div key={`${rowIndex}-${keyIndex}`} className="h-16"></div>;
+              }
+              return (
+                <button
+                  key={`${rowIndex}-${keyIndex}`}
+                  onClick={() => {
+                    if (key === '⌫') {
+                      onBackspace();
+                    } else {
+                      onKeyPress(key);
+                    }
+                  }}
+                  className="h-16 font-bold text-4xl text-gray-900 hover:text-green-600 active:scale-90 transition-all duration-150 cursor-pointer"
+                >
+                  {key}
+                </button>
+              );
+            })
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Composant pour afficher les 6 carrés du mot de passe
+  const PasswordBoxes = () => {
+    const boxes = Array(6).fill(null);
+    
+    return (
+      <div className="flex justify-center gap-3 mb-4">
+        {boxes.map((_, index) => (
+          <div
+            key={index}
+            className={`
+              w-14 h-16 border-3 rounded-lg flex items-center justify-center text-2xl font-bold
+              ${motDePasse.length > index 
+                ? 'border-green-600 bg-green-50' 
+                : 'border-gray-300 bg-white'}
+              transition-all duration-200
+            `}
+          >
+            {motDePasse[index] ? '●' : ''}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   // Affichage du formulaire d'inscription
   if (showSignupForm) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
-        {/* Header avec logo */}
         <div className="bg-white py-6 px-4 text-center border-b">
           <div className="flex justify-center mb-2">
             <img 
@@ -211,15 +350,16 @@ export default function LoginPage({ onLogin }) {
           </div>
         </div>
 
-        {/* Formulaire d'inscription */}
         <div className="flex-1 px-6 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto">
-            <button
-              onClick={() => setShowSignupForm(false)}
-              className="text-green-700 mb-4 flex items-center gap-2 hover:underline"
-            >
-              ← Retour à la connexion
-            </button>
+            {!signupSuccess && (
+              <button
+                onClick={handleBackToLogin}
+                className="text-green-700 mb-4 flex items-center gap-2 hover:underline"
+              >
+                ← Retour à la connexion
+              </button>
+            )}
 
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Devenir client
@@ -235,172 +375,184 @@ export default function LoginPage({ onLogin }) {
             )}
 
             {signupSuccess && (
-              <div className="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded-lg mb-6 text-sm">
-                {signupSuccess}
+              <div className="bg-green-50 border-2 border-green-400 text-green-800 px-6 py-4 rounded-lg mb-6">
+                <div className="whitespace-pre-line text-sm leading-relaxed">
+                  {signupSuccess}
+                </div>
+                <div className="mt-6 space-y-3">
+                  <button
+                    onClick={handleBackToLogin}
+                    className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition"
+                  >
+                    Se connecter maintenant
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(newUserIdentifiant);
+                      alert('Identifiant copié dans le presse-papiers !');
+                    }}
+                    className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                  >
+                    📋 Copier l'identifiant
+                  </button>
+                </div>
               </div>
             )}
 
-            <div className="space-y-5">
-              {/* Nom */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Nom <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="nom"
-                  value={signupData.nom}
-                  onChange={handleSignupInputChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Prénom */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Prénom <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="prenom"
-                  value={signupData.prenom}
-                  onChange={handleSignupInputChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Date de naissance */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Date de naissance <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="date"
-                  name="dateNaissance"
-                  value={signupData.dateNaissance}
-                  onChange={handleSignupInputChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Téléphone */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Téléphone <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="tel"
-                  name="telephone"
-                  value={signupData.telephone}
-                  onChange={handleSignupInputChange}
-                  placeholder="0612345678"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Email <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={signupData.email}
-                  onChange={handleSignupInputChange}
-                  placeholder="exemple@email.com"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Mot de passe */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Mot de passe <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="password"
-                  name="motDePasse"
-                  value={signupData.motDePasse}
-                  onChange={handleSignupInputChange}
-                  placeholder="Minimum 6 caractères"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Confirmation mot de passe */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Confirmer le mot de passe <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="password"
-                  name="confirmMotDePasse"
-                  value={signupData.confirmMotDePasse}
-                  onChange={handleSignupInputChange}
-                  placeholder="Retapez votre mot de passe"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Adresse */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                  Adresse
-                </label>
-                <input
-                  type="text"
-                  name="adresse"
-                  value={signupData.adresse}
-                  onChange={handleSignupInputChange}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
-                />
-              </div>
-
-              {/* Ville et Code postal */}
-              <div className="grid grid-cols-2 gap-4">
+            {!signupSuccess && (
+              <div className="space-y-5">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-sm">
-                    Ville
+                    Nom <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
-                    name="ville"
-                    value={signupData.ville}
+                    name="nom"
+                    value={signupData.nom}
                     onChange={handleSignupInputChange}
                     className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
                   />
                 </div>
+
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-sm">
-                    Code postal
+                    Prénom <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
-                    name="codePostal"
-                    value={signupData.codePostal}
+                    name="prenom"
+                    value={signupData.prenom}
                     onChange={handleSignupInputChange}
                     className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
                   />
                 </div>
-              </div>
 
-              {/* Boutons */}
-              <div className="pt-4 space-y-3">
-                <button
-                  onClick={handleSignupSubmit}
-                  className="w-full bg-green-700 text-white py-4 rounded-lg font-semibold text-base hover:bg-green-800 transition duration-200 uppercase tracking-wide"
-                >
-                  Soumettre ma demande
-                </button>
-                <button
-                  onClick={() => setShowSignupForm(false)}
-                  className="w-full bg-gray-200 text-gray-700 py-4 rounded-lg font-semibold text-base hover:bg-gray-300 transition duration-200"
-                >
-                  Annuler
-                </button>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Date de naissance <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="dateNaissance"
+                    value={signupData.dateNaissance}
+                    onChange={handleSignupInputChange}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Téléphone <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    name="telephone"
+                    value={signupData.telephone}
+                    onChange={handleSignupInputChange}
+                    placeholder="0612345678"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Email <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={signupData.email}
+                    onChange={handleSignupInputChange}
+                    placeholder="exemple@email.com"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Mot de passe (6 chiffres) <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="motDePasse"
+                    value={signupData.motDePasse}
+                    onChange={handleSignupInputChange}
+                    placeholder="Exemple : 123456"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Uniquement des chiffres (6 chiffres)</p>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Confirmer le mot de passe <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmMotDePasse"
+                    value={signupData.confirmMotDePasse}
+                    onChange={handleSignupInputChange}
+                    placeholder="Retapez votre mot de passe"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Adresse
+                  </label>
+                  <input
+                    type="text"
+                    name="adresse"
+                    value={signupData.adresse}
+                    onChange={handleSignupInputChange}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2 text-sm">
+                      Ville
+                    </label>
+                    <input
+                      type="text"
+                      name="ville"
+                      value={signupData.ville}
+                      onChange={handleSignupInputChange}
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2 text-sm">
+                      Code postal
+                    </label>
+                    <input
+                      type="text"
+                      name="codePostal"
+                      value={signupData.codePostal}
+                      onChange={handleSignupInputChange}
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 space-y-3">
+                  <button
+                    onClick={handleSignupSubmit}
+                    className="w-full bg-green-700 text-white py-4 rounded-lg font-semibold text-base hover:bg-green-800 transition duration-200 uppercase tracking-wide"
+                  >
+                    Créer mon compte
+                  </button>
+                  <button
+                    onClick={handleBackToLogin}
+                    className="w-full bg-gray-200 text-gray-700 py-4 rounded-lg font-semibold text-base hover:bg-gray-300 transition duration-200"
+                  >
+                    Annuler
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -411,7 +563,6 @@ export default function LoginPage({ onLogin }) {
   if (showPasswordPage) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
-        {/* Header avec logo */}
         <div className="bg-white py-6 px-4 text-center border-b">
           <div className="flex justify-center mb-2">
             <img 
@@ -422,8 +573,7 @@ export default function LoginPage({ onLogin }) {
           </div>
         </div>
 
-        {/* Contenu principal - Mot de passe */}
-        <div className="flex-1 px-6 py-8">
+        <div className="flex-1 px-6 py-8 overflow-y-auto">
           <div className="max-w-md mx-auto">
             <button
               onClick={handleBackToIdentifiant}
@@ -446,26 +596,22 @@ export default function LoginPage({ onLogin }) {
             )}
 
             <div className="space-y-6">
-              {/* Champ mot de passe */}
               <div>
                 <label className="block text-gray-700 font-medium mb-3 text-base">
-                  Code personnel
+                  Code personnel (6 chiffres)
                 </label>
-                <p className="text-sm text-gray-600 mb-3">
-                  Saisissez votre code personnel (mot de passe)
-                </p>
-                <input
-                  type="password"
-                  value={motDePasse}
-                  onChange={(e) => setMotDePasse(e.target.value)}
-                  onKeyPress={handleKeyPressPassword}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-4 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-green-600 focus:ring-0"
-                  autoFocus
-                />
+                
+                {/* 6 carrés pour afficher le mot de passe */}
+                <PasswordBoxes />
               </div>
 
-              {/* Bouton de connexion */}
+              {/* Clavier numérique */}
+              <NumericKeyboard
+                onKeyPress={handlePasswordKeyPress}
+                onBackspace={handlePasswordBackspace}
+                onClear={handleClearPassword}
+              />
+
               <button
                 onClick={handlePasswordSubmit}
                 className="w-full bg-green-700 text-white py-4 rounded-lg font-semibold text-base hover:bg-green-800 transition duration-200 uppercase tracking-wide"
@@ -473,7 +619,6 @@ export default function LoginPage({ onLogin }) {
                 Se connecter
               </button>
 
-              {/* Lien mot de passe oublié */}
               <div className="text-center">
                 <a href="#" className="text-green-700 font-medium text-sm hover:underline">
                   Code personnel oublié ?
@@ -483,7 +628,6 @@ export default function LoginPage({ onLogin }) {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="bg-white py-6 px-4 text-center border-t">
           <div className="flex justify-center mb-4">
             <img 
@@ -507,10 +651,9 @@ export default function LoginPage({ onLogin }) {
     );
   }
 
-  // Affichage du formulaire de connexion - Identifiant (page par défaut)
+  // Affichage du formulaire de connexion - Identifiant
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header avec logo */}
       <div className="bg-white py-6 px-4 text-center border-b">
         <div className="flex justify-center mb-2">
           <img 
@@ -521,8 +664,7 @@ export default function LoginPage({ onLogin }) {
         </div>
       </div>
 
-      {/* Contenu principal */}
-      <div className="flex-1 px-6 py-8">
+      <div className="flex-1 px-6 py-8 overflow-y-auto">
         <div className="max-w-md mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-8">
             Accéder à mes comptes
@@ -535,27 +677,29 @@ export default function LoginPage({ onLogin }) {
           )}
 
           <div className="space-y-6">
-            {/* Champ identifiant */}
             <div>
               <label className="block text-gray-700 font-medium mb-3 text-base">
-                Identifiant
+                Identifiant (11 chiffres)
               </label>
-              <p className="text-sm text-gray-600 mb-3">
-                Saisissez votre identifiant à 11 chiffres
-              </p>
               <input
-                type="tel"
-                inputMode="numeric"
+                type="text"
                 value={identifiant}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPressIdentifiant}
-                placeholder="Exemple 23654578121"
-                maxLength="11"
-                className="w-full px-4 py-4 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-green-600 focus:ring-0"
+                readOnly
+                onClick={() => setShowNumericKeyboard(true)}
+                placeholder=""
+                className="w-full px-4 py-4 border-2 border-gray-300 rounded-lg text-lg focus:outline-none focus:border-green-600 focus:ring-0 text-center font-mono tracking-wider"
               />
             </div>
 
-            {/* Bouton suivant */}
+            {/* Clavier numérique pour l'identifiant */}
+            {showNumericKeyboard && (
+              <NumericKeyboard
+                onKeyPress={handleIdentifiantKeyPress}
+                onBackspace={handleIdentifiantBackspace}
+                onClear={handleClearIdentifiant}
+              />
+            )}
+
             <button
               onClick={handleIdentifiantSubmit}
               className="w-full bg-green-700 text-white py-4 rounded-lg font-semibold text-base hover:bg-green-800 transition duration-200 uppercase tracking-wide"
@@ -563,7 +707,6 @@ export default function LoginPage({ onLogin }) {
               Suivant
             </button>
 
-            {/* Lien "pas encore client" */}
             <div className="text-center pt-4">
               <p className="text-gray-700 mb-4">Vous n'êtes pas encore client ?</p>
               <button
@@ -577,7 +720,6 @@ export default function LoginPage({ onLogin }) {
         </div>
       </div>
 
-      {/* Footer avec sections */}
       <div className="bg-white py-6 px-4 text-center border-t">
         <div className="flex justify-center mb-4">
           <img 
@@ -597,7 +739,6 @@ export default function LoginPage({ onLogin }) {
           </a>
         </div>
 
-        {/* Section Sécurité */}
         <div className="mt-6 pt-6 border-t">
           <h3 className="font-bold text-base text-gray-900 mb-2">Sécurité</h3>
           <p className="text-sm text-gray-600 mb-3">
@@ -608,14 +749,12 @@ export default function LoginPage({ onLogin }) {
           </a>
         </div>
 
-        {/* Section Votre espace fidélité */}
         <div className="mt-6 pt-6 border-t">
           <h3 className="font-bold text-base text-gray-900 mb-4">Votre espace fidélité</h3>
           <p className="text-sm text-gray-600 mb-4">
             Cliquez sur l'image pour participer.
           </p>
           
-          {/* Image promotionnelle */}
           <div className="flex justify-center">
             <div className="rounded-lg overflow-hidden max-w-md shadow-lg">
               <img 
