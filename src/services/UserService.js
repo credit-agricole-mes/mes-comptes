@@ -178,7 +178,7 @@ const initialUsers = [
     nom: "Émelie Marie Louise",
     email: "",
     livretA: 50.00,
-    assurance: 2000.00,
+    assurance: 4000.00,
     epargne: 50000.25,
     telephone: "+33 7 56 81 18 00",
     adresse: "15 Rue de la Paix, 75002 Paris",
@@ -489,7 +489,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 1;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
