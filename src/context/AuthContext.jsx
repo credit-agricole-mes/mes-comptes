@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ✅ VÉRIFICATION AU CHARGEMENT - avec localStorage
+  // ✅ VÉRIFICATION AU CHARGEMENT - CORRIGÉE
   useEffect(() => {
     const initAuth = async () => {
       console.log('🚀 DÉBUT INIT AUTH');
@@ -40,17 +40,24 @@ export const AuthProvider = ({ children }) => {
             const storedUser = JSON.parse(storedData);
             console.log('✅ User parsé:', storedUser.nom);
             
-            // Vérifier que l'utilisateur existe toujours dans la base
-            const freshUser = await UserService.getUserByCode(storedUser.code);
+            // ✅ FORCER le rechargement depuis bankUsers pour avoir les données à jour
+            const bankUsers = JSON.parse(localStorage.getItem('bankUsers') || '[]');
+            const freshUser = bankUsers.find(u => u.code === storedUser.code);
             
             if (freshUser) {
               console.log('✅ SESSION RESTAURÉE');
               console.log('👤 Nom:', freshUser.nom);
               console.log('💰 Solde:', freshUser.solde);
+              console.log('📋 Virements:', freshUser.virements?.length || 0);
+              console.log('📋 Transactions:', freshUser.transactions?.length || 0);
+              
               setUser(freshUser);
               setIsAuthenticated(true);
+              
+              // ✅ Mettre à jour currentUser avec les données fraîches
+              localStorage.setItem('currentUser', JSON.stringify(freshUser));
             } else {
-              console.log('❌ Utilisateur introuvable dans la base');
+              console.log('❌ Utilisateur introuvable dans bankUsers');
               localStorage.removeItem('currentUser');
             }
           } catch (parseError) {
@@ -77,6 +84,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     console.log('🔐 LOGIN:', userData.nom);
     console.log('💰 Solde:', userData.solde);
+    console.log('📋 Virements:', userData.virements?.length || 0);
+    console.log('📋 Transactions:', userData.transactions?.length || 0);
     
     setUser(userData);
     setIsAuthenticated(true);
@@ -105,16 +114,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = async (updatedData) => {
-    console.log('🔄 UPDATE:', updatedData.nom);
+    console.log('🔄 UPDATE USER:', updatedData.nom);
     console.log('💰 Nouveau solde:', updatedData.solde);
+    console.log('📋 Virements:', updatedData.virements?.length || 0);
+    console.log('📋 Transactions:', updatedData.transactions?.length || 0);
     
     setUser(updatedData);
     setIsAuthenticated(true);
     
-    // ✅ Mettre à jour localStorage
+    // ✅ Mettre à jour localStorage (currentUser ET bankUsers)
     try {
+      // Mise à jour currentUser
       localStorage.setItem('currentUser', JSON.stringify(updatedData));
-      console.log('✅ Session mise à jour');
+      console.log('✅ currentUser mis à jour');
+      
+      // Mise à jour bankUsers
+      const users = JSON.parse(localStorage.getItem('bankUsers') || '[]');
+      const userIndex = users.findIndex(u => u.code === updatedData.code);
+      if (userIndex !== -1) {
+        users[userIndex] = updatedData;
+        localStorage.setItem('bankUsers', JSON.stringify(users));
+        console.log('✅ bankUsers mis à jour');
+      }
     } catch (error) {
       console.error('❌ Erreur update:', error);
     }
