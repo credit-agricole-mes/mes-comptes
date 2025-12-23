@@ -63,7 +63,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    statut: "actif", // ✅ COMPTE ACTIF
+    statut: "actif",
     transactions: [
       { date: '25/11/2024', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
       { date: '26/11/2024', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
@@ -123,7 +123,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2022",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "28/11/2025",
     dateAttestation: "05/12/2024",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 20 000 €. Merci de votre compréhension.",
@@ -171,7 +171,6 @@ const initialUsers = [
       email: "sophie.bernard@notaire-paris.fr"
     }
   },
-
   {
     code: "33333444444",
     motDePasse: "123456",
@@ -190,7 +189,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2015",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "28/12/2019",
     dateAttestation: "05/12/2015",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 30 000 €. Merci de votre compréhension.",
@@ -275,7 +274,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2018",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "15/06/2022",
     dateAttestation: "05/12/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 2500 €. Merci de votre compréhension.",
@@ -339,7 +338,7 @@ const initialUsers = [
       titre: "NOTAIRE",
       adresse: "45 Avenue Montaigne",
       ville: "75008 PARIS",
-       telephone: " +33 6 42 89 33 44",
+      telephone: " +33 6 42 89 33 44",
       email: "balmond1643@gmail.com"
     }
   },
@@ -347,25 +346,23 @@ const initialUsers = [
     code: "07885513461",
     motDePasse: "260823",
     nom: "Alexandre Roussel",
-    email: "",
+    email: "Alexandreroussel07050@gmail.com",
     livretA: 50.00,
     assurance: 4000.00,
     epargne: 50000.25,
     telephone: "+33 7 56 84 42 55",
-    email: "Alexandreroussel07050@gmail.com",
-    adresse: "15 Rue de la Paix, 75002 Paris",
-    solde: 58600.21,
+    adresse: "10 rue Roger Salengro 69009 Lyon",
+    solde: 989000.21,
     devise: "EUR",
     symboleDevise: "€",
     numeroCompte: "FR76 1723 8000 0102 2543 9080 351",
     iban: "FR76 3000 4000 0200 0123 4567 890",
     bic: "BNPAFRPPXXX",
-    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    agence: "Agence Lyon Opéra - 29 Boulevard des Capucines, 75009 Lyon",
     dateOuverture: "15/11/2018",
-    statut: "actif", // 🔒 COMPTE BLOQUÉ
-   
+    statut: "actif",
     transactions: [
-      { date: '09/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '09/06/2025', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
       { date: '06/06/2025', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
       { date: '06/06/2025', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
       { date: '04/06/2025', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
@@ -383,23 +380,23 @@ const initialUsers = [
       { mois: 'octobre', annee: '2025', dateGeneration: '15/10/2025' }
     ],
     virements: [
-      { date: '10/06/2025', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
-      { date: '18/05/2025', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
-      { date: '10/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '06/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '05/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '07/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '07/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '06/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '06/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '07/04/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '05/03/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '06/02/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '05/01/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
-      { date: '02/01/2025', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
-      { date: '02/01/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
-      { date: '02/07/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
-      { date: '02/06/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '10/12/2025', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/12/2025', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
+      { date: '10/12/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/09/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2025', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
     ],
     depots: [
       { type: 'Dépôt de chèque', date: '10/06/2025', montant: 1250.00, icon: '📝' },
@@ -424,7 +421,7 @@ const initialUsers = [
       titre: "NOTAIRE",
       adresse: "45 Avenue Montaigne",
       ville: "75008 PARIS",
-       telephone: " +33 6 46 85 33 44",
+      telephone: " +33 6 46 85 33 44",
       email: "balmond163@gmail.com"
     }
   },
@@ -443,7 +440,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "28/12/2021",
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 14 950 €. Merci de votre compréhension.",
@@ -501,7 +498,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2013",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "13/06/2019",
     dateAttestation: "25/03/2013",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 8750 €. Merci de votre compréhension.",
@@ -559,7 +556,7 @@ const initialUsers = [
     bic: "CHASUS33XXX",
     agence: "Wall Street Branch - 123 Wall Street, New York, NY 10005",
     dateOuverture: "10/01/2021",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "02/12/2025",
     dateAttestation: "08/12/2021",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 15 050 $. Merci de votre compréhension.",
@@ -618,7 +615,7 @@ const initialUsers = [
     bic: "BICIIVBJXXX",
     agence: "Agence Cocody - Boulevard Latrille, Abidjan",
     dateOuverture: "12/05/2020",
-    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
+    statut: "bloqué",
     dateBlocage: "01/12/2024",
     dateAttestation: "06/12/2024",
     notification: "Votre compte a été temporairement bloqué pour des raisons de sécurité. Pour le débloquer, veuillez régler les frais de 7 500 000 FCFA. Merci.",
@@ -665,7 +662,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7; // ✅ Version mise à jour
+const DATA_VERSION = 8;
 
 const UserService = {
   initializeUsers() {
@@ -687,27 +684,45 @@ const UserService = {
     return stored;
   },
 
+  // ✅ FONCTION CORRIGÉE - Récupère TOUJOURS depuis localStorage
   verifyLogin(code, motDePasse) {
-    const users = StorageService.get('bankUsers') || initialUsers;
+    // ✅ TOUJOURS récupérer depuis localStorage pour avoir les données à jour
+    const users = StorageService.get('bankUsers');
+    
+    if (!users) {
+      console.error('❌ Aucun utilisateur trouvé dans localStorage');
+      return {
+        success: false,
+        message: "Erreur système - Veuillez rafraîchir la page"
+      };
+    }
+    
     const user = users.find(u => u.code === code);
     
     if (!user) {
+      console.log('❌ Utilisateur non trouvé:', code);
       return {
         success: false,
         message: "Identifiant incorrect"
       };
     }
     
+    // ✅ Log pour debug
+    console.log('🔍 Vérification connexion:');
+    console.log('Code:', code);
+    console.log('Mot de passe stocké:', user.motDePasse, 'Type:', typeof user.motDePasse);
+    console.log('Mot de passe saisi:', motDePasse, 'Type:', typeof motDePasse);
+    
+    // ✅ Comparaison stricte avec conversion en String
     if (String(user.motDePasse) !== String(motDePasse)) {
-      console.log('🔍 Comparaison mot de passe:');
-      console.log('Stocké:', user.motDePasse, 'Type:', typeof user.motDePasse);
-      console.log('Saisi:', motDePasse, 'Type:', typeof motDePasse);
+      console.log('❌ Mot de passe incorrect');
       return {
         success: false,
         message: "Mot de passe incorrect"
       };
     }
     
+    console.log('✅ Connexion réussie pour:', user.nom);
     return {
       success: true,
       user: { ...user }
@@ -722,7 +737,18 @@ const UserService = {
         return { valid: false };
       }
 
-      const users = StorageService.get('bankUsers') || initialUsers;
+      // ✅ Récupérer depuis localStorage pour avoir les données à jour
+      const users = StorageService.get('bankUsers');
+      
+      if (!users) {
+        StorageService.delete('currentUser');
+        return { 
+          valid: false, 
+          shouldLogout: true,
+          message: "Session expirée. Veuillez vous reconnecter."
+        };
+      }
+
       const userStillExists = users.find(u => u.code === currentUser.code);
 
       if (!userStillExists) {
@@ -739,14 +765,22 @@ const UserService = {
         user: { ...userStillExists }
       };
     } catch (error) {
-      console.error('Erreur validation session:', error);
+      console.error('❌ Erreur validation session:', error);
       StorageService.delete('currentUser');
       return { valid: false, shouldLogout: true };
     }
   },
 
   loginUser(code) {
-    const users = StorageService.get('bankUsers') || initialUsers;
+    const users = StorageService.get('bankUsers');
+    
+    if (!users) {
+      return {
+        success: false,
+        message: "Erreur système"
+      };
+    }
+    
     const user = users.find(u => u.code === code);
     
     if (user) {
@@ -763,12 +797,15 @@ const UserService = {
   },
 
   getUserByCode(code) {
-    const users = StorageService.get('bankUsers') || initialUsers;
-    return users.find(u => u.code === code) || null;
+    const users = StorageService.get('bankUsers');
+    return users ? users.find(u => u.code === code) || null : null;
   },
 
   updateUserBalance(code, newBalance) {
-    const users = StorageService.get('bankUsers') || initialUsers;
+    const users = StorageService.get('bankUsers');
+    
+    if (!users) return false;
+    
     const userIndex = users.findIndex(u => u.code === code);
     
     if (userIndex !== -1) {

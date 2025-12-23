@@ -6,10 +6,10 @@ import CurrencySelector from './CurrencySelector';
 const SettingsPage = () => {
   const { user, updateUser } = useAuth();
   const [expandedSection, setExpandedSection] = useState(null);
-  
+
   // ✅ Vérifier si le compte est bloqué
   const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
-  
+
   const [settings, setSettings] = useState({
     twoFactorAuth: false,
     biometricAuth: true,
@@ -20,6 +20,37 @@ const SettingsPage = () => {
     pushNotif: true,
     securityAlert: true
   });
+
+  // ✅ Nouveau : Formulaire mot de passe
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+
+  // ✅ StorageService intégré
+  const StorageService = {
+    get(key) {
+      try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : null;
+      } catch (error) {
+        console.log(`Key "${key}" not found`);
+        return null;
+      }
+    },
+
+    set(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (error) {
+        console.error('LocalStorage set error:', error);
+        return false;
+      }
+    }
+  };
 
   const toggleSection = (section) => {
     setExpandedSection(expandedSection === section ? null : section);
@@ -36,18 +67,18 @@ const SettingsPage = () => {
   const handleCurrencyChange = async (newCurrency, newSymbol) => {
     try {
       console.log('🔄 Changement de devise:', newCurrency, newSymbol);
-      
+
       const updatedUser = {
         ...user,
         devise: newCurrency,
         symboleDevise: newSymbol
       };
-      
+
       const result = await window.storage.get('bankUsers');
       if (result) {
         const users = JSON.parse(result.value);
         const userIndex = users.findIndex(u => u.code === user.code);
-        
+
         if (userIndex !== -1) {
           users[userIndex].devise = newCurrency;
           users[userIndex].symboleDevise = newSymbol;
@@ -55,12 +86,69 @@ const SettingsPage = () => {
           console.log('✅ Devise mise à jour dans bankUsers');
         }
       }
-      
+
       updateUser(updatedUser);
       console.log('✅ Devise changée avec succès !');
-      
+
     } catch (error) {
       console.error('❌ Erreur changement devise:', error);
+    }
+  };
+
+  // ✅ FONCTION CORRIGÉE - Sauvegarde dans localStorage
+  const handlePasswordChange = () => {
+    // Validation des champs
+    if (!passwordForm.oldPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+      alert('Veuillez remplir tous les champs.');
+      return;
+    }
+
+    // Vérification de l'ancien mot de passe
+    if (String(passwordForm.oldPassword) !== String(user.motDePasse)) {
+      alert('L\'ancien mot de passe est incorrect.');
+      return;
+    }
+
+    // Vérification de la confirmation
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      alert('Le nouveau mot de passe et la confirmation ne correspondent pas.');
+      return;
+    }
+
+    // Validation du nouveau mot de passe (minimum 6 caractères)
+    if (passwordForm.newPassword.length < 6) {
+      alert('Le nouveau mot de passe doit contenir au moins 6 caractères.');
+      return;
+    }
+
+    try {
+      // ✅ 1. Mettre à jour dans bankUsers (localStorage)
+      const users = StorageService.get('bankUsers');
+      if (users) {
+        const userIndex = users.findIndex(u => u.code === user.code);
+
+        if (userIndex !== -1) {
+          users[userIndex].motDePasse = passwordForm.newPassword;
+          StorageService.set('bankUsers', users);
+          console.log('✅ Mot de passe mis à jour dans bankUsers');
+        }
+      }
+
+      // ✅ 2. Mettre à jour dans currentUser (session)
+      const updatedUser = { ...user, motDePasse: passwordForm.newPassword };
+      StorageService.set('currentUser', updatedUser);
+      console.log('✅ Mot de passe mis à jour dans currentUser');
+
+      // ✅ 3. Mettre à jour le contexte React
+      updateUser(updatedUser);
+      
+      alert('✅ Mot de passe modifié avec succès ! Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
+      setShowPasswordForm(false);
+      setPasswordForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
+
+    } catch (error) {
+      console.error('❌ Erreur modification mot de passe:', error);
+      alert('❌ Erreur lors de la modification du mot de passe. Veuillez réessayer.');
     }
   };
 
@@ -116,16 +204,66 @@ const SettingsPage = () => {
                     <Lock className="mr-3 text-gray-600" size={20} />
                     <div>
                       <p className="font-semibold text-gray-800">Mot de passe</p>
-                      <p className="text-sm text-gray-500">Dernière modification il y a 45 jours</p>
+                      <p className="text-sm text-gray-500">Modifiez votre mot de passe de connexion</p>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-semibold">
-                    Modifier
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-semibold"
+                    onClick={() => setShowPasswordForm(!showPasswordForm)}
+                  >
+                    {showPasswordForm ? 'Annuler' : 'Modifier'}
                   </button>
                 </div>
+
+                {showPasswordForm && (
+                  <div className="mt-4 space-y-3 bg-gray-50 p-4 rounded-lg">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Ancien mot de passe
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Entrez votre ancien mot de passe"
+                        value={passwordForm.oldPassword}
+                        onChange={(e) => setPasswordForm({...passwordForm, oldPassword: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Nouveau mot de passe
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Minimum 6 caractères"
+                        value={passwordForm.newPassword}
+                        onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Confirmer le nouveau mot de passe
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Retapez le nouveau mot de passe"
+                        value={passwordForm.confirmPassword}
+                        onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                    <button
+                      className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
+                      onClick={handlePasswordChange}
+                    >
+                      💾 Sauvegarder le nouveau mot de passe
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Code PIN - Bloqué SEULEMENT si compte bloqué */}
+              {/* Code PIN */}
               <div className={`border-b pb-4 ${isCompteBloque ? 'opacity-50' : ''}`}>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center">
