@@ -24,8 +24,6 @@ export default function AccountCard({ user, onLogout }) {
     return localStorage.getItem(key) !== 'true';
   });
 
-
-
   const handleNavigate = (path) => {
     navigate(path);
     setMenuOpen(false);
@@ -52,8 +50,6 @@ export default function AccountCard({ user, onLogout }) {
       localStorage.setItem(key, 'true');
     }
   };
-
-
 
   // ✅ Formater le solde avec la devise de l'utilisateur
   const soldeFormate = user?.solde !== undefined && user?.solde !== null
@@ -158,28 +154,33 @@ export default function AccountCard({ user, onLogout }) {
                   <button onClick={() => handleNavigate('/transactions')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📊 Mes transactions
                   </button>
+                  
+                  {/* ✅ VIREMENTS - Affichage différent selon statut compte */}
                   <button 
                     onClick={isCompteBloque ? undefined : () => handleNavigate('/virements')}
                     className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
                       isCompteBloque 
-                        ? 'text-gray-400 cursor-not-allowed' 
+                        ? 'text-gray-400 cursor-not-allowed bg-gray-50' 
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                     disabled={isCompteBloque}
                   >
-                    💸 Virements {isCompteBloque && <span className="text-xs">(bloqué)</span>}
+                    💸 Virements {isCompteBloque && <span className="text-xs text-red-500">(🔒 bloqué)</span>}
                   </button>
+                  
+                  {/* ✅ DÉPÔTS - Affichage différent selon statut compte */}
                   <button 
                     onClick={isCompteBloque ? undefined : () => handleNavigate('/depots')}
                     className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
                       isCompteBloque 
-                        ? 'text-gray-400 cursor-not-allowed' 
+                        ? 'text-gray-400 cursor-not-allowed bg-gray-50' 
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                     disabled={isCompteBloque}
                   >
-                    💰 Dépôts {isCompteBloque && <span className="text-xs">(bloqué)</span>}
+                    💰 Dépôts {isCompteBloque && <span className="text-xs text-red-500">(🔒 bloqué)</span>}
                   </button>
+                  
                   <button onClick={() => handleNavigate('/overdraft')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📈 Mes découverts
                   </button>
@@ -267,7 +268,13 @@ export default function AccountCard({ user, onLogout }) {
             </div>
           )}
 
-
+          {/* ✅ BADGE COMPTE ACTIF pour les comptes non bloqués */}
+          {!isCompteBloque && (
+            <div className="text-green-600 text-sm font-semibold text-center mb-4 flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Compte actif
+            </div>
+          )}
 
           {/* ✅ BOUTON ASSISTANT TOUJOURS VISIBLE */}
           <div className="flex justify-center">

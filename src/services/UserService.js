@@ -63,9 +63,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
-    dateBlocage: "28/11/2024",
-    dateAttestation: "05/12/2024",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 12 800 €. Merci de votre compréhension.",
+    statut: "actif", // ✅ COMPTE ACTIF
     transactions: [
       { date: '25/11/2024', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
       { date: '26/11/2024', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
@@ -112,7 +110,7 @@ const initialUsers = [
   },
   {
     code: "33333333333",
-    motDePasse: "111111", // Changé de "azerty" à "111111"
+    motDePasse: "111111",
     nom: "Clarisse Bianchi",
     email: "clarisse.bianchi@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -125,6 +123,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2022",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "28/11/2025",
     dateAttestation: "05/12/2024",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 20 000 €. Merci de votre compréhension.",
@@ -191,6 +190,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2015",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "28/12/2019",
     dateAttestation: "05/12/2015",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 30 000 €. Merci de votre compréhension.",
@@ -275,6 +275,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2018",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "15/06/2022",
     dateAttestation: "05/12/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 2500 €. Merci de votre compréhension.",
@@ -343,8 +344,93 @@ const initialUsers = [
     }
   },
   {
+    code: "07885513461",
+    motDePasse: "260823",
+    nom: "Alexandre Roussel",
+    email: "",
+    livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 50000.25,
+    telephone: "+33 7 56 84 42 55",
+    email: "Alexandreroussel07050@gmail.com",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 58600.21,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 1723 8000 0102 2543 9080 351",
+    iban: "FR76 3000 4000 0200 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/11/2018",
+    statut: "actif", // 🔒 COMPTE BLOQUÉ
+   
+    transactions: [
+      { date: '09/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '06/06/2025', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '06/06/2025', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '04/06/2025', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '04/06/2025', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '01/06/2025', libelle: 'Abonnement Internet', debit: '30.00', credit: '' },
+      { date: '28/05/2025', libelle: 'Restaurant', debit: '500.00', credit: '' },
+      { date: '20/05/2025', libelle: 'Fast-food', debit: '350.75', credit: '' },
+      { date: '20/05/2024', libelle: 'Abonnement Netflix', debit: '50.00', credit: '' },
+      { date: '18/05/2024', libelle: 'Achat Bijouterie Cartier', debit: '800.00', credit: '' },
+      { date: '30/04/2024', libelle: 'Restaurant Le Grand Véfour', debit: '350.75', credit: '' },
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2025', dateGeneration: '01/12/2025' },
+      { mois: 'novembre', annee: '2025', dateGeneration: '01/11/2025' },
+      { mois: 'octobre', annee: '2025', dateGeneration: '01/10/2025' }
+    ],
+    virements: [
+      { date: '10/06/2025', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/05/2025', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
+      { date: '10/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/05/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/04/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/01/2025', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/01/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/06/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '10/06/2025', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/05/2025', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/06/2025', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/05/2025', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/05/2025', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/05/2025', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/05/2024', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/04/2024', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 23 46 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Balmond Andrée",
+      prenom: "Andrée",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+       telephone: " +33 6 46 85 33 44",
+      email: "balmond163@gmail.com"
+    }
+  },
+  {
     code: "00111111111",
-    motDePasse: "222222", // Changé de "secure2021" à "222222"
+    motDePasse: "222222",
     nom: "Marcelin Rolzou",
     email: "Marcelin.Rolzou@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -357,6 +443,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2018",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "28/12/2021",
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 14 950 €. Merci de votre compréhension.",
@@ -401,7 +488,7 @@ const initialUsers = [
   },
   {
     code: "00000111111",
-    motDePasse: "333333", // Changé de "gauthier2019" à "333333"
+    motDePasse: "333333",
     nom: "Jean Patrick Gauthier",
     email: "gauthierjeanpatrick05@email.com",
     telephone: "+33 6 12 34 56 78",
@@ -414,6 +501,7 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/03/2013",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "13/06/2019",
     dateAttestation: "25/03/2013",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 8750 €. Merci de votre compréhension.",
@@ -458,7 +546,7 @@ const initialUsers = [
   },
   {
     code: "22222222222",
-    motDePasse: "444444", // Changé de "newyork2025" à "444444"
+    motDePasse: "444444",
     nom: "Florence Deschênes",
     email: "ginetteb040@email.com",
     telephone: "+1 438 896 3897",
@@ -471,6 +559,7 @@ const initialUsers = [
     bic: "CHASUS33XXX",
     agence: "Wall Street Branch - 123 Wall Street, New York, NY 10005",
     dateOuverture: "10/01/2021",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "02/12/2025",
     dateAttestation: "08/12/2021",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 15 050 $. Merci de votre compréhension.",
@@ -516,7 +605,7 @@ const initialUsers = [
   },
   {
     code: "11122233344",
-    motDePasse: "555555", // Changé de "abidjan2024" à "555555"
+    motDePasse: "555555",
     nom: "Ahmed Koné",
     email: "ahmed.kone@email.com",
     telephone: "+225 07 12 34 56 78",
@@ -529,6 +618,7 @@ const initialUsers = [
     bic: "BICIIVBJXXX",
     agence: "Agence Cocody - Boulevard Latrille, Abidjan",
     dateOuverture: "12/05/2020",
+    statut: "bloqué", // 🔒 COMPTE BLOQUÉ
     dateBlocage: "01/12/2024",
     dateAttestation: "06/12/2024",
     notification: "Votre compte a été temporairement bloqué pour des raisons de sécurité. Pour le débloquer, veuillez régler les frais de 7 500 000 FCFA. Merci.",
@@ -575,7 +665,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 7; // ✅ Version mise à jour
 
 const UserService = {
   initializeUsers() {
@@ -597,7 +687,6 @@ const UserService = {
     return stored;
   },
 
-  // NOUVELLE FONCTION : Vérifie le login avec identifiant ET mot de passe
   verifyLogin(code, motDePasse) {
     const users = StorageService.get('bankUsers') || initialUsers;
     const user = users.find(u => u.code === code);
@@ -609,7 +698,6 @@ const UserService = {
       };
     }
     
-    // Conversion forcée en string pour la comparaison
     if (String(user.motDePasse) !== String(motDePasse)) {
       console.log('🔍 Comparaison mot de passe:');
       console.log('Stocké:', user.motDePasse, 'Type:', typeof user.motDePasse);
