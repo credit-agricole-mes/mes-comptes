@@ -378,9 +378,9 @@ const initialUsers = [
       { date: '30/04/2024', libelle: 'Restaurant Le Grand Véfour', debit: '350.75', credit: '' },
     ],
     relevesMensuels: [
-      { mois: 'décembre', annee: '2025', dateGeneration: '01/12/2025' },
-      { mois: 'novembre', annee: '2025', dateGeneration: '01/11/2025' },
-      { mois: 'octobre', annee: '2025', dateGeneration: '01/10/2025' }
+      { mois: 'décembre', annee: '2025', dateGeneration: '15/12/2025' },
+      { mois: 'novembre', annee: '2025', dateGeneration: '15/11/2025' },
+      { mois: 'octobre', annee: '2025', dateGeneration: '15/10/2025' }
     ],
     virements: [
       { date: '10/06/2025', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
