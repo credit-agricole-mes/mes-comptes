@@ -625,6 +625,139 @@ const initialUsers = [
     }
   },
   {
+    code: "00111111111",
+    motDePasse: "222222",
+    nom: "Marcelin Rolzou",
+    email: "Marcelin.Rolzou@email.com",
+    telephone: "+33 6 12 34 56 78",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 600000.75,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0100 0123 4567 890",
+    iban: "FR76 3000 4000 0100 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/03/2018",
+    statut: "bloqué",
+    dateBlocage: "28/12/2021",
+    dateAttestation: "25/03/2018",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 14 950 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '23/11/2021', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/11/2021', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '16/10/2021', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/10/2021', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/10/2021', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' }
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2021', dateGeneration: '05/01/2021' },
+      { mois: 'novembre', annee: '2021', dateGeneration: '01/12/2021' },
+      { mois: 'décembre', annee: '2020', dateGeneration: '05/01/2020' },
+      { mois: 'novembre', annee: '2020', dateGeneration: '01/12/2020' }
+    ],
+    virements: [
+      { date: '10/11/2021', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/11/2021', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/11/2021', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/10/2021', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/10/2021', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 23 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Douchet",
+      prenom: "Fabrizio",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: "+33 6 44 70 45 67",
+      email: "Fabrizio.bernard@notaire-paris.fr"
+    }
+  },
+  {
+    code: "07885513463",
+    motDePasse: "333333",
+    nom: "Richard Rose Irène",
+    email: "gauthierjeanpatrick05@email.com",
+      livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 50000.25,
+    telephone: "+33 6 44 70  45 76",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 50000.70,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/03/2013",
+    statut: "bloqué",
+    dateBlocage: "13/06/2022",
+    dateAttestation: "25/03/2013",
+    notification: "Votre compte est bloqué en raison de plusieurs tentative de  connexion échouées. Votre compte sera débloqué le 11/12/2025 après verification.",
+    transactions: [
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/06/2022', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '16/05/2022', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/05/2022', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/05/2022', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '06/11/2021', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/11/2021', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2021', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2021', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2021', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2020',beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2020', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/10/2020', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/10/2020', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/09/2020', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2020', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2020', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2019', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2018', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    relevesMensuels: [
+      { mois: 'mai', annee: '2022', dateGeneration: '01/06/2022'},
+      { mois: 'avril', annee: '2022', dateGeneration: '01/05/2022'},
+      { mois: 'mars', annee: '2022', dateGeneration: '01/04/2022' },
+      { mois: 'février', annee: '2022', dateGeneration: '01/03/2022' }
+    ],
+    virements: [
+      { date: '10/06/2022', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2022', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2022', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2022', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2022', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 22 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Douchet",
+      prenom: "Fabrizio",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: "+33 6 44 58 45 67",
+      email: "Douchet.bernard@notaire-paris.fr"
+    }
+  },
+  {
     code: "22222222222",
     motDePasse: "444444",
     nom: "Florence Deschênes",
@@ -745,7 +878,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
