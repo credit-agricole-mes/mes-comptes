@@ -703,7 +703,7 @@ const initialUsers = [
     statut: "bloqué",
     dateBlocage: "13/06/2022",
     dateAttestation: "25/03/2013",
-    notification: "Votre compte est bloqué en raison de plusieurs tentative de  connexion échouées. Votre compte sera débloqué le 11/12/2025 après verification.",
+    notification: "Votre compte est bloqué en raison de plusieurs tentative de  connexion échouées. Votre compte sera débloqué le 11/01/2026 après verification.",
     transactions: [
       { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
       { date: '07/06/2022', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
