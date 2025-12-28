@@ -878,7 +878,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 4;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
