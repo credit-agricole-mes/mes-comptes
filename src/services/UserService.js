@@ -758,7 +758,7 @@ const initialUsers = [
     }
   },
   {
-    code: "07014860454",
+    code: "07020304051",
     motDePasse: "260824",
     nom: "Marie Sylvia",
     email: "mariesylvia688@gmail.com",
@@ -953,7 +953,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 2;
+const DATA_VERSION = 3;
 
 const UserService = {
   initializeUsers() {
