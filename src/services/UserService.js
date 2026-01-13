@@ -851,7 +851,7 @@ const initialUsers = [
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 65000 Tarbes",
     dateOuverture: "15/03/2018",
     statut: "bloqué",
-    dateBlocage: "13/10/2024",
+    dateBlocage: "13/08/2025",
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage restants  s'élevant à  5500 €. Merci de votre compréhension.",
     transactions: [
@@ -878,13 +878,12 @@ const initialUsers = [
     relevesMensuels: [
       { mois: 'Octobre', annee: '2025', dateGeneration: '01/10/2025'},
       { mois: 'Septembre', annee: '2025', dateGeneration: '01/09/2025'},
-      { mois: 'Aout', annee: '2025', dateGeneration: '01/08/2025' },
-      { mois: 'Juin', annee: '2025', dateGeneration: '01/07/2025' }
+    
     ],
     virements: [
+      { date: '08/10/2025', beneficiaire: 'StartUp Marrakech', montant:'10000', statut: 'Effectué' },
       { date: '10/06/2024', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
       { date: '05/06/2024', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
-      { date: '08/10/2025', beneficiaire: 'StartUp Marrakech', montant:'10000', statut: 'Effectué' },
       
     ],
     depots: [
@@ -1030,7 +1029,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 2;
+const DATA_VERSION = 6;
 
 const UserService = {
   initializeUsers() {
