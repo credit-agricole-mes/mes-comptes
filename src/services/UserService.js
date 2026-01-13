@@ -835,7 +835,7 @@ const initialUsers = [
   {
     code: "07020304055",
     motDePasse: "260825",
-    nom: "Aurelie Carmen",
+    nom: "DELIERT Aurelie Carmen",
     email: "carmendelorient@gmail.com",
       livretA: 50.00,
     assurance: 4000.00,
@@ -1029,7 +1029,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 6;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
