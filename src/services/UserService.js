@@ -894,7 +894,7 @@ const initialUsers = [
       { id: 2, date: '05/05/2025', montant: -220, duree: 3, frais: 6.6 },
     ],
     conseiller: {
-      nom: 'Marie Martin',
+      nom: 'Philippe Cassereau',
       telephone: '',
       email: 'PhilippeCassereau16340@look.fr',
     },
@@ -1021,7 +1021,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 8;
 
 const UserService = {
   initializeUsers() {
