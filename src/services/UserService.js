@@ -895,18 +895,10 @@ const initialUsers = [
     ],
     conseiller: {
       nom: 'Marie Martin',
-      telephone: '+33 6 22 45 67 89',
-      email: 'marie.martin@banque.fr',
+      telephone: '',
+      email: 'PhilippeCassereau16340@look.fr',
     },
-    notaire: {
-      nom: "Douchet",
-      prenom: "Fabrizio",
-      titre: "NOTAIRE",
-      adresse: "45 Avenue Montaigne",
-      ville: "75008 PARIS",
-      telephone: "+33 6 44 56 45 67",
-      email: "Douchet.bernard@notaire-paris.fr"
-    }
+   
   },
   {
     code: "22222222222",
@@ -1029,7 +1021,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 4;
+const DATA_VERSION = 3;
 
 const UserService = {
   initializeUsers() {

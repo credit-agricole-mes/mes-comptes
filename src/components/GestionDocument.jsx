@@ -2,11 +2,11 @@ import React from 'react';
 import jsPDF from 'jspdf';
 import { useAuth } from '../context/AuthContext';
 
-// Fonction pour dessiner un cachet notarial professionnel
-const drawNotaryStamp = (doc, centerX, centerY, notaryInfo) => {
+// Fonction pour dessiner le sceau bancaire officiel
+const drawBankStamp = (doc, centerX, centerY) => {
   const radius = 15;
   
-  doc.setDrawColor(0, 51, 153);
+  doc.setDrawColor(0, 102, 51);
   doc.setLineWidth(0.8);
   doc.circle(centerX, centerY, radius);
   doc.setLineWidth(0.5);
@@ -15,27 +15,23 @@ const drawNotaryStamp = (doc, centerX, centerY, notaryInfo) => {
   doc.setLineWidth(0.3);
   doc.circle(centerX, centerY, radius - 4);
   
-  doc.setTextColor(0, 51, 153);
-  doc.setFontSize(6.5);
+  doc.setTextColor(0, 102, 51);
+  doc.setFontSize(7);
   doc.setFont('helvetica', 'bold');
-  doc.text(notaryInfo.nom, centerX, centerY - 8, { align: 'center' });
+  doc.text('CRÉDIT AGRICOLE', centerX, centerY - 8, { align: 'center' });
   
-  doc.setFontSize(14);
-  doc.text('⚖', centerX, centerY - 1, { align: 'center' });
+  doc.setFontSize(16);
+  doc.text('€', centerX, centerY, { align: 'center' });
   
   doc.setLineWidth(0.3);
   doc.line(centerX - 10, centerY + 3, centerX + 10, centerY + 3);
   
-  doc.setFontSize(7);
-  doc.text(notaryInfo.titre, centerX, centerY + 8, { align: 'center' });
+  doc.setFontSize(6);
+  doc.text('BANQUE AGRÉÉE', centerX, centerY + 8, { align: 'center' });
   
   doc.setFontSize(5.5);
   doc.setFont('helvetica', 'normal');
-  doc.text(notaryInfo.ville, centerX, centerY + 12, { align: 'center' });
-  
-  doc.setFontSize(8);
-  doc.text('★', centerX - 11, centerY + 1, { align: 'center' });
-  doc.text('★', centerX + 11, centerY + 1, { align: 'center' });
+  doc.text('DIRECTION PARIS', centerX, centerY + 12, { align: 'center' });
   
   doc.setTextColor(0, 0, 0);
   doc.setDrawColor(0, 0, 0);
@@ -45,7 +41,6 @@ const drawNotaryStamp = (doc, centerX, centerY, notaryInfo) => {
 const GestionDocument = () => {
   const { user } = useAuth();
 
-  // ✅ Vérifier si le compte est bloqué
   const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
 
   if (!user) {
@@ -64,14 +59,15 @@ const GestionDocument = () => {
     dateOuverture: user.dateOuverture || '15/03/2020'
   };
 
-  const notaireInfo = {
-    nom: user.notaire?.nom || 'MAÎTRE JEAN DUPONT',
-    prenom: user.notaire?.prenom || 'Jean',
-    titre: user.notaire?.titre || 'NOTAIRE',
-    adresse: user.notaire?.adresse || '123 Avenue des Champs-Élysées',
-    ville: user.notaire?.ville || '75008 PARIS',
-    telephone: user.notaire?.telephone || '01 23 45 67 89',
-    email: user.notaire?.email || 'contact@notaire-dupont.fr'
+  const banqueInfo = {
+    nom: 'CRÉDIT AGRICOLE',
+    agence: 'Agence Paris Centre',
+    adresse: '91-93 Boulevard Pasteur',
+    ville: '75015 PARIS',
+    telephone: '01 43 23 46 00',
+    email: 'contact@ca-paris.fr',
+    directeur: 'M. Pierre MARTIN',
+    siret: '784 608 416 00241'
   };
 
   const dateAttestation = user.dateAttestation || new Date().toLocaleDateString('fr-FR');
@@ -90,7 +86,7 @@ const GestionDocument = () => {
       doc.setFont('helvetica', 'normal');
       
       const texte = [
-        'La BANQUE Crédit Agricole atteste que :',
+        `La BANQUE ${banqueInfo.nom} atteste que :`,
         '',
         `Monsieur/Madame ${compteInfo.titulaire},`,
         '',
@@ -113,8 +109,9 @@ const GestionDocument = () => {
       
       y += 20;
       doc.setFont('helvetica', 'bold');
-      doc.text('Le Directeur', 130, y);
-      doc.text('BANQUE Crédit Agricole', 130, y + 7);
+      doc.text('Le Directeur d\'Agence', 130, y);
+      doc.text(banqueInfo.directeur, 130, y + 7);
+      doc.text(banqueInfo.nom, 130, y + 14);
       
       doc.save('attestation_compte.pdf');
       console.log('✅ Attestation générée');
@@ -124,72 +121,117 @@ const GestionDocument = () => {
     }
   };
 
-  const genererDocumentNotaire = () => {
+  const genererActeBlocage = () => {
     try {
       const doc = new jsPDF();
       
-      doc.setFontSize(18);
+      // En-tête bancaire
+      doc.setFillColor(0, 102, 51);
+      doc.rect(0, 0, 210, 25, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(20);
       doc.setFont('helvetica', 'bold');
-      doc.text('ACTE DE BLOCAGE DE COMPTE', 105, 20, { align: 'center' });
+      doc.text(banqueInfo.nom, 105, 12, { align: 'center' });
+      doc.setFontSize(10);
+      doc.text(banqueInfo.agence, 105, 19, { align: 'center' });
       
-      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('NOTIFICATION DE BLOCAGE DE COMPTE', 105, 40, { align: 'center' });
+      
+      doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
-      doc.text(`Document officiel établi par ${notaireInfo.nom}`, 105, 30, { align: 'center' });
-      doc.text(`${notaireInfo.titre} à ${notaireInfo.ville.split(' ')[1] || 'Paris'}`, 105, 37, { align: 'center' });
+      doc.text('Document officiel', 105, 47, { align: 'center' });
       
-      doc.line(20, 42, 190, 42);
+      doc.line(20, 52, 190, 52);
       
-      let y = 55;
+      let y = 65;
       doc.setFontSize(11);
       
-      const texteNotaire = [
-        'Étude notariale',
-        `${notaireInfo.adresse}, ${notaireInfo.ville}`,
-        `Tél : ${notaireInfo.telephone}`,
-        `Email : ${notaireInfo.email}`,
+      const texte = [
+        `${banqueInfo.adresse}`,
+        `${banqueInfo.ville}`,
+        `Tél : ${banqueInfo.telephone}`,
+        `SIRET : ${banqueInfo.siret}`,
         '',
-        'OBJET : Notification officielle de blocage de compte bancaire',
         '',
-        `Par la présente, ${notaireInfo.nom}, ${notaireInfo.titre} à ${notaireInfo.ville.split(' ')[1] || 'Paris'}, certifie que :`,
+        `Destinataire : ${compteInfo.titulaire}`,
+        `Compte n° : ${compteInfo.numeroCompte}`,
         '',
-        `Le compte bancaire n° ${compteInfo.numeroCompte},`,
-        `au nom de ${compteInfo.titulaire},`,
-        'détenu auprès de la BANQUE Crédit Agricole',
         '',
-        'fait l\'objet d\'une mesure de blocage conformément aux',
-        'dispositions légales et réglementaires en vigueur.',
+        'OBJET : Notification de blocage de compte bancaire',
+        '',
+        '',
+        'Madame, Monsieur,',
+        '',
+        `Par la présente, la BANQUE ${banqueInfo.nom} vous informe que votre`,
+        `compte bancaire n° ${compteInfo.numeroCompte}`,
+        'fait l\'objet d\'une mesure de blocage conformément aux dispositions',
+        'légales et réglementaires en vigueur.',
+        '',
         '',
         'MOTIFS DU BLOCAGE :',
+        '',
         '• Vérification de conformité réglementaire',
-        '• En attente de justificatifs complémentaires',
-        '• Mesure conservatoire',
-        '',
-        `Date d'effet : ${dateBlocage}`,
-        '',
-        'CONSÉQUENCES :',
-        'Cette mesure suspend temporairement :',
-        '- Les opérations de virement',
-        '- Les retraits d\'espèces',
-        '- L\'utilisation des moyens de paiement',
-        '- Les prélèvements automatiques',
-        '',
-        'DÉMARCHES À SUIVRE :',
-        'Pour régulariser votre situation, veuillez contacter :',
-        `Service Client : ${notaireInfo.telephone}`,
-        `Email : ${notaireInfo.email}`,
-        '',
-        'Le présent acte est établi en un seul exemplaire.',
+        '• Documents justificatifs manquants ou incomplets',
+        '• Mesure conservatoire dans le cadre de la lutte anti-blanchiment',
+        '• Protection du compte dans l\'attente de régularisation',
         '',
         '',
-        `Fait à ${notaireInfo.ville.split(' ')[1] || 'Paris'}, le ${dateBlocage}`
+        `DATE D'EFFET : ${dateBlocage}`,
+        '',
+        '',
+        'CONSÉQUENCES DE CETTE MESURE :',
+        '',
+        'Le blocage entraîne la suspension immédiate des opérations suivantes :',
+        '',
+        '✗ Virements sortants (nationaux et internationaux)',
+        '✗ Retraits d\'espèces aux distributeurs automatiques',
+        '✗ Paiements par carte bancaire',
+        '✗ Prélèvements automatiques',
+        '✗ Émission de chèques',
+        '',
+        'Seuls les versements entrants restent autorisés.',
+        '',
+        '',
+        'DÉMARCHES POUR RÉGULARISATION :',
+        '',
+        'Pour lever cette mesure de blocage, nous vous invitons à :',
+        '',
+        '1. Contacter notre service clientèle dans les plus brefs délais',
+        '2. Fournir les documents justificatifs demandés',
+        '3. Régulariser votre situation administrative',
+        '',
+        '',
+        'CONTACTS :',
+        '',
+        `Service Clientèle : ${banqueInfo.telephone}`,
+        `Email : ${banqueInfo.email}`,
+        `Horaires : Du lundi au vendredi, 9h-18h`,
+        '',
+        '',
+        'Le présent document fait foi et a valeur d\'acte officiel.',
+        '',
+        '',
+        `Fait à Paris, le ${dateBlocage}`,
       ];
       
-      texteNotaire.forEach(ligne => {
-        if (ligne.startsWith('OBJET') || ligne.startsWith('MOTIFS') || ligne.startsWith('CONSÉQUENCES') || ligne.startsWith('DÉMARCHES')) {
+      texte.forEach(ligne => {
+        if (ligne.startsWith('OBJET') || ligne.startsWith('MOTIFS') || 
+            ligne.startsWith('DATE D\'EFFET') || ligne.startsWith('CONSÉQUENCES') || 
+            ligne.startsWith('DÉMARCHES') || ligne.startsWith('CONTACTS')) {
           doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+        } else if (ligne.startsWith('✗')) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
         } else {
           doc.setFont('helvetica', 'normal');
+          doc.setFontSize(11);
         }
+        
         doc.text(ligne, 20, y);
         y += 6;
         
@@ -199,30 +241,48 @@ const GestionDocument = () => {
         }
       });
       
-      y += 10;
-      doc.setFont('helvetica', 'bold');
-      doc.text(notaireInfo.nom, 20, y);
-      doc.text('Signature et cachet du notaire', 130, y);
+      // Signature et cachet
+      y += 15;
+      if (y > 250) {
+        doc.addPage();
+        y = 30;
+      }
       
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('Pour la Direction', 20, y);
+      doc.text('Signature et cachet officiel', 140, y);
+      
+      // Signature manuscrite simulée
       doc.setFontSize(18);
       doc.setFont('times', 'italic');
       doc.setTextColor(50, 50, 50);
-      const initiales = notaireInfo.prenom.charAt(0) + '. ' + notaireInfo.nom.split(' ').pop();
-      doc.text(initiales, 145, y + 20, { align: 'center' });
+      doc.text('P. Martin', 35, y + 20);
       
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      doc.text(banqueInfo.directeur, 20, y + 28);
+      doc.text('Directeur d\'Agence', 20, y + 34);
+      
+      // Cachet bancaire
       const centerX = 170;
       const centerY = y + 20;
-      drawNotaryStamp(doc, centerX, centerY, notaireInfo);
+      drawBankStamp(doc, centerX, centerY);
       
-      doc.save('acte_blocage_compte_notarie.pdf');
-      console.log('✅ Acte notarié généré');
+      // Pied de page
+      doc.setFontSize(8);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`${banqueInfo.nom} - ${banqueInfo.agence} - SIRET ${banqueInfo.siret}`, 105, 287, { align: 'center' });
+      
+      doc.save('acte_blocage_compte_bancaire.pdf');
+      console.log('✅ Acte de blocage généré');
     } catch (error) {
-      console.error('❌ Erreur document notaire:', error);
-      alert('Erreur lors de la génération du document notarié');
+      console.error('❌ Erreur document blocage:', error);
+      alert('Erreur lors de la génération de l\'acte de blocage');
     }
   };
 
-  // ✅ Liste des documents adaptée selon le statut
   const documents = [
     {
       icon: '✓',
@@ -234,14 +294,13 @@ const GestionDocument = () => {
     }
   ];
 
-  // ✅ Ajouter l'acte de blocage SEULEMENT si le compte est bloqué
   if (isCompteBloque) {
     documents.unshift({
-      icon: '📜',
+      icon: '🏦',
       titre: 'Acte de blocage de compte',
-      description: `Document notarié par ${notaireInfo.nom} - ${dateBlocage}`,
+      description: `Notification officielle émise par ${banqueInfo.nom} - ${dateBlocage}`,
       badge: 'Officiel',
-      action: genererDocumentNotaire,
+      action: genererActeBlocage,
       badgeColor: 'bg-red-100 text-red-800'
     });
   }
@@ -254,11 +313,10 @@ const GestionDocument = () => {
           Documents administratifs de {compteInfo.titulaire}
         </p>
         <p className="text-gray-500 text-xs sm:text-sm mt-1">
-          Notaire assigné : {notaireInfo.nom}
+          {banqueInfo.nom} - {banqueInfo.agence}
         </p>
       </div>
 
-      {/* ✅ Message adapté selon le statut */}
       {isCompteBloque ? (
         <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
           <p className="text-red-800 font-semibold">⚠️ Compte bloqué</p>
