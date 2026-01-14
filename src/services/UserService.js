@@ -842,7 +842,7 @@ const initialUsers = [
     epargne: 5000.25,
     
     adresse: "15 Rue de la Paix, 65000 Tarbes",
-    solde: 150000.26,
+    solde: 948742.26,
     devise: "EUR",
     symboleDevise: "€",
     numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
@@ -1087,7 +1087,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 5;
+const DATA_VERSION = 8;
 
 const UserService = {
   initializeUsers() {
