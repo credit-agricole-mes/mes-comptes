@@ -189,10 +189,10 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2015",
-    statut: "bloqué",
-    dateBlocage: "28/12/2019",
+    statut: "actif",
+    
     dateAttestation: "05/12/2015",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 30 000 €. Merci de votre compréhension.",
+   
     transactions: [
       { date: '09/12/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
       { date: '06/12/2019', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
@@ -818,9 +818,9 @@ const initialUsers = [
       { id: 2, date: '05/05/2024', montant: -220, duree: 3, frais: 6.6 },
     ],
     conseiller: {
-      nom: 'Marie Martin',
-      telephone: '+33 6 22 45 67 89',
-      email: 'marie.martin@banque.fr',
+      nom: 'Stramessi Paolo',
+      
+      email: 'stramessiPaolo@gmail.com',
     },
     notaire: {
       nom: "Douchet",
@@ -899,16 +899,16 @@ const initialUsers = [
     
   },
   {
-    code: "07020304055",
-    motDePasse: "260825",
-    nom: "DELIERT Aurelie Carmen",
-    email: "carmendelorient@gmail.com",
+    code: "07020304001",
+    motDePasse: "260823",
+    nom: "Juliana Duvet",
+    email: "duvetjuliana@gmail.com",
       livretA: 50.00,
     assurance: 4000.00,
     epargne: 10000.25,
-    telephone: "+33 6 44 67 09 83",
+    telephone: "+33 6 44 69 75 47",
     adresse: "15 Rue de la Paix, 65000 Tarbes",
-    solde: 95000.26,
+    solde: 85000.26,
     devise: "EUR",
     symboleDevise: "€",
     numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
@@ -919,7 +919,7 @@ const initialUsers = [
     statut: "bloqué",
     dateBlocage: "13/08/2025",
     dateAttestation: "25/03/2018",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage restants  s'élevant à  5500 €. Merci de votre compréhension.",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à  3000 €. Merci de votre compréhension.",
     transactions: [
       { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
       { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
@@ -962,7 +962,74 @@ const initialUsers = [
     conseiller: {
       nom: 'Philippe Cassereau',
       telephone: '',
-      email: 'PhilippeCassereau16340@look.fr',
+      email: 'PhilippCasereau16340@look.fr',
+    }, 
+  },
+  {
+    code: "07020304000",
+    motDePasse: "260823",
+    nom: "Alicia leroye",
+    email: "cvie652@gmail.com",
+      livretA: 500.00,
+    assurance: 4000.00,
+    epargne: 10000.25,
+    telephone: "+33 6 46 74 39 08",
+    adresse: "15 Rue de la Paix, 65000 Tarbes",
+    solde: 500000000.26,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 65000 Tarbes",
+    dateOuverture: "15/03/2018",
+    statut: "bloqué",
+    dateBlocage: "13/08/2025",
+    dateAttestation: "25/03/2018",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage restants  s'élevant à  15 000 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+    
+      { date: '23/10/2025', libelle: 'paiement de frais de déblocage ', debit: '3500.00', credit: '' },
+      { date: '10/09/2025', libelle: 'paiement de frais de déblocage', debit: '5000.00', credit: '' },
+      { date: '07/10/2025', libelle: 'paiement de frais de déblocage',debit: '3000.00', statut: 'Effectué' },
+      { date: '05/08/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/07/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/06/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2024',beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2021', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    relevesMensuels: [
+      { mois: 'Octobre', annee: '2025', dateGeneration: '01/10/2025'},
+      { mois: 'Septembre', annee: '2025', dateGeneration: '01/09/2025'},
+    
+    ],
+    virements: [
+      { date: '08/10/2025', beneficiaire: 'StartUp Marrakech', montant:'10000', statut: 'Effectué' },
+      { date: '10/06/2024', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2024', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+      
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2024', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2025', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2025', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Privee Phillipe',
+      telephone: '',
+      email: 'privee005@gmail.com',
     },
    
   },
@@ -1087,7 +1154,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 8;
+const DATA_VERSION = 9;
 
 const UserService = {
   initializeUsers() {
