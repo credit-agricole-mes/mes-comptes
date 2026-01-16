@@ -174,7 +174,7 @@ const initialUsers = [
   {
     code: "33333444444",
     motDePasse: "123456",
-    nom: "Émelie Marie Louise",
+    nom: "NANNAN BOYA",
     email: "",
     livretA: 50.00,
     assurance: 4000.00,
@@ -1154,7 +1154,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 9;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
