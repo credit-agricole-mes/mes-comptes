@@ -1093,13 +1093,13 @@ const initialUsers = [
     }
   },
   {
-    code: "11122233344",
+    code: "11111144444",
     motDePasse: "555555",
-    nom: "Ahmed Koné",
-    email: "ahmed.kone@email.com",
-    telephone: "+225 07 12 34 56 78",
+    nom: "Adama Coulibaly",
+    email: "adamacoulibaly@gmail.com",
+    telephone: "+225 07 68 79 04 91",
     adresse: "Cocody, Abidjan",
-    solde: 5000000,
+    solde: 500000000,
     devise: "XOF",
     symboleDevise: "FCFA",
     numeroCompte: "CI93 1234 5678 9012 3456 7890 12",
@@ -1107,8 +1107,8 @@ const initialUsers = [
     bic: "BICIIVBJXXX",
     agence: "Agence Cocody - Boulevard Latrille, Abidjan",
     dateOuverture: "12/05/2020",
-    statut: "bloqué",
-    dateBlocage: "01/12/2024",
+    statut: "actif",
+    
     dateAttestation: "06/12/2024",
     notification: "Votre compte a été temporairement bloqué pour des raisons de sécurité. Pour le débloquer, veuillez régler les frais de 7 500 000 FCFA. Merci.",
     transactions: [
@@ -1154,7 +1154,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 4;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
