@@ -831,6 +831,81 @@ const initialUsers = [
       telephone: "+33 6 44 56 45 67",
       email: "Douchet.bernard@notaire-paris.fr"
     }
+    },
+  {
+    code: "07020304057",
+    motDePasse: "260825",
+    nom: "Derkani Nephael",
+    email: "Derkaninephael8@gmail.com",
+      livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 5000.25,
+    telephone: "+33 7 56 89 88 29",
+    adresse: "15 Rue de la Paix, 20000 Ajaccio",
+    solde: 120000.26,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4001 0120 0133 4457 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Ajaccio Opéra - 29 Boulevard des Capucines, 20000 Ajaccio",
+    dateOuverture: "15/03/2018",
+    statut: "bloqué",
+    dateBlocage: "13/11/2024",
+    dateAttestation: "25/03/2019",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 7 000 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '08/10/2024', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/10/2024', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/09/2024', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '06/09/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/08/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/07/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/06/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2024',beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2021', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    relevesMensuels: [
+      { mois: 'Septembre', annee: '2024', dateGeneration: '01/10/2024'},
+      { mois: 'Aout', annee: '2024', dateGeneration: '01/09/2024'},
+      { mois: 'Juillet', annee: '2024', dateGeneration: '01/08/2024' },
+      { mois: 'Juin', annee: '2024', dateGeneration: '01/07/2024' }
+    ],
+    virements: [
+      { date: '10/06/2024', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2024', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2024', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2024', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2024', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Jean Paul Lucas',
+      
+      email: 'jeanpaul23@gmail.com',
+    },
+    notaire: {
+      nom: "Douchet",
+      prenom: "Fabrizio",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: "+33 6 44 56 45 67",
+      email: "Douchet.bernard@notaire-paris.fr"
+    }
   },
   {
     code: "07020304056",
@@ -1154,7 +1229,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7;
+const DATA_VERSION = 3;
 
 const UserService = {
   initializeUsers() {
