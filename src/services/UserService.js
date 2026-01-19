@@ -1110,7 +1110,7 @@ const initialUsers = [
     statut: "actif",
     
     dateAttestation: "06/12/2024",
-    notification: "Votre compte a été temporairement bloqué pour des raisons de sécurité. Pour le débloquer, veuillez régler les frais de 7 500 000 FCFA. Merci.",
+    notification: null,
     transactions: [
       { date: '20/11/2024', libelle: 'Transfert International', debit: '', credit: '3000000.00' },
       { date: '22/11/2024', libelle: 'Achat terrain Riviera', debit: '1500000.00', credit: '' },
@@ -1154,7 +1154,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 2;
+const DATA_VERSION = 7;
 
 const UserService = {
   initializeUsers() {
