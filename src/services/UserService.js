@@ -351,7 +351,7 @@ const initialUsers = [
     assurance: 4000.00,
     epargne: 50000.25,
     telephone: "+33 6 44 66 36 48",
-    adresse: "15 Rue de la Paix, 75002 Paris",
+    adresse: "15 Rue de la Paix, 06000 Nice",
     solde: 200000.11,
     devise: "EUR",
     symboleDevise: "€",
@@ -1306,7 +1306,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 5;
+const DATA_VERSION = 7;
 
 const UserService = {
   initializeUsers() {
