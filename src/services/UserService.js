@@ -985,6 +985,72 @@ const initialUsers = [
     }
   },
   {
+    code: "07020304058",
+    motDePasse: "260826",
+    nom: "Marie Jeanne Morisot",
+    email: "Mmorisot49@gmail.com",
+      livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 5000.25,
+    telephone: "+33 7 56 89 88 29",
+    adresse: "15 Rue de la Paix, 20000 Ajaccio",
+    solde: 140000.26,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4001 0120 0133 4457 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75000 Paris",
+    dateOuverture: "15/03/2010",
+    statut: "bloqué",
+    dateBlocage: "13/11/2015",
+    dateAttestation: "25/03/2010",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 2 250 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '08/10/2024', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/10/2024', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/09/2024', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '06/09/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/08/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/07/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/06/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2024',beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2021', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    relevesMensuels: [
+      { mois: 'Septembre', annee: '2019', dateGeneration: '01/10/2019'},
+      { mois: 'Aout', annee: '2019', dateGeneration: '01/09/2019'},
+      { mois: 'Juillet', annee: '2019', dateGeneration: '01/08/2019' },
+      { mois: 'Juin', annee: '2019', dateGeneration: '01/07/2019' }
+    ],
+    virements: [
+      { date: '10/06/2019', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2019', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2019', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2019', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2019', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Jean Paul Lucas',
+      
+      email: 'jeanpaul23@gmail.com',
+    },
+  },
+  {
     code: "07020304056",
     motDePasse: "260825",
     nom: "fedotowsky Ali Manno",
@@ -1306,7 +1372,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
