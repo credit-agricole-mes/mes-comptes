@@ -343,6 +343,83 @@ const initialUsers = [
     }
   },
   {
+    code: "05561154982",
+    motDePasse: "260826",
+    nom: "Céline Dubois",
+    email: "",
+    livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 50000.25,
+    telephone: "+33 6 44 66 36 48",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 200000.11,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 1723 8000 0102 2543 9080 351",
+    iban: "FR76 3000 4000 0200 0123 4567 890",
+    bic: "AGRIFRPPXXX",
+    agence: "Agence NICE Opéra - 29 Boulevard des Capucines, 06000 Nice",
+    dateOuverture: "15/11/2018",
+    statut: "bloqué",
+    dateBlocage: "15/08/2022",
+    dateAttestation: "05/12/2018",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 5000 €. Merci de votre compréhension.",
+    transactions: [
+      { date: '09/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '06/06/2022', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '06/06/2022', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '04/06/2022', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '04/06/2022', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '01/06/2022', libelle: 'Abonnement Internet', debit: '30.00', credit: '' },
+      { date: '28/05/2022', libelle: 'Restaurant', debit: '500.00', credit: '' },
+      { date: '20/05/2022', libelle: 'Fast-food', debit: '350.75', credit: '' },
+      { date: '20/05/2022', libelle: 'Abonnement Netflix', debit: '50.00', credit: '' },
+      { date: '18/05/2022', libelle: 'Achat Bijouterie Cartier', debit: '800.00', credit: '' },
+      { date: '30/04/2022', libelle: 'Restaurant Le Grand Véfour', debit: '350.75', credit: '' },
+    ],
+    relevesMensuels: [
+      { mois: 'novembre', annee: '2022', dateGeneration: '01/06/2022' },
+      { mois: 'octobre', annee: '2022', dateGeneration: '01/05/2022' },
+      { mois: 'septembre', annee: '2022', dateGeneration: '01/04/2022' }
+    ],
+    virements: [
+      { date: '10/06/2022', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/05/2022', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
+      { date: '10/05/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/05/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/05/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/04/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/04/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2022', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/01/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/01/2021', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2020', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/06/2019', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '10/06/2022', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/05/2022', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/06/2022', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/05/2022', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/05/2022', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/05/2022', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/05/2022', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/04/2022', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Balmond Andrée',
+     
+      email: 'balmond1643@gmail.com',
+  },
+},
+  {
     code: "07885513461",
     motDePasse: "260823",
     nom: "Alexandre Roussel",
@@ -1229,7 +1306,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
