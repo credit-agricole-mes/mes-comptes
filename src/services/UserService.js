@@ -762,14 +762,14 @@ const initialUsers = [
   {
     code: "07885513463",
     motDePasse: "333333",
-    nom: "Richard Rose Irène",
+    nom: "Thomas Tylera",
     email: "gauthierjeanpatrick05@email.com",
       livretA: 50.00,
     assurance: 4000.00,
     epargne: 50000.25,
     telephone: "+33 6 44 70  45 76",
     adresse: "15 Rue de la Paix, 75002 Paris",
-    solde: 50000.70,
+    solde: 800000000.70,
     devise: "EUR",
     symboleDevise: "€",
     numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
@@ -780,7 +780,7 @@ const initialUsers = [
     statut: "bloqué",
     dateBlocage: "13/06/2022",
     dateAttestation: "25/03/2013",
-    notification: "Votre compte est bloqué en raison de plusieurs tentative de  connexion échouées. Votre compte sera débloqué le 11/01/2026 après verification.",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 13 500 €. Merci de votre compréhension.",
     transactions: [
       { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
       { date: '07/06/2022', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
@@ -1438,7 +1438,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 7;
 
 const UserService = {
   initializeUsers() {
