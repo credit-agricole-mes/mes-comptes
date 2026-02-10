@@ -852,10 +852,10 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 65000 Tarbes",
     dateOuverture: "15/03/2018",
-    statut: "bloqué",
-    dateBlocage: "13/10/2024",
+    statut: "ative",
+    
     dateAttestation: "25/03/2018",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 15 000 €. Merci de votre compréhension.",
+    notification: null,
     transactions: [
       { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
       { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
@@ -1438,7 +1438,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7;
+const DATA_VERSION = 3;
 
 const UserService = {
   initializeUsers() {
