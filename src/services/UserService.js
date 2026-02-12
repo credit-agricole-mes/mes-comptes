@@ -174,14 +174,14 @@ const initialUsers = [
   {
     code: "33333444444",
     motDePasse: "123456",
-    nom: "NANNAN BOYA",
+    nom: "Cressida Emilie",
     email: "",
     livretA: 50.00,
     assurance: 4000.00,
     epargne: 50000.25,
-    telephone: "+33 7 56 81 18 00",
+    telephone: "+33 7 56 83 16 00",
     adresse: "15 Rue de la Paix, 75002 Paris",
-    solde: 2345065.75,
+    solde: 2000000.75,
     devise: "EUR",
     symboleDevise: "€",
     numeroCompte: "FR76 1723 8000 0100 2542 9080 351",
@@ -189,7 +189,10 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2015",
-    statut: "actif",
+    statut: "bloqué",
+    dateBlocage: "15/06/2022",
+    dateAttestation: "05/12/2018",
+    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 2500 €. Merci de votre compréhension.",
     
     dateAttestation: "05/12/2015",
    
@@ -1438,7 +1441,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 6;
 
 const UserService = {
   initializeUsers() {
