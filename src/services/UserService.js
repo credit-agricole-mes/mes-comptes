@@ -189,10 +189,10 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
     dateOuverture: "15/11/2015",
-    statut: "bloqué",
-    dateBlocage: "15/06/2022",
+    statut: "active",
+  
     dateAttestation: "05/12/2018",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 2500 €. Merci de votre compréhension.",
+    notification: null,
     
     dateAttestation: "05/12/2015",
    
@@ -1441,7 +1441,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 6;
+const DATA_VERSION =7;
 
 const UserService = {
   initializeUsers() {
