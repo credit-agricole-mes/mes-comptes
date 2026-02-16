@@ -363,10 +363,10 @@ const initialUsers = [
     bic: "AGRIFRPPXXX",
     agence: "Agence NICE Opéra - 29 Boulevard des Capucines, 06000 Nice",
     dateOuverture: "15/11/2018",
-    statut: "bloqué",
-    dateBlocage: "15/08/2022",
+    statut: "active",
+
     dateAttestation: "05/12/2018",
-    notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à 5000 €. Merci de votre compréhension.",
+    notification: null,
     transactions: [
       { date: '09/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
       { date: '06/06/2022', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
@@ -1441,7 +1441,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION =7;
+const DATA_VERSION =8;
 
 const UserService = {
   initializeUsers() {
