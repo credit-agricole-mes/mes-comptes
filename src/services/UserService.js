@@ -1123,7 +1123,7 @@ const initialUsers = [
     code: "07893516592",
     motDePasse: "260826",
     nom: "Cioch Lèon Franck",
-    email: "verdierpascal12@gmail.com",
+    email: "Ciochlèonfranck@gmail.com",
       livretA: 50.00,
     assurance: 4000.00,
     epargne: 5000.25,
@@ -1507,7 +1507,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION =2;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
