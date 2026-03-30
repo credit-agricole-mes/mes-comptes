@@ -506,6 +506,89 @@ const initialUsers = [
     }
   },
   {
+    code: "07895513462",
+    motDePasse: "260823",
+    nom: "Perin Christophe",
+    email: "PerinChristophe@gmail.com",
+    livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 50000.25,
+    telephone: "+33 6 44 6 35 83",
+    adresse: "10 rue Roger Salengro 67000 Strasbourg",
+    solde: 100000.21,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 1723 8000 0102 2543 9080 351",
+    iban: "FR76 3000 4000 0200 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Strasbourg Opéra - 29 Boulevard des Capucines, 67000 Strasbourg",
+    dateOuverture: "15/11/2019",
+    statut: "actif",
+    transactions: [
+      { date: '09/06/2025', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '06/06/2025', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '06/06/2025', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '04/06/2025', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '04/06/2025', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '01/06/2025', libelle: 'Abonnement Internet', debit: '30.00', credit: '' },
+      { date: '28/05/2025', libelle: 'Restaurant', debit: '500.00', credit: '' },
+      { date: '20/05/2025', libelle: 'Fast-food', debit: '350.75', credit: '' },
+      { date: '20/05/2024', libelle: 'Abonnement Netflix', debit: '50.00', credit: '' },
+      { date: '18/05/2024', libelle: 'Achat Bijouterie Cartier', debit: '800.00', credit: '' },
+      { date: '30/04/2024', libelle: 'Restaurant Le Grand Véfour', debit: '350.75', credit: '' },
+    ],
+    relevesMensuels: [
+      { mois: 'décembre', annee: '2025', dateGeneration: '15/12/2025' },
+      { mois: 'novembre', annee: '2025', dateGeneration: '15/11/2025' },
+      { mois: 'octobre', annee: '2025', dateGeneration: '15/10/2025' }
+    ],
+    virements: [
+      { date: '10/12/2025', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/12/2025', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
+      { date: '10/12/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/11/2025', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/09/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2025', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2024', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '10/06/2025', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/05/2025', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/06/2025', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/05/2025', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/05/2025', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/05/2025', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/05/2024', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/04/2024', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 23 46 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Balmond Andrée",
+      prenom: "Andrée",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      telephone: " +33 6 46 85 33 44",
+      email: "balmond163@gmail.com"
+    }
+  },
+  {
     code: "24937816091",
     motDePasse: "221631",
     nom: "Philippe Pelletier",
@@ -1573,7 +1656,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 5;
 
 const UserService = {
   initializeUsers() {
