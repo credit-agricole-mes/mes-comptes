@@ -1269,7 +1269,7 @@ const initialUsers = [
     },
   },
   {
-    code: "07020304056",
+    code: "07020304057",
     motDePasse: "260825",
     nom: "fedotowsky Ali Manno",
     email: "alimannofedotowsky@gmail.com",
@@ -1722,7 +1722,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 8;
+const DATA_VERSION = 9;
 
 const UserService = {
   initializeUsers() {
