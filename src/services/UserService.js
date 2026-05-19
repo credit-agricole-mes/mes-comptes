@@ -1467,10 +1467,10 @@ const initialUsers = [
     
   },
   {
-    code: "07020304001",
+    code: "06020304001",
     motDePasse: "260823",
-    nom: "Juliana Duvet",
-    email: "duvetjuliana@gmail.com",
+    nom: "Piero Duvet",
+    email: "duvetpiero@gmail.com",
       livretA: 50.00,
     assurance: 4000.00,
     epargne: 10000.25,
@@ -1484,8 +1484,8 @@ const initialUsers = [
     bic: "BNPAFRPPXXX",
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 65000 Tarbes",
     dateOuverture: "15/03/2018",
-    statut: "bloqué",
-    dateBlocage: "13/08/2025",
+    statut: "actif",
+    dateBlocage: null,
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué pour des raisons d'une anomalie détectée. Afin de réactiver votre accès, nous vous invitons à régler les frais de déblocage s'élevant à  3000 €. Merci de votre compréhension.",
     transactions: [
@@ -1722,7 +1722,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 9;
+const DATA_VERSION = 5;
 
 const UserService = {
   initializeUsers() {
