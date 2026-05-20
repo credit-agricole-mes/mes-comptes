@@ -1552,7 +1552,7 @@ const initialUsers = [
     agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 65000 Tarbes",
     dateOuverture: "15/03/2018",
     statut: "actif",
-    dateBlocage:"13/08/2025",
+    dateBlocage:null,
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué car le propriétaire n'a pas payé les frais de dédouanement français. Nous avons reçu un virement, mais la somme nécessaire pour débloquer le compte s'élève à 45000 €. Une fois cette somme réglée, votre compte sera immédiatement débloqué. Nous vous remercions pour votre compréhension et votre coopération dans cette situation.",
     transactions: [
@@ -1791,7 +1791,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 2;
+const DATA_VERSION = 6;
 
 const UserService = {
   initializeUsers() {
