@@ -1534,7 +1534,7 @@ const initialUsers = [
     }, 
   },
   {
-    code: "06020304002",
+    code: "06020304007",
     motDePasse: "260823",
     nom: "Alessandro Rossi",
     email: "alessandrorossi@gmail.com",
@@ -1791,7 +1791,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 5;
+const DATA_VERSION = 9;
 
 const UserService = {
   initializeUsers() {
