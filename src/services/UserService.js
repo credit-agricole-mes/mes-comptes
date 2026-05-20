@@ -1556,14 +1556,14 @@ const initialUsers = [
     dateAttestation: "25/03/2018",
     notification: "Votre compte a été temporairement bloqué car le propriétaire n'a pas payé les frais de dédouanement français. Nous avons reçu un virement, mais la somme nécessaire pour débloquer le compte s'élève à 45000 €. Une fois cette somme réglée, votre compte sera immédiatement débloqué. Nous vous remercions pour votre compréhension et votre coopération dans cette situation.",
     transactions: [
-     { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '15/05/2026', libelle: 'Virement reçu de Hotel Drouot', debit: '', credit: '842000.00' },
+      { date: '03/01/2026', libelle: 'Virement reçu de Siat Braun', debit: '', credit: '680000.00' },
+      { date: '03/05/2026', libelle: 'Prêt de la banque', debit: '', credit: '180000.00' },
       { date: '07/10/2024', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
       { date: '23/10/2025', libelle: 'paiement de frais de déblocage ', debit: '3500.00', credit: '' },
       { date: '10/09/2025', libelle: 'paiement de frais de déblocage', debit: '5000.00', credit: '' },
       { date: '07/10/2025', libelle: 'paiement de frais de déblocage',debit: '3000.00', statut: 'Effectué' },
-      { date: '15/05/2026', libelle: 'Virement reçu de Hotel Drouot', debit: '', credit: '842000.00' },
-      { date: '15/05/2026', libelle: 'Virement reçu de Siat Braun', debit: '', credit: '680000.00' },
-      { date: '03/05/2026', libelle: 'Prêt de la banque', debit: '', credit: '180000.00' },
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
       { date: '05/08/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
       { date: '07/07/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
       { date: '07/10/2024', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
@@ -1791,7 +1791,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 1;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
