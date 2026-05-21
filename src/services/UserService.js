@@ -1398,7 +1398,71 @@ const initialUsers = [
       nom: 'Jean Marke',
       email: 'jmarke654@gmail.com',
     },
+  },
+  {
+    code: "07020304068",
+    motDePasse: "260825",
+    nom: "Stéphanie Debout",
+    email: "sdebout@gmail.com",
+      livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 5000.25,
     
+    adresse: "15 Rue de la Paix, 14000 Caen",
+    solde: 400000.00,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 3000 4000 0120 0123 4557 890",
+    iban: "FR76 3000 4000 0120 0123 4557 890",
+    bic: "AGRIGRPPXXX",
+    agence: "Agence Caen Opéra - 29 Boulevard des Capucines, 14000 Caen",
+    dateOuverture: "15/03/2018",
+    statut: "bloqué",
+    dateBlocage: null,
+    dateAttestation: "25/03/2018",
+    notification: "Votre compte est bloqué,veillez vous acquitter des frais de débloccage de 100000 EUR avant toute opération bancaire associer à ce compte. Merci de votre compréhension. ",
+    transactions: [
+      { date: '10/06/2022', libelle: 'Virement Notaire - Succession', debit: '', credit: '15000.00' },
+      { date: '07/10/2023', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '08/10/2023', libelle: 'Virement entrant', debit: '', credit: '25000.00' },
+      { date: '05/10/2023', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '20/09/2023', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '06/09/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/08/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/07/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/10/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/06/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2023',beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2023', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/09/2023', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/09/2022', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2021', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2020', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    relevesMensuels: [
+      { mois: 'Septembre', annee: '2023', dateGeneration: '01/10/2023'},
+      { mois: 'Aout', annee: '2023', dateGeneration: '01/09/2023'},
+      { mois: 'Juillet', annee: '2023', dateGeneration: '01/08/2023' },
+      { mois: 'Juin', annee: '2023', dateGeneration: '01/07/2023' }
+    ],
+    virements: [
+      { date: '10/06/2023', beneficiaire: 'Électricité', montant: -120.00, statut: 'Effectué' },
+      { date: '05/06/2023', beneficiaire: 'Jean Martin', montant: -300.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '01/06/2023', montant: 800.00, icon: '📝' },
+    ],
+    decouvert: [
+      { id: 1, date: '15/05/2023', montant: -180, duree: 4, frais: 7.2 },
+      { id: 2, date: '05/05/2023', montant: -220, duree: 3, frais: 6.6 },
+    ],
+    conseiller: {
+      nom: 'Jean Marke',
+      email: 'jmarke654@gmail.com',
+    },
   },
   {
     code: "07893516593",
@@ -1791,7 +1855,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 6;
+const DATA_VERSION = 7;
 
 const UserService = {
   initializeUsers() {
