@@ -8,18 +8,12 @@ export default function AccountCard({ user, onLogout }) {
   const [notificationRead, setNotificationRead] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ VÉRIFIER SI LE COMPTE EST VRAIMENT BLOQUÉ
   const isCompteBloque = user?.dateBlocage && user.dateBlocage !== "" && user.dateBlocage !== null;
   const estNouveauCompte = user?.solde === 0 && (!user?.transactions || user.transactions.length === 0);
 
-  // ✅ CORRECTION : Pour comptes bloqués = toujours afficher, pour autres = vérifier localStorage
   const [showBanner, setShowBanner] = useState(() => {
     if (!user?.notification) return false;
-    
-    // Si compte bloqué, toujours afficher (pas de localStorage)
     if (isCompteBloque) return true;
-    
-    // Sinon, vérifier si déjà fermé
     const key = `notificationClosed_${user?.email || user?.nom}`;
     return localStorage.getItem(key) !== 'true';
   });
@@ -39,19 +33,15 @@ export default function AccountCard({ user, onLogout }) {
     if (onLogout) onLogout();
   };
 
-  // ✅ Fermer la bannière notification et sauvegarder (sauf si compte bloqué)
   const handleCloseBanner = () => {
     setShowBanner(false);
     setNotificationRead(true);
-    
-    // NE PAS sauvegarder pour les comptes bloqués (doit revenir à chaque fois)
     if (!isCompteBloque) {
       const key = `notificationClosed_${user?.email || user?.nom}`;
       localStorage.setItem(key, 'true');
     }
   };
 
-  // ✅ Formater le solde avec la devise de l'utilisateur
   const soldeFormate = user?.solde !== undefined && user?.solde !== null
     ? formatCurrency(user.solde, user.devise || "EUR", user.symboleDevise || "€")
     : (user?.symboleDevise === "$" ? "$0.00" : "0,00 €");
@@ -60,16 +50,22 @@ export default function AccountCard({ user, onLogout }) {
     <>
       <div className="bg-green-500 rounded-bl-3xl rounded-br-3xl z-50">
         <div className="flex justify-between items-start px-4 sm:px-20 pt-4 pb-32">
-          <div className="w-12 h-12 flex items-center justify-center">
-            <img 
-              src="images/logo-transparent.png" 
-              alt="Logo" 
-              className="w-full h-full object-contain drop-shadow-lg"
-            />
+
+          {/* LOGO + NOM DE LA BANQUE */}
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-12 flex items-center justify-center">
+              <img 
+                src="images/logo-transparent.png" 
+                alt="Logo" 
+                className="w-full h-full object-contain drop-shadow-lg"
+              />
+            </div>
+            <span className="text-white text-xs font-semibold mt-1 tracking-wide">
+              CTGRETG GBFDF
+            </span>
           </div>
 
           <div className="flex items-center gap-6">
-            {/* ✅ Notification MOBILE uniquement - PAS pour les comptes bloqués si nouveau compte */}
             {user?.notification && !(isCompteBloque && estNouveauCompte) && (
               <button 
                 className="md:hidden relative cursor-pointer hover:opacity-80 transition"
@@ -91,7 +87,6 @@ export default function AccountCard({ user, onLogout }) {
               {menuOpen ? <X size={32} /> : <Menu size={32} />}
             </button>
 
-            {/* ✅ Notification DESKTOP uniquement - PAS pour les comptes bloqués si nouveau compte */}
             {user?.notification && !(isCompteBloque && estNouveauCompte) && (
               <button 
                 className="hidden md:block relative cursor-pointer hover:opacity-80 transition"
@@ -154,8 +149,6 @@ export default function AccountCard({ user, onLogout }) {
                   <button onClick={() => handleNavigate('/transactions')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📊 Mes transactions
                   </button>
-                  
-                  {/* ✅ VIREMENTS - Affichage différent selon statut compte */}
                   <button 
                     onClick={isCompteBloque ? undefined : () => handleNavigate('/virements')}
                     className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
@@ -167,8 +160,6 @@ export default function AccountCard({ user, onLogout }) {
                   >
                     💸 Virements {isCompteBloque && <span className="text-xs text-red-500">(🔒 bloqué)</span>}
                   </button>
-                  
-                  {/* ✅ DÉPÔTS - Affichage différent selon statut compte */}
                   <button 
                     onClick={isCompteBloque ? undefined : () => handleNavigate('/depots')}
                     className={`w-full text-left px-4 py-3 rounded-lg font-medium ${
@@ -180,7 +171,6 @@ export default function AccountCard({ user, onLogout }) {
                   >
                     💰 Dépôts {isCompteBloque && <span className="text-xs text-red-500">(🔒 bloqué)</span>}
                   </button>
-                  
                   <button onClick={() => handleNavigate('/overdraft')} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 text-gray-700 font-medium">
                     📈 Mes découverts
                   </button>
@@ -232,7 +222,6 @@ export default function AccountCard({ user, onLogout }) {
 
       <div className="-mt-20 px-4 z-60 relative">
         <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-2xl mx-auto relative">
-          {/* ✅ Bannière notification - PAS pour les comptes bloqués si nouveau compte */}
           {user?.notification && showBanner && !(isCompteBloque && estNouveauCompte) && (
             <div className="mb-6 bg-blue-50 border-2 border-blue-200 text-blue-800 rounded-lg p-4 flex items-start gap-3">
               <div className="mt-0.5">
@@ -256,19 +245,16 @@ export default function AccountCard({ user, onLogout }) {
             {user?.nom || "Nom d'utilisateur"}
           </h1>
 
-          {/* ✅ SOLDE AVEC DEVISE DYNAMIQUE */}
           <div className="text-4xl sm:text-5xl font-bold text-green-400 text-center mb-6 sm:mb-8">
             {soldeFormate}
           </div>
 
-          {/* ✅ AFFICHER LE MESSAGE DE BLOCAGE UNIQUEMENT SI LE COMPTE EST VRAIMENT BLOQUÉ */}
           {isCompteBloque && (
             <div className="text-red-600 text-lg sm:text-xl font-bold text-center mb-4 sm:mb-6">
               ⛔ Compte temporairement bloqué !
             </div>
           )}
 
-          {/* ✅ BADGE COMPTE ACTIF pour les comptes non bloqués */}
           {!isCompteBloque && (
             <div className="text-green-600 text-sm font-semibold text-center mb-4 flex items-center justify-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -276,7 +262,6 @@ export default function AccountCard({ user, onLogout }) {
             </div>
           )}
 
-          {/* ✅ BOUTON ASSISTANT TOUJOURS VISIBLE */}
           <div className="flex justify-center">
             <button 
               onClick={() => handleNavigate('/assistant')}
@@ -290,31 +275,15 @@ export default function AccountCard({ user, onLogout }) {
 
       <style>{`
         @keyframes slide-in {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
         }
-        .animate-slide-in {
-          animation: slide-in 0.3s ease-out;
-        }
+        .animate-slide-in { animation: slide-in 0.3s ease-out; }
         @keyframes scale-in {
-          from {
-            transform: scale(0.9);
-            opacity: 0;
-          }
-          to {
-            transform: scale(1);
-            opacity: 1;
-          }
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
         }
-        .animate-scale-in {
-          animation: scale-in 0.3s ease-out;
-        }
+        .animate-scale-in { animation: scale-in 0.3s ease-out; }
       `}</style>
     </>
   );

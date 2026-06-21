@@ -260,6 +260,94 @@ const initialUsers = [
     }
   },
   {
+    code: "12345678890",
+    motDePasse: "123456",
+    nom: "Delarouse Marie",
+    email: "",
+    livretA: 50.00,
+    assurance: 4000.00,
+    epargne: 50000.25,
+    telephone: "+33 7 56 83 16 00",
+    adresse: "15 Rue de la Paix, 75002 Paris",
+    solde: 1287342.75,
+    devise: "EUR",
+    symboleDevise: "€",
+    numeroCompte: "FR76 1723 8000 0100 2542 9080 351",
+    iban: "FR76 3000 5000 0200 0123 4567 890",
+    bic: "BNPAFRPPXXX",
+    agence: "Agence Paris Opéra - 29 Boulevard des Capucines, 75009 Paris",
+    dateOuverture: "15/11/2015",
+    statut: "active",
+  
+    dateAttestation: "05/12/2018",
+    notification: null,
+    
+    dateAttestation: "05/12/2015",
+   
+    transactions: [
+      { date: '09/12/2019', libelle: 'Virement Notaire - Succession', debit: '', credit: '1500000.00' },
+      { date: '06/12/2019', libelle: 'Virement entrant', debit: '', credit: '250000.00' },
+      { date: '06/12/2019', libelle: 'Frais de gestion compte', debit: '45.00', credit: '' },
+      { date: '04/12/2019', libelle: 'Achat Bijouterie Cartier', debit: '8500.00', credit: '' },
+      { date: '04/12/2019', libelle: 'Restaurant Le Grand Véfour', debit: '320.75', credit: '' },
+      { date: '01/12/2019', libelle: 'Abonnement Internet', debit: '30.00', credit: '' },
+      { date: '28/11/2019', libelle: 'Restaurant', debit: '500.00', credit: '' },
+      { date: '20/11/2019', libelle: 'Fast-food', debit: '350.75', credit: '' },
+      { date: '20/11/2019', libelle: 'Abonnement Netflix', debit: '50.00', credit: '' },
+      { date: '18/11/2019', libelle: 'Achat Bijouterie Cartier', debit: '800.00', credit: '' },
+      { date: '30/10/2019', libelle: 'Restaurant Le Grand Véfour', debit: '350.75', credit: '' },
+    ],
+    relevesMensuels: [
+      { mois: 'novembre', annee: '2019', dateGeneration: '01/12/2019' },
+      { mois: 'octobre', annee: '2019', dateGeneration: '01/11/2019' },
+      { mois: 'septembre', annee: '2019', dateGeneration: '01/10/2019' }
+    ],
+    virements: [
+      { date: '10/12/2019', beneficiaire: 'EDF', montant: -85.50, statut: 'Effectué' },
+      { date: '18/11/2019', beneficiaire: 'Marie Dubois', montant: -2000.00, statut: 'Effectué' },
+      { date: '10/11/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/10/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/09/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/08/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/07/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/06/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/05/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '07/04/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/03/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '06/02/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '05/01/2019', beneficiaire: 'Loyer', montant: -950.00, statut: 'Effectué' },
+      { date: '02/08/2019', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/08/2018', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/07/2017', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+      { date: '02/06/2016', beneficiaire: 'Assurance', montant: -1000.00, statut: 'Effectué' },
+    ],
+    depots: [
+      { type: 'Dépôt de chèque', date: '15/11/2019', montant: 1250.00, icon: '📝' },
+      { type: 'Dépôt espèces', date: '10/11/2019', montant: 500.00, icon: '💵' },
+    ],
+    decouvert: [
+      { id: 1, date: '05/12/2019', montant: -250, duree: 3, frais: 7.5 },
+      { id: 2, date: '28/11/2019', montant: -180, duree: 5, frais: 9.0 },
+      { id: 3, date: '15/11/2019', montant: -320, duree: 2, frais: 6.4 },
+      { id: 4, date: '01/11/2019', montant: -150, duree: 4, frais: 6.0 },
+      { id: 5, date: '20/10/2019', montant: -280, duree: 6, frais: 16.8 },
+      { id: 6, date: '05/10/2019', montant: -200, duree: 3, frais: 6.0 }
+    ],
+    conseiller: {
+      nom: 'Marie Martin',
+      telephone: '+33 6 22 45 67 89',
+      email: 'marie.martin@banque.fr',
+    },
+    notaire: {
+      nom: "Maitre",
+      prenom: "Hermann",
+      titre: "NOTAIRE",
+      adresse: "45 Avenue Montaigne",
+      ville: "75008 PARIS",
+      email: "Hermann1643@gmail.com"
+    }
+  },
+  {
     code: "07014860451",
     motDePasse: "260823",
     nom: "Paulo Brunetti",
@@ -1855,7 +1943,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 7;
+const DATA_VERSION = 2;
 
 const UserService = {
   initializeUsers() {
