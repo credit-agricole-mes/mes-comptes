@@ -334,9 +334,9 @@ const initialUsers = [
       { id: 6, date: '05/10/2019', montant: -200, duree: 3, frais: 6.0 }
     ],
     conseiller: {
-      nom: 'Marie Martin',
-      telephone: '+33 6 22 45 67 89',
-      email: 'marie.martin@banque.fr',
+      nom: 'Dorian Chanaigner',
+      telephone: '+33 1 89 62 80 82',
+      email: 'dorian.chataigner@ca-caen.fr',
     },
     notaire: {
       nom: "Maitre",
@@ -1943,7 +1943,7 @@ const initialUsers = [
 ];
 
 // ==================== USER SERVICE ====================
-const DATA_VERSION = 3;
+const DATA_VERSION = 4;
 
 const UserService = {
   initializeUsers() {
