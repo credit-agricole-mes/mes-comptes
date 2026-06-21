@@ -61,7 +61,7 @@ export default function AccountCard({ user, onLogout }) {
               />
             </div>
             <span className="text-white text-xs font-semibold mt-1 tracking-wide">
-              CTGRETG GBFDF
+              CREDIT AGRICOLE
             </span>
           </div>
 
